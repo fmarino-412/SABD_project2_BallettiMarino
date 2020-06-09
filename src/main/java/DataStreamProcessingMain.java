@@ -1,8 +1,8 @@
-import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.sink.SinkFunction;
+import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExtractor;
+import query1.Query1TopologyBuilder;
 import utility.BusData;
 import utility.StreamGenerator;
 
@@ -14,21 +14,17 @@ public class DataStreamProcessingMain {
         environment.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
         StreamGenerator source = new StreamGenerator();
-        DataStream<BusData> stream = environment.addSource(source).name("stream-source");
+        DataStream<BusData> stream = environment
+                .addSource(source)
+                .assignTimestampsAndWatermarks(new AscendingTimestampExtractor<BusData>() {
+                    @Override
+                    public long extractAscendingTimestamp(BusData busData) {
+                        // specify event time
+                        return busData.getEventTime().getTime();
+                    }
+        }).name("stream-source");
 
-        // Query 1 topology
-
-
-        DataStream<String> debugStream = stream.map(new MapFunction<BusData, String>() {
-            public String map(BusData busData) throws Exception {
-                return "Date: " + busData.getEventTime() + " - value: " + busData.getDelay();
-            }
-        }).name("debug-map");
-        debugStream.addSink(new SinkFunction<String>() {
-            public void invoke(String value, Context context) throws Exception {
-                System.out.println(value);
-            }
-        }).name("debug-sink");
+        Query1TopologyBuilder.buildTopology(stream);
 
         try {
             environment.execute();
