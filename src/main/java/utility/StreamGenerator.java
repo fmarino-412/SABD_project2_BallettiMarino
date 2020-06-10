@@ -1,6 +1,7 @@
 package utility;
 
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
+import utility.delay_parsing.DelayFormatException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -21,15 +22,15 @@ public class StreamGenerator implements SourceFunction<BusData> {
         String line;
 
         while (isRunning && (line = bufferedReader.readLine()) != null) {
-            String[] info = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+            String[] info = line.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
             try {
                 data = new BusData(info[7], info[11]);
                 sourceContext.collect(data);
-                Thread.sleep(SLEEP);
-            } catch (ParseException ignored) {
-                // skip to next line
-            } catch (NumberFormatException ignored) {
-
+                // TODO: Uncomment - Thread.sleep(SLEEP);
+            } catch (ParseException| DelayFormatException |NumberFormatException e) {
+                // ignore and skip to next line
+                // TODO: remove and replace 'e' with 'ignored'
+                System.err.println(e.getMessage());
             }
         }
     }

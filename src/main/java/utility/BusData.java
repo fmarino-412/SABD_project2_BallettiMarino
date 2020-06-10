@@ -1,5 +1,8 @@
 package utility;
 
+import utility.delay_parsing.DelayFormatException;
+import utility.delay_parsing.DelayParsingUtility;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,29 +12,17 @@ public class BusData {
     private Date eventTime;
     private Long delay; // expressed in minutes
 
-    public BusData(String eventTime, String delay) throws ParseException {
+    public BusData(String eventTime, String delay) throws ParseException, DelayFormatException {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         this.eventTime = format.parse(eventTime);
-        this.delay = parseDelay(delay);
+        this.delay = DelayParsingUtility.parseDelay(delay);
     }
 
     public Date getEventTime() {
         return eventTime;
     }
 
-    public void setEventTime(Date eventTime) {
-        this.eventTime = eventTime;
-    }
-
     public Long getDelay() {
         return delay;
-    }
-
-    public void setDelay(Long delay) {
-        this.delay = delay;
-    }
-
-    private Long parseDelay(String dirtyDelay) {
-        return Long.parseLong(dirtyDelay);
     }
 }
