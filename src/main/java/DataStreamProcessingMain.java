@@ -20,15 +20,8 @@ public class DataStreamProcessingMain {
 
         //add the source and handle watermarks
         StreamGenerator source = new StreamGenerator();
-        DataStream<BusData> stream = environment
+        DataStream<String> stream = environment
                 .addSource(source)
-                .assignTimestampsAndWatermarks(new AscendingTimestampExtractor<BusData>() {
-                    @Override
-                    public long extractAscendingTimestamp(BusData busData) {
-                        // specify event time
-                        return busData.getEventTime().getTime();
-                    }
-                })
                 .name("stream-source");
 
         //build query 1 topology
