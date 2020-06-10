@@ -28,19 +28,7 @@ public class BusData {
         return delay;
     }
 
-    public void setDelay(Long delay) {
-        this.delay = delay;
-    }
-
-    private Long parseDelay(String dirtyDelay) {
-        return Long.parseLong(dirtyDelay);
-    }
-
     public String getBoro() {
         return boro;
-    }
-
-    public void setBoro(String boro) {
-        this.boro = boro;
     }
 }
