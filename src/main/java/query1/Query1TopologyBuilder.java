@@ -43,8 +43,8 @@ public class Query1TopologyBuilder {
         stream.timeWindowAll(Time.hours(24))
                 .aggregate(new AverageDelayAggregator())
                 .name("query1-daily-mean")
-                .addSink(new SinkFunction<AggregatorOutcome>() {
-                    public void invoke(AggregatorOutcome outcome, Context context) {
+                .addSink(new SinkFunction<AverageDelayOutcome>() {
+                    public void invoke(AverageDelayOutcome outcome, Context context) {
                         CSVOutputFormatter.writeOutputQuery1(CSVOutputFormatter.QUERY1_DAILY_CSV_FILE_PATH, outcome);
                     }
                 });
@@ -53,8 +53,8 @@ public class Query1TopologyBuilder {
         stream.timeWindowAll(Time.days(7))
                 .aggregate(new AverageDelayAggregator())
                 .name("query1-weekly-mean")
-                .addSink(new SinkFunction<AggregatorOutcome>() {
-                    public void invoke(AggregatorOutcome outcome, Context context) {
+                .addSink(new SinkFunction<AverageDelayOutcome>() {
+                    public void invoke(AverageDelayOutcome outcome, Context context) {
                         CSVOutputFormatter.writeOutputQuery1(CSVOutputFormatter.QUERY1_WEEKLY_CSV_FILE_PATH, outcome);
                     }
                 });
@@ -63,8 +63,8 @@ public class Query1TopologyBuilder {
         stream.timeWindowAll(Time.days(30))
                 .aggregate(new AverageDelayAggregator())
                 .name("query1-monthly-mean")
-                .addSink(new SinkFunction<AggregatorOutcome>() {
-                    public void invoke(AggregatorOutcome outcome, Context context) {
+                .addSink(new SinkFunction<AverageDelayOutcome>() {
+                    public void invoke(AverageDelayOutcome outcome, Context context) {
                         CSVOutputFormatter.writeOutputQuery1(CSVOutputFormatter.QUERY1_MONTHLY_CSV_FILE_PATH, outcome);
                     }
                 });

@@ -1,14 +1,11 @@
 package query1;
 
 import org.apache.flink.api.common.functions.AggregateFunction;
-import scala.Tuple2;
 import utility.BusData;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class AverageDelayAggregator implements AggregateFunction<BusData, AverageDelayAccumulator, AggregatorOutcome> {
+public class AverageDelayAggregator implements AggregateFunction<BusData, AverageDelayAccumulator, AverageDelayOutcome> {
 
     public AverageDelayAccumulator createAccumulator() {
         return new AverageDelayAccumulator();
@@ -40,8 +37,8 @@ public class AverageDelayAggregator implements AggregateFunction<BusData, Averag
         return acc1;
     }
 
-    public AggregatorOutcome getResult(AverageDelayAccumulator accumulator) {
-        AggregatorOutcome outcome = new AggregatorOutcome(accumulator.getStartDate());
+    public AverageDelayOutcome getResult(AverageDelayAccumulator accumulator) {
+        AverageDelayOutcome outcome = new AverageDelayOutcome(accumulator.getStartDate());
         accumulator.getBoroMap().forEach((k, v) -> outcome.addMean(k, v._1() / v._2()));
 
         return outcome;

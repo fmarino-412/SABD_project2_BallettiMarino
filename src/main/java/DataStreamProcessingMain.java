@@ -3,6 +3,7 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExtractor;
 import query1.Query1TopologyBuilder;
+import query2.Query2TopologyBuilder;
 import utility.BusData;
 import utility.CSVOutputFormatter;
 import utility.StreamGenerator;
@@ -26,6 +27,9 @@ public class DataStreamProcessingMain {
 
         //build query 1 topology
         Query1TopologyBuilder.buildTopology(stream);
+
+        //build query 2 topology
+        Query2TopologyBuilder.buildTopology(stream);
 
         try {
             //execute the environment for DSP

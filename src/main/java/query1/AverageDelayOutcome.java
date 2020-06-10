@@ -3,11 +3,11 @@ package query1;
 import java.util.Date;
 import java.util.HashMap;
 
-public class AggregatorOutcome {
+public class AverageDelayOutcome {
     private Date startDate;
     private HashMap<String, Double> boroMeans = new HashMap<>();
 
-    public AggregatorOutcome(Date startDate) {
+    public AverageDelayOutcome(Date startDate) {
         this.startDate = startDate;
     }
 

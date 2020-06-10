@@ -7,11 +7,12 @@ import java.util.HashMap;
 
 public class AverageDelayAccumulator {
 
-    private HashMap<String, Tuple2<Double, Long>> boroMap = new HashMap<>();
+    private HashMap<String, Tuple2<Double, Long>> boroMap;
     private Date startDate;
 
     public AverageDelayAccumulator() {
         this.startDate = new Date(Long.MAX_VALUE);
+        this.boroMap = new HashMap<>();
     }
 
     public void add(String boro, Double total, Long counter) {
