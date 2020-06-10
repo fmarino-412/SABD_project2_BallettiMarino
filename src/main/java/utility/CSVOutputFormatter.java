@@ -38,9 +38,7 @@ public class CSVOutputFormatter {
             StringBuilder builder = new StringBuilder();
 
             builder.delete(0, builder.length());
-            builder.append(outcome.getStartDate())
-                    .append(";")
-                    .append(outcome.getEndDate());
+            builder.append(outcome.getStartDate().getTime());
             outcome.getBoroMeans().forEach((k, v) -> builder.append(";").append(k).append(";").append(v));
             builder.append("\n");
             bw.append(builder.toString());

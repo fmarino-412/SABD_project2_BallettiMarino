@@ -5,12 +5,10 @@ import java.util.HashMap;
 
 public class AggregatorOutcome {
     private Date startDate;
-    private Date endDate;
     private HashMap<String, Double> boroMeans = new HashMap<>();
 
-    public AggregatorOutcome(Date startDate, Date endDate) {
+    public AggregatorOutcome(Date startDate) {
         this.startDate = startDate;
-        this.endDate = endDate;
     }
 
     public void addMean(String boro, Double mean) {
@@ -27,14 +25,6 @@ public class AggregatorOutcome {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
     }
 
     public HashMap<String, Double> getBoroMeans() {
