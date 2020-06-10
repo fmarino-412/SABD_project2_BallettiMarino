@@ -5,6 +5,7 @@ import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import scala.Tuple2;
 import utility.BusData;
+import utility.CSVOutputFormatter;
 
 public class Query1TopologyBuilder {
 
@@ -16,7 +17,7 @@ public class Query1TopologyBuilder {
                 .name("query1-daily-mean")
                 .addSink(new SinkFunction<AggregatorOutcome>() {
                     public void invoke(AggregatorOutcome outcome, Context context) {
-                        //TODO: do stuff with outcome
+                        CSVOutputFormatter.writeOutputQuery1(CSVOutputFormatter.QUERY1_DAILY_CSV_FILE_PATH, outcome);
                     }
                 });
 
@@ -26,7 +27,7 @@ public class Query1TopologyBuilder {
                 .name("query1-weekly-mean")
                 .addSink(new SinkFunction<AggregatorOutcome>() {
                     public void invoke(AggregatorOutcome outcome, Context context) {
-                        //TODO: do stuff with outcome
+                        CSVOutputFormatter.writeOutputQuery1(CSVOutputFormatter.QUERY1_WEEKLY_CSV_FILE_PATH, outcome);
                     }
                 });
 
@@ -36,7 +37,7 @@ public class Query1TopologyBuilder {
                 .name("query1-monthly-mean")
                 .addSink(new SinkFunction<AggregatorOutcome>() {
                     public void invoke(AggregatorOutcome outcome, Context context) {
-                        //TODO: do stuff with outcome
+                        CSVOutputFormatter.writeOutputQuery1(CSVOutputFormatter.QUERY1_MONTHLY_CSV_FILE_PATH, outcome);
                     }
                 });
     }
