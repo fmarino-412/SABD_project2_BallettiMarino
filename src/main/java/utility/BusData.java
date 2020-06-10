@@ -9,14 +9,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BusData {
-    private Date eventTime;
 
-    /* Query 1 scope */
+    private Date eventTime;
     private Double delay; // expressed in minutes
     private String boro;
-
-    /* Query 2 scope */
     private String reason;
+    private String companyName;
 
     /* Query 1 scope */
     public BusData(String eventTime, String delay, String boro) throws ParseException, DelayFormatException {
@@ -33,6 +31,16 @@ public class BusData {
         this.reason = reason;
     }
 
+    /* Query 3 scope */
+    public BusData(String eventTime, String delay, String reason, String companyName) throws ParseException,
+            DelayFormatException {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        this.eventTime = format.parse(eventTime);
+        this.delay = DelayParsingUtility.parseDelay(delay);
+        this.reason = reason;
+        this.companyName = companyName;
+    }
+
     public Date getEventTime() {
         return eventTime;
     }
@@ -47,5 +55,9 @@ public class BusData {
 
     public String getReason() {
         return reason;
+    }
+
+    public String getCompanyName() {
+        return companyName;
     }
 }

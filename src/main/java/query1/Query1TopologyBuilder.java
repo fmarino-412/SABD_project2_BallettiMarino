@@ -25,7 +25,7 @@ public class Query1TopologyBuilder {
                         try {
                             data = new BusData(info[7], info[11], info[9]);
                             collector.collect(data);
-                        } catch (ParseException | DelayFormatException |NumberFormatException ignored) {
+                        } catch (ParseException | DelayFormatException | NumberFormatException ignored) {
                             // ignored
                         }
                     }

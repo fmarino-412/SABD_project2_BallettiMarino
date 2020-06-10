@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class RankingOutcome {
-    private Date startDate;
-    private ArrayList<String> amRanking;
-    private ArrayList<String> pmRanking;
+    private final Date startDate;
+    private final ArrayList<String> amRanking;
+    private final ArrayList<String> pmRanking;
 
     public RankingOutcome(Date startDate) {
         this.startDate = startDate;
@@ -26,23 +26,11 @@ public class RankingOutcome {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
     public ArrayList<String> getAmRanking() {
         return amRanking;
     }
 
-    public void setAmRanking(ArrayList<String> amRanking) {
-        this.amRanking = amRanking;
-    }
-
     public ArrayList<String> getPmRanking() {
         return pmRanking;
-    }
-
-    public void setPmRanking(ArrayList<String> pmRanking) {
-        this.pmRanking = pmRanking;
     }
 }

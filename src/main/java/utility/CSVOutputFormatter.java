@@ -3,6 +3,8 @@ package utility;
 import org.apache.commons.io.FileUtils;
 import query1.AverageDelayOutcome;
 import query2.RankingOutcome;
+import query3.CompanyRankingOutcome;
+import scala.Tuple2;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -20,6 +22,10 @@ public class CSVOutputFormatter {
     /* Query2 scope */
     public static final String QUERY2_DAILY_CSV_FILE_PATH = "Results/query2_daily.csv";
     public static final String QUERY2_WEEKLY_CSV_FILE_PATH = "Results/query2_weekly.csv";
+
+    /* Query3 scope */
+    public static final String QUERY3_DAILY_CSV_FILE_PATH = "Results/query3_daily.csv";
+    public static final String QUERY3_WEEKLY_CSV_FILE_PATH = "Results/query3_weekly.csv";
 
     public static void cleanResultsFolder() {
         try {
@@ -93,6 +99,43 @@ public class CSVOutputFormatter {
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Could not export query 2 result to CSV file");
+        }
+    }
+
+    /**
+     * Query3 scope
+     * @param path
+     * @param outcome
+     */
+    public static void writeOutputQuery3(String path, CompanyRankingOutcome outcome) {
+        try {
+            // output structures
+            File file = new File(path);
+            if (!file.exists()) {
+                // creates the file if it does not exist
+                file.createNewFile();
+            }
+
+            // append to existing version of the same file
+            FileWriter writer = new FileWriter(file, true);
+            BufferedWriter bw = new BufferedWriter(writer);
+            StringBuilder builder = new StringBuilder();
+
+            builder.append(outcome.getStartDate().getTime());
+            for (Tuple2<String, Double> score : outcome.getCompanyRanking()) {
+                builder.append(";")
+                        .append(score._1())
+                        .append(";")
+                        .append(score._2());
+            }
+            builder.append("\n");
+
+            bw.append(builder.toString());
+            bw.close();
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Could not export query 3 result to CSV file");
         }
     }
 }
