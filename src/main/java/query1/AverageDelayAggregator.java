@@ -30,7 +30,7 @@ public class AverageDelayAggregator implements AggregateFunction<BusData, Averag
     }
 
     public AverageDelayAccumulator merge(AverageDelayAccumulator acc1, AverageDelayAccumulator acc2) {
-        // adjust start and end date
+        // adjust start date
         if ((acc2.getStartDate()).before(acc1.getStartDate())) {
             acc1.setStartDate(acc2.getStartDate());
         }
@@ -42,7 +42,7 @@ public class AverageDelayAggregator implements AggregateFunction<BusData, Averag
 
     public AggregatorOutcome getResult(AverageDelayAccumulator accumulator) {
         AggregatorOutcome outcome = new AggregatorOutcome(accumulator.getStartDate());
-        accumulator.getBoroMap().forEach((k, v) -> outcome.addMean(k, Double.valueOf(v._1()) / v._2()));
+        accumulator.getBoroMap().forEach((k, v) -> outcome.addMean(k, v._1() / v._2()));
 
         return outcome;
     }

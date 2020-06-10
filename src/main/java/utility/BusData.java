@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class BusData {
     private Date eventTime;
-    private Long delay; // expressed in minutes
+    private Double delay; // expressed in minutes
     private String boro;
 
     public BusData(String eventTime, String delay, String boro) throws ParseException, DelayFormatException {
@@ -24,7 +24,7 @@ public class BusData {
         return eventTime;
     }
 
-    public Long getDelay() {
+    public Double getDelay() {
         return delay;
     }
 

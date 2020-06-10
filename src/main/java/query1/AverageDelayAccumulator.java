@@ -7,17 +7,15 @@ import java.util.HashMap;
 
 public class AverageDelayAccumulator {
 
-    private HashMap<String, Tuple2<Long, Long>> boroMap = new HashMap<>();
+    private HashMap<String, Tuple2<Double, Long>> boroMap = new HashMap<>();
     private Date startDate;
-    private Date endDate;
 
     public AverageDelayAccumulator() {
         this.startDate = new Date(Long.MAX_VALUE);
-        this.endDate = new Date(Long.MIN_VALUE);
     }
 
-    public void add(String boro, Long total, Long counter) {
-        Tuple2<Long, Long> elem = this.boroMap.get(boro);
+    public void add(String boro, Double total, Long counter) {
+        Tuple2<Double, Long> elem = this.boroMap.get(boro);
         if (elem == null) {
             this.boroMap.put(boro, new Tuple2<>(total, counter));
         } else {
@@ -25,12 +23,8 @@ public class AverageDelayAccumulator {
         }
     }
 
-    public HashMap<String, Tuple2<Long, Long>> getBoroMap() {
+    public HashMap<String, Tuple2<Double, Long>> getBoroMap() {
         return boroMap;
-    }
-
-    public void setBoroMap(HashMap<String, Tuple2<Long, Long>> boroMap) {
-        this.boroMap = boroMap;
     }
 
     public Date getStartDate() {
@@ -39,13 +33,5 @@ public class AverageDelayAccumulator {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
     }
 }

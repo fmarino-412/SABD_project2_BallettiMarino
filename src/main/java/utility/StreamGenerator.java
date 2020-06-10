@@ -10,7 +10,7 @@ import java.text.ParseException;
 public class StreamGenerator implements SourceFunction<BusData> {
 
     private Boolean isRunning = true;
-    private static final Long SLEEP = 100L;
+    private static final Long SLEEP = 10L;
     private static final String FILEPATH = "data/dataset.csv";
 
 
@@ -26,11 +26,14 @@ public class StreamGenerator implements SourceFunction<BusData> {
             try {
                 data = new BusData(info[7], info[11], info[9]);
                 sourceContext.collect(data);
-                // TODO: Uncomment - Thread.sleep(SLEEP);
-            } catch (ParseException| DelayFormatException |NumberFormatException e) {
+                Thread.sleep(SLEEP);
+            } catch (ParseException| DelayFormatException |NumberFormatException ignored) {
                 // ignore and skip to next line
-                // TODO: remove and replace 'e' with 'ignored'
-                System.err.println(e.getMessage());
+                /*
+                if (!e.getMessage().equals("Could not find any delay information in string: ")) {
+                    System.err.println(e.getMessage());
+                }
+                */
             }
         }
     }
