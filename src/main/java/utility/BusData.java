@@ -13,14 +13,7 @@ public class BusData {
     private Double delay; // expressed in minutes
     private String boro;
 
-    /**
-     * Query 1 scope
-     * @param eventTime
-     * @param delay
-     * @param boro
-     * @throws ParseException
-     * @throws DelayFormatException
-     */
+    /* Query 1 scope */
     public BusData(String eventTime, String delay, String boro) throws ParseException, DelayFormatException {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         this.eventTime = format.parse(eventTime);
