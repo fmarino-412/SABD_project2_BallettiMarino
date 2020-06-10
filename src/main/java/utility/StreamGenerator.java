@@ -23,7 +23,7 @@ public class StreamGenerator implements SourceFunction<BusData> {
         while (isRunning && (line = bufferedReader.readLine()) != null) {
             String[] info = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
             try {
-                data = new BusData(info[7], info[11]);
+                data = new BusData(info[7], info[11], info[9]);
                 sourceContext.collect(data);
                 Thread.sleep(SLEEP);
             } catch (ParseException ignored) {
