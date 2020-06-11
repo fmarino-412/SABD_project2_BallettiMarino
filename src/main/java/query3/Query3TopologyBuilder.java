@@ -7,6 +7,7 @@ import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExt
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
 import query1.AverageDelayOutcome;
+import scala.Tuple2;
 import utility.BusData;
 import utility.CSVOutputFormatter;
 import utility.delay_parsing.DelayFormatException;
@@ -15,14 +16,14 @@ import java.text.ParseException;
 
 public class Query3TopologyBuilder {
 
-    public static void buildTopology(DataStream<String> source) {
+    public static void buildTopology(DataStream<Tuple2<Long, String>> source) {
 
         DataStream<BusData> stream = source
-                .flatMap(new FlatMapFunction<String, BusData>() {
+                .flatMap(new FlatMapFunction<Tuple2<Long, String>, BusData>() {
                     @Override
-                    public void flatMap(String s, Collector<BusData> collector) {
+                    public void flatMap(Tuple2<Long, String> tuple, Collector<BusData> collector) {
                         BusData data;
-                        String[] info = s.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+                        String[] info = tuple._2().split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                         try {
                             data = new BusData(info[7], info[11], info[5], info[10]);
                             collector.collect(data);
@@ -31,14 +32,7 @@ public class Query3TopologyBuilder {
                         }
                     }
                 })
-                .name("stream-query3-decoder")
-                .assignTimestampsAndWatermarks(new AscendingTimestampExtractor<BusData>() {
-                    @Override
-                    public long extractAscendingTimestamp(BusData busData) {
-                        // specify event time
-                        return busData.getEventTime().getTime();
-                    }
-        });
+                .name("stream-query3-decoder");
 
         // 1 day statistics
         stream.timeWindowAll(Time.hours(24))
