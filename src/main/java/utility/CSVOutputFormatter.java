@@ -13,6 +13,13 @@ import java.io.IOException;
 
 public class CSVOutputFormatter {
     private static final String RESULTS_DIRECTORY = "Results";
+    private static final String CSV_SEP = ";";
+    private static final String NEW_LINE = "\n";
+    private static final String AM = "05:00-11:59";
+    private static final String PM = "12:00-19:00";
+    private static final String DAILY_HEADER = "DAILY: \t\t";
+    private static final String WEEKLY_HEADER = "WEEKLY: \t";
+    private static final String MONTHLY_HEADER = "MONTHLY: \t";
 
     /* Query1 scope */
     public static final String QUERY1_DAILY_CSV_FILE_PATH = "Results/query1_daily.csv";
@@ -27,6 +34,10 @@ public class CSVOutputFormatter {
     public static final String QUERY3_DAILY_CSV_FILE_PATH = "Results/query3_daily.csv";
     public static final String QUERY3_WEEKLY_CSV_FILE_PATH = "Results/query3_weekly.csv";
 
+    /**
+     * Global scope
+     * Used to remove old files in Results directory
+     */
     public static void cleanResultsFolder() {
         try {
             FileUtils.cleanDirectory(new File(RESULTS_DIRECTORY));
@@ -38,8 +49,9 @@ public class CSVOutputFormatter {
 
     /**
      * Query1 scope
-     * @param path
-     * @param outcome
+     * Save outcome to csv file and print result
+     * @param path where to store csv
+     * @param outcome to be stored
      */
     public static void writeOutputQuery1(String path, AverageDelayOutcome outcome) {
         try {
@@ -56,11 +68,25 @@ public class CSVOutputFormatter {
             StringBuilder builder = new StringBuilder();
 
             builder.append(outcome.getStartDate().getTime());
-            outcome.getBoroMeans().forEach((k, v) -> builder.append(";").append(k).append(";").append(v));
-            builder.append("\n");
+            outcome.getBoroMeans().forEach((k, v) -> builder.append(CSV_SEP).append(k).append(CSV_SEP).append(v));
+            builder.append(NEW_LINE);
             bw.append(builder.toString());
             bw.close();
             writer.close();
+
+            //print output formatted
+            switch (path) {
+                case QUERY1_DAILY_CSV_FILE_PATH:
+                    System.out.println(DAILY_HEADER + builder.toString());
+                    break;
+                case QUERY1_WEEKLY_CSV_FILE_PATH:
+                    System.out.println(WEEKLY_HEADER + builder.toString());
+                    break;
+                case QUERY1_MONTHLY_CSV_FILE_PATH:
+                    System.out.println(MONTHLY_HEADER + builder.toString());
+                    break;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Could not export query 1 result to CSV file");
@@ -69,8 +95,9 @@ public class CSVOutputFormatter {
 
     /**
      * Query2 scope
-     * @param path
-     * @param outcome
+     * Save outcome to csv file and print result
+     * @param path where to store csv
+     * @param outcome to be stored
      */
     public static void writeOutputQuery2(String path, RankingOutcome outcome) {
         try {
@@ -87,15 +114,26 @@ public class CSVOutputFormatter {
             StringBuilder builder = new StringBuilder();
 
             builder.append(outcome.getStartDate().getTime());
-            builder.append(";05:00-11:59;");
+            builder.append(CSV_SEP + AM + CSV_SEP);
             builder.append(outcome.getAmRanking().toString());
-            builder.append(";12:00-19:00;");
+            builder.append(CSV_SEP + PM + CSV_SEP);
             builder.append(outcome.getPmRanking().toString());
-            builder.append("\n");
+            builder.append(NEW_LINE);
 
             bw.append(builder.toString());
             bw.close();
             writer.close();
+
+            //print output formatted
+            switch (path) {
+                case QUERY2_DAILY_CSV_FILE_PATH:
+                    System.out.println(DAILY_HEADER + builder.toString());
+                    break;
+                case QUERY2_WEEKLY_CSV_FILE_PATH:
+                    System.out.println(WEEKLY_HEADER + builder.toString());
+                    break;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Could not export query 2 result to CSV file");
@@ -104,8 +142,9 @@ public class CSVOutputFormatter {
 
     /**
      * Query3 scope
-     * @param path
-     * @param outcome
+     * Save outcome to csv file and print result
+     * @param path where to store csv
+     * @param outcome to be stored
      */
     public static void writeOutputQuery3(String path, CompanyRankingOutcome outcome) {
         try {
@@ -123,9 +162,9 @@ public class CSVOutputFormatter {
 
             builder.append(outcome.getStartDate().getTime());
             for (Tuple2<String, Double> score : outcome.getCompanyRanking()) {
-                builder.append(";")
+                builder.append(CSV_SEP)
                         .append(score._1())
-                        .append(";")
+                        .append(CSV_SEP)
                         .append(score._2());
             }
             builder.append("\n");
@@ -133,6 +172,17 @@ public class CSVOutputFormatter {
             bw.append(builder.toString());
             bw.close();
             writer.close();
+
+            //print output formatted
+            switch (path) {
+                case QUERY3_DAILY_CSV_FILE_PATH:
+                    System.out.println(DAILY_HEADER + builder.toString());
+                    break;
+                case QUERY3_WEEKLY_CSV_FILE_PATH:
+                    System.out.println(WEEKLY_HEADER + builder.toString());
+                    break;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Could not export query 3 result to CSV file");
