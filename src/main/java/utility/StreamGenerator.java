@@ -2,10 +2,9 @@ package utility;
 
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 
+@SuppressWarnings("BusyWait")
 public class StreamGenerator implements SourceFunction<String> {
 
     private Boolean isRunning = true;
@@ -19,7 +18,7 @@ public class StreamGenerator implements SourceFunction<String> {
         FileTailReader reader = new FileTailReader(new File(FILEPATH), MAX_FILE_UPDATE_WAIT_SECONDS);
         reader.start();
 
-        while (isRunning && !reader.hasEnded()) {
+        while (isRunning && reader.hasNotEnded()) {
             while (reader.linesAvailable()) {
                 sourceContext.collect(reader.getLine());
                 // to simulate a data source

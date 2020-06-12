@@ -7,8 +7,8 @@ import java.util.Locale;
 
 public class ReasonRankingAccumulator {
     private Date startDate;
-    private HashMap<String, Long> amRanking;
-    private HashMap<String, Long> pmRanking;
+    private final HashMap<String, Long> amRanking;
+    private final HashMap<String, Long> pmRanking;
 
     public ReasonRankingAccumulator() {
         this.startDate = new Date(Long.MAX_VALUE);
@@ -78,15 +78,7 @@ public class ReasonRankingAccumulator {
         return amRanking;
     }
 
-    public void setAmRanking(HashMap<String, Long> amRanking) {
-        this.amRanking = amRanking;
-    }
-
     public HashMap<String, Long> getPmRanking() {
         return pmRanking;
-    }
-
-    public void setPmRanking(HashMap<String, Long> pmRanking) {
-        this.pmRanking = pmRanking;
     }
 }

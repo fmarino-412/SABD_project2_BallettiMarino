@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+@SuppressWarnings({"ResultOfMethodCallIgnored", "DuplicatedCode"})
 public class OutputFormatter {
     private static final boolean CONSOLE_RESULTS_PRINT = false;
     private static final String RESULTS_DIRECTORY = "Results";

@@ -11,6 +11,7 @@ import utility.OutputFormatter;
 
 import java.text.ParseException;
 
+@SuppressWarnings("Convert2Lambda")
 public class Query2TopologyBuilder {
 
     public static void buildTopology(DataStream<Tuple2<Long, String>> source) {

@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.ArrayDeque;
 
+@SuppressWarnings({"ResultOfMethodCallIgnored", "BusyWait"})
 public class FileTailReader {
 
     private final File file;
@@ -102,13 +103,14 @@ public class FileTailReader {
      * Used to assert if no more lines will be available
      * @return true if stop() has been called or the service has expired
      */
-    public boolean hasEnded() {
-        return ended;
+    public boolean hasNotEnded() {
+        return !ended;
     }
 
     /**
      * Watches for folder updates
      */
+    @SuppressWarnings("BusyWait")
     private class FileWatcher implements Runnable {
         private final Path path = file.toPath().getParent();
         @Override
@@ -154,7 +156,7 @@ public class FileTailReader {
     public static void test(String[] args) throws InterruptedException {
         FileTailReader reader = new FileTailReader(new File("/Users/francescomarino/Desktop/prova.txt"), 20);
         reader.start();
-        while (!reader.hasEnded()) {
+        while (reader.hasNotEnded()) {
             while (reader.linesAvailable()) {
                 System.out.println(reader.getLine());
             }

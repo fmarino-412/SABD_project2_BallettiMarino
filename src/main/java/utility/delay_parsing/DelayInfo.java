@@ -2,9 +2,9 @@ package utility.delay_parsing;
 
 public class DelayInfo {
 
-    private Long hours;
-    private Long minutes;
-    private boolean hoursData;
+    private final Long hours;
+    private final Long minutes;
+    private final boolean hoursData;
 
     public DelayInfo(Long hours, Long minutes, boolean hoursData) {
         this.hours = hours;

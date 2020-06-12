@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class CompanyRankingAccumulator {
 
     private Date startDate;
-    private HashMap<String, Double> companyRanking;
+    private final HashMap<String, Double> companyRanking;
 
     public CompanyRankingAccumulator() {
         this.startDate = new Date(Long.MAX_VALUE);

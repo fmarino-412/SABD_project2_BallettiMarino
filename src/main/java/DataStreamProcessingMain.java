@@ -16,6 +16,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+@SuppressWarnings("Convert2Lambda")
 public class DataStreamProcessingMain {
 
     public static void main(String[] args) {
@@ -35,7 +36,7 @@ public class DataStreamProcessingMain {
                 .name("stream-source")
                 .flatMap(new FlatMapFunction<String, Tuple2<Long, String>>() {
                     @Override
-                    public void flatMap(String s, Collector<Tuple2<Long, String>> collector) throws Exception {
+                    public void flatMap(String s, Collector<Tuple2<Long, String>> collector) {
                         String[] info = s.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
                         try {

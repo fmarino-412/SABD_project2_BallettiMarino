@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class BusData {
 
-    private Date eventTime;
+    private final Date eventTime;
     private Double delay; // expressed in minutes
     private String boro;
     private String reason;

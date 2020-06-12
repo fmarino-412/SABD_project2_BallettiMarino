@@ -12,6 +12,7 @@ import utility.delay_parsing.DelayFormatException;
 
 import java.text.ParseException;
 
+@SuppressWarnings("Convert2Lambda")
 public class Query3TopologyBuilder {
 
     public static void buildTopology(DataStream<Tuple2<Long, String>> source) {
