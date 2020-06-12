@@ -1,4 +1,5 @@
 import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -24,7 +25,8 @@ public class DataStreamProcessingMain {
         CSVOutputFormatter.cleanResultsFolder();
 
         //setup flink environment
-        StreamExecutionEnvironment environment = StreamExecutionEnvironment.getExecutionEnvironment();
+        Configuration conf = new Configuration();
+        StreamExecutionEnvironment environment = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(conf);
         environment.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
         //add the source and handle watermarks
