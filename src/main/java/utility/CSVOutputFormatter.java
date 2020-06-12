@@ -20,6 +20,9 @@ public class CSVOutputFormatter {
     private static final String DAILY_HEADER = "DAILY: \t\t";
     private static final String WEEKLY_HEADER = "WEEKLY: \t";
     private static final String MONTHLY_HEADER = "MONTHLY: \t";
+    private static final String QUERY1_HEADER = "QUERY 1 - ";
+    private static final String QUERY2_HEADER = "QUERY 2 - ";
+    private static final String QUERY3_HEADER = "QUERY 3 - ";
 
     /* Query1 scope */
     public static final String QUERY1_DAILY_CSV_FILE_PATH = "Results/query1_daily.csv";
@@ -77,13 +80,13 @@ public class CSVOutputFormatter {
             //print output formatted
             switch (path) {
                 case QUERY1_DAILY_CSV_FILE_PATH:
-                    System.out.println(DAILY_HEADER + builder.toString());
+                    System.out.println(QUERY1_HEADER + DAILY_HEADER + builder.toString());
                     break;
                 case QUERY1_WEEKLY_CSV_FILE_PATH:
-                    System.out.println(WEEKLY_HEADER + builder.toString());
+                    System.out.println(QUERY1_HEADER + WEEKLY_HEADER + builder.toString());
                     break;
                 case QUERY1_MONTHLY_CSV_FILE_PATH:
-                    System.out.println(MONTHLY_HEADER + builder.toString());
+                    System.out.println(QUERY1_HEADER + MONTHLY_HEADER + builder.toString());
                     break;
             }
 
@@ -127,10 +130,10 @@ public class CSVOutputFormatter {
             //print output formatted
             switch (path) {
                 case QUERY2_DAILY_CSV_FILE_PATH:
-                    System.out.println(DAILY_HEADER + builder.toString());
+                    System.out.println(QUERY2_HEADER + DAILY_HEADER + builder.toString());
                     break;
                 case QUERY2_WEEKLY_CSV_FILE_PATH:
-                    System.out.println(WEEKLY_HEADER + builder.toString());
+                    System.out.println(QUERY2_HEADER + WEEKLY_HEADER + builder.toString());
                     break;
             }
 
@@ -176,10 +179,10 @@ public class CSVOutputFormatter {
             //print output formatted
             switch (path) {
                 case QUERY3_DAILY_CSV_FILE_PATH:
-                    System.out.println(DAILY_HEADER + builder.toString());
+                    System.out.println(QUERY3_HEADER + DAILY_HEADER + builder.toString());
                     break;
                 case QUERY3_WEEKLY_CSV_FILE_PATH:
-                    System.out.println(WEEKLY_HEADER + builder.toString());
+                    System.out.println(QUERY3_HEADER + WEEKLY_HEADER + builder.toString());
                     break;
             }
 
