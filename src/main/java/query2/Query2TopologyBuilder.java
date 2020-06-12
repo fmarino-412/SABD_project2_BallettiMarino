@@ -7,7 +7,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
 import scala.Tuple2;
 import utility.BusData;
-import utility.CSVOutputFormatter;
+import utility.OutputFormatter;
 
 import java.text.ParseException;
 
@@ -37,7 +37,7 @@ public class Query2TopologyBuilder {
                 .name("query2-daily-ranking")
                 .addSink(new SinkFunction<ReasonRankingOutcome>() {
                     public void invoke(ReasonRankingOutcome outcome, Context context) {
-                        CSVOutputFormatter.writeOutputQuery2(CSVOutputFormatter.QUERY2_DAILY_CSV_FILE_PATH, outcome);
+                        OutputFormatter.writeOutputQuery2(OutputFormatter.QUERY2_DAILY_CSV_FILE_PATH, outcome);
                     }
                 });
 
@@ -47,7 +47,7 @@ public class Query2TopologyBuilder {
                 .name("query2-weekly-ranking")
                 .addSink(new SinkFunction<ReasonRankingOutcome>() {
                     public void invoke(ReasonRankingOutcome outcome, Context context) {
-                        CSVOutputFormatter.writeOutputQuery2(CSVOutputFormatter.QUERY2_WEEKLY_CSV_FILE_PATH, outcome);
+                        OutputFormatter.writeOutputQuery2(OutputFormatter.QUERY2_WEEKLY_CSV_FILE_PATH, outcome);
                     }
                 });
     }

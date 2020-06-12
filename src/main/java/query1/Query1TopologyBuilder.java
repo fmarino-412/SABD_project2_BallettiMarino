@@ -3,12 +3,11 @@ package query1;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
-import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExtractor;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
 import scala.Tuple2;
 import utility.BusData;
-import utility.CSVOutputFormatter;
+import utility.OutputFormatter;
 import utility.delay_parsing.DelayFormatException;
 
 import java.text.ParseException;
@@ -39,7 +38,7 @@ public class Query1TopologyBuilder {
                 .name("query1-daily-mean")
                 .addSink(new SinkFunction<AverageDelayOutcome>() {
                     public void invoke(AverageDelayOutcome outcome, Context context) {
-                        CSVOutputFormatter.writeOutputQuery1(CSVOutputFormatter.QUERY1_DAILY_CSV_FILE_PATH, outcome);
+                        OutputFormatter.writeOutputQuery1(OutputFormatter.QUERY1_DAILY_CSV_FILE_PATH, outcome);
                     }
                 });
 
@@ -49,7 +48,7 @@ public class Query1TopologyBuilder {
                 .name("query1-weekly-mean")
                 .addSink(new SinkFunction<AverageDelayOutcome>() {
                     public void invoke(AverageDelayOutcome outcome, Context context) {
-                        CSVOutputFormatter.writeOutputQuery1(CSVOutputFormatter.QUERY1_WEEKLY_CSV_FILE_PATH, outcome);
+                        OutputFormatter.writeOutputQuery1(OutputFormatter.QUERY1_WEEKLY_CSV_FILE_PATH, outcome);
                     }
                 });
 
@@ -59,7 +58,7 @@ public class Query1TopologyBuilder {
                 .name("query1-monthly-mean")
                 .addSink(new SinkFunction<AverageDelayOutcome>() {
                     public void invoke(AverageDelayOutcome outcome, Context context) {
-                        CSVOutputFormatter.writeOutputQuery1(CSVOutputFormatter.QUERY1_MONTHLY_CSV_FILE_PATH, outcome);
+                        OutputFormatter.writeOutputQuery1(OutputFormatter.QUERY1_MONTHLY_CSV_FILE_PATH, outcome);
                     }
                 });
     }

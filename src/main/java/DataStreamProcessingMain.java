@@ -8,8 +8,7 @@ import query1.Query1TopologyBuilder;
 import query2.Query2TopologyBuilder;
 import query3.Query3TopologyBuilder;
 import scala.Tuple2;
-import utility.BusData;
-import utility.CSVOutputFormatter;
+import utility.OutputFormatter;
 import utility.StreamGenerator;
 
 import java.text.DateFormat;
@@ -21,7 +20,7 @@ public class DataStreamProcessingMain {
     public static void main(String[] args) {
 
         //cleaning result directory to store data results
-        CSVOutputFormatter.cleanResultsFolder();
+        OutputFormatter.cleanResultsFolder();
 
         //setup flink environment
         StreamExecutionEnvironment environment = StreamExecutionEnvironment.getExecutionEnvironment();

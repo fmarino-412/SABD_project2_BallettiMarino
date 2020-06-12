@@ -11,7 +11,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CSVOutputFormatter {
+public class OutputFormatter {
+    private static final boolean CONSOLE_RESULTS_PRINT = false;
     private static final String RESULTS_DIRECTORY = "Results";
     private static final String CSV_SEP = ";";
     private static final String NEW_LINE = "\n";
@@ -78,16 +79,18 @@ public class CSVOutputFormatter {
             writer.close();
 
             //print output formatted
-            switch (path) {
-                case QUERY1_DAILY_CSV_FILE_PATH:
-                    System.out.println(QUERY1_HEADER + DAILY_HEADER + builder.toString());
-                    break;
-                case QUERY1_WEEKLY_CSV_FILE_PATH:
-                    System.out.println(QUERY1_HEADER + WEEKLY_HEADER + builder.toString());
-                    break;
-                case QUERY1_MONTHLY_CSV_FILE_PATH:
-                    System.out.println(QUERY1_HEADER + MONTHLY_HEADER + builder.toString());
-                    break;
+            if (CONSOLE_RESULTS_PRINT) {
+                switch (path) {
+                    case QUERY1_DAILY_CSV_FILE_PATH:
+                        System.out.println(QUERY1_HEADER + DAILY_HEADER + builder.toString());
+                        break;
+                    case QUERY1_WEEKLY_CSV_FILE_PATH:
+                        System.out.println(QUERY1_HEADER + WEEKLY_HEADER + builder.toString());
+                        break;
+                    case QUERY1_MONTHLY_CSV_FILE_PATH:
+                        System.out.println(QUERY1_HEADER + MONTHLY_HEADER + builder.toString());
+                        break;
+                }
             }
 
         } catch (Exception e) {
@@ -128,13 +131,15 @@ public class CSVOutputFormatter {
             writer.close();
 
             //print output formatted
-            switch (path) {
-                case QUERY2_DAILY_CSV_FILE_PATH:
-                    System.out.println(QUERY2_HEADER + DAILY_HEADER + builder.toString());
-                    break;
-                case QUERY2_WEEKLY_CSV_FILE_PATH:
-                    System.out.println(QUERY2_HEADER + WEEKLY_HEADER + builder.toString());
-                    break;
+            if (CONSOLE_RESULTS_PRINT) {
+                switch (path) {
+                    case QUERY2_DAILY_CSV_FILE_PATH:
+                        System.out.println(QUERY2_HEADER + DAILY_HEADER + builder.toString());
+                        break;
+                    case QUERY2_WEEKLY_CSV_FILE_PATH:
+                        System.out.println(QUERY2_HEADER + WEEKLY_HEADER + builder.toString());
+                        break;
+                }
             }
 
         } catch (Exception e) {
@@ -177,13 +182,15 @@ public class CSVOutputFormatter {
             writer.close();
 
             //print output formatted
-            switch (path) {
-                case QUERY3_DAILY_CSV_FILE_PATH:
-                    System.out.println(QUERY3_HEADER + DAILY_HEADER + builder.toString());
-                    break;
-                case QUERY3_WEEKLY_CSV_FILE_PATH:
-                    System.out.println(QUERY3_HEADER + WEEKLY_HEADER + builder.toString());
-                    break;
+            if (CONSOLE_RESULTS_PRINT) {
+                switch (path) {
+                    case QUERY3_DAILY_CSV_FILE_PATH:
+                        System.out.println(QUERY3_HEADER + DAILY_HEADER + builder.toString());
+                        break;
+                    case QUERY3_WEEKLY_CSV_FILE_PATH:
+                        System.out.println(QUERY3_HEADER + WEEKLY_HEADER + builder.toString());
+                        break;
+                }
             }
 
         } catch (Exception e) {

@@ -3,13 +3,11 @@ package query3;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
-import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExtractor;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
-import query1.AverageDelayOutcome;
 import scala.Tuple2;
 import utility.BusData;
-import utility.CSVOutputFormatter;
+import utility.OutputFormatter;
 import utility.delay_parsing.DelayFormatException;
 
 import java.text.ParseException;
@@ -40,7 +38,7 @@ public class Query3TopologyBuilder {
                 .name("query3-daily-ranking")
                 .addSink(new SinkFunction<CompanyRankingOutcome>() {
                     public void invoke(CompanyRankingOutcome outcome, Context context) {
-                        CSVOutputFormatter.writeOutputQuery3(CSVOutputFormatter.QUERY3_DAILY_CSV_FILE_PATH, outcome);
+                        OutputFormatter.writeOutputQuery3(OutputFormatter.QUERY3_DAILY_CSV_FILE_PATH, outcome);
                     }
                 });
 
@@ -50,7 +48,7 @@ public class Query3TopologyBuilder {
                 .name("query3-weekly-ranking")
                 .addSink(new SinkFunction<CompanyRankingOutcome>() {
                     public void invoke(CompanyRankingOutcome outcome, Context context) {
-                        CSVOutputFormatter.writeOutputQuery3(CSVOutputFormatter.QUERY3_WEEKLY_CSV_FILE_PATH, outcome);
+                        OutputFormatter.writeOutputQuery3(OutputFormatter.QUERY3_WEEKLY_CSV_FILE_PATH, outcome);
                     }
                 });
     }

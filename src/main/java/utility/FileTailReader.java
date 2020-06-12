@@ -151,7 +151,7 @@ public class FileTailReader {
         }
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void test(String[] args) throws InterruptedException {
         FileTailReader reader = new FileTailReader(new File("/Users/francescomarino/Desktop/prova.txt"), 20);
         reader.start();
         while (!reader.hasEnded()) {
