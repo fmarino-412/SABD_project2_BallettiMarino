@@ -3,10 +3,8 @@ package query2;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
-import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExtractor;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
-import query1.AverageDelayOutcome;
 import scala.Tuple2;
 import utility.BusData;
 import utility.CSVOutputFormatter;
@@ -35,20 +33,20 @@ public class Query2TopologyBuilder {
 
         // 1 day statistics
         stream.timeWindowAll(Time.hours(24))
-                .aggregate(new RankingAggregator())
+                .aggregate(new ReasonRankingAggregator())
                 .name("query2-daily-ranking")
-                .addSink(new SinkFunction<RankingOutcome>() {
-                    public void invoke(RankingOutcome outcome, Context context) {
+                .addSink(new SinkFunction<ReasonRankingOutcome>() {
+                    public void invoke(ReasonRankingOutcome outcome, Context context) {
                         CSVOutputFormatter.writeOutputQuery2(CSVOutputFormatter.QUERY2_DAILY_CSV_FILE_PATH, outcome);
                     }
                 });
 
         // 7 days statistics
         stream.timeWindowAll(Time.days(7))
-                .aggregate(new RankingAggregator())
+                .aggregate(new ReasonRankingAggregator())
                 .name("query2-weekly-ranking")
-                .addSink(new SinkFunction<RankingOutcome>() {
-                    public void invoke(RankingOutcome outcome, Context context) {
+                .addSink(new SinkFunction<ReasonRankingOutcome>() {
+                    public void invoke(ReasonRankingOutcome outcome, Context context) {
                         CSVOutputFormatter.writeOutputQuery2(CSVOutputFormatter.QUERY2_WEEKLY_CSV_FILE_PATH, outcome);
                     }
                 });

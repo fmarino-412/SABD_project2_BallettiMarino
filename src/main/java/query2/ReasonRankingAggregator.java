@@ -5,17 +5,17 @@ import utility.BusData;
 
 import java.util.*;
 
-public class RankingAggregator implements AggregateFunction<BusData, RankingAccumulator, RankingOutcome> {
+public class ReasonRankingAggregator implements AggregateFunction<BusData, ReasonRankingAccumulator, ReasonRankingOutcome> {
 
     private static final int RANK_SIZE = 3;
 
     @Override
-    public RankingAccumulator createAccumulator() {
-        return new RankingAccumulator();
+    public ReasonRankingAccumulator createAccumulator() {
+        return new ReasonRankingAccumulator();
     }
 
     @Override
-    public RankingAccumulator add(BusData busData, RankingAccumulator accumulator) {
+    public ReasonRankingAccumulator add(BusData busData, ReasonRankingAccumulator accumulator) {
 
         Date startDate = accumulator.getStartDate();
         Date currentElemDate = busData.getEventTime();
@@ -32,7 +32,7 @@ public class RankingAggregator implements AggregateFunction<BusData, RankingAccu
     }
 
     @Override
-    public RankingAccumulator merge(RankingAccumulator acc1, RankingAccumulator acc2) {
+    public ReasonRankingAccumulator merge(ReasonRankingAccumulator acc1, ReasonRankingAccumulator acc2) {
         // adjust start date
         if ((acc2.getStartDate()).before(acc1.getStartDate())) {
             acc1.setStartDate(acc2.getStartDate());
@@ -45,7 +45,7 @@ public class RankingAggregator implements AggregateFunction<BusData, RankingAccu
     }
 
     @Override
-    public RankingOutcome getResult(RankingAccumulator accumulator) {
+    public ReasonRankingOutcome getResult(ReasonRankingAccumulator accumulator) {
 
         // Create the lists from elements of HashMap
         List<Map.Entry<String, Long>> amList = new LinkedList<>(accumulator.getAmRanking().entrySet());
@@ -56,7 +56,7 @@ public class RankingAggregator implements AggregateFunction<BusData, RankingAccu
         pmList.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
 
         // Generating outcome
-        RankingOutcome outcome = new RankingOutcome(accumulator.getStartDate());
+        ReasonRankingOutcome outcome = new ReasonRankingOutcome(accumulator.getStartDate());
         for (int i = 0; i < RANK_SIZE; i++) {
             try {
                 outcome.addAmRanking(amList.get(i).getKey());

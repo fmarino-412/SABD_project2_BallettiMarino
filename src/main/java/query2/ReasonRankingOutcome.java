@@ -3,12 +3,12 @@ package query2;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class RankingOutcome {
+public class ReasonRankingOutcome {
     private final Date startDate;
     private final ArrayList<String> amRanking;
     private final ArrayList<String> pmRanking;
 
-    public RankingOutcome(Date startDate) {
+    public ReasonRankingOutcome(Date startDate) {
         this.startDate = startDate;
         this.amRanking = new ArrayList<>();
         this.pmRanking = new ArrayList<>();

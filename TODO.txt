@@ -1,0 +1,9 @@
+Lateness - non serve
+Watermarks
+
+Ritardi 0 minuti
+Ritardi in giorni?
+
+Tempi latenza e throughput (flink web ui)
+
+Kafka

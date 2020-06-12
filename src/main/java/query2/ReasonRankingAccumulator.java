@@ -5,12 +5,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class RankingAccumulator {
+public class ReasonRankingAccumulator {
     private Date startDate;
     private HashMap<String, Long> amRanking;
     private HashMap<String, Long> pmRanking;
 
-    public RankingAccumulator() {
+    public ReasonRankingAccumulator() {
         this.startDate = new Date(Long.MAX_VALUE);
         this.amRanking = new HashMap<>();
         this.pmRanking = new HashMap<>();
@@ -20,14 +20,38 @@ public class RankingAccumulator {
         //threshold setup
         Calendar threshold = Calendar.getInstance(Locale.US);
         threshold.setTime(date);
-        threshold.set(Calendar.HOUR_OF_DAY, 12);
-        threshold.set(Calendar.MINUTE, 0);
-        threshold.set(Calendar.SECOND, 0);
-        threshold.set(Calendar.MILLISECOND, 0);
 
         //element setup
         Calendar elem = Calendar.getInstance(Locale.US);
         elem.setTime(date);
+
+        // check if before 05:00
+        threshold.set(Calendar.HOUR_OF_DAY, 5);
+        threshold.set(Calendar.MINUTE, 0);
+        threshold.set(Calendar.SECOND, 0);
+        threshold.set(Calendar.MILLISECOND, 0);
+
+        // out of both time intervals
+        if (elem.before(threshold)) {
+            return;
+        }
+
+        // check if after 19:00
+        threshold.set(Calendar.HOUR_OF_DAY, 19);
+        threshold.set(Calendar.MINUTE, 0);
+        threshold.set(Calendar.SECOND, 0);
+        threshold.set(Calendar.MILLISECOND, 0);
+
+        // out of both time intervals
+        if (elem.after(threshold)) {
+            return;
+        }
+
+        // set threshold at 12:00 of the same day
+        threshold.set(Calendar.HOUR_OF_DAY, 12);
+        threshold.set(Calendar.MINUTE, 0);
+        threshold.set(Calendar.SECOND, 0);
+        threshold.set(Calendar.MILLISECOND, 0);
 
         //check if it falls in am or pm
         if (elem.before(threshold)) {

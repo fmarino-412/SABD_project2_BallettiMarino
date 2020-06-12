@@ -127,7 +127,8 @@ public class FileTailReader {
                     Thread.sleep(500);
                 }
             } catch (InterruptedException | IOException | ClosedWatchServiceException ignored) {
-                System.out.println("File watcher stopped");
+                System.out.println("\u001B[32m" +
+                        "File watcher stopped... There is no new data, computation is reaching the end" + "\u001B[0m");
             } finally {
                 ended = true;
             }

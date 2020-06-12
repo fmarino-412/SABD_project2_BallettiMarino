@@ -2,7 +2,7 @@ package utility;
 
 import org.apache.commons.io.FileUtils;
 import query1.AverageDelayOutcome;
-import query2.RankingOutcome;
+import query2.ReasonRankingOutcome;
 import query3.CompanyRankingOutcome;
 import scala.Tuple2;
 
@@ -99,7 +99,7 @@ public class CSVOutputFormatter {
      * @param path where to store csv
      * @param outcome to be stored
      */
-    public static void writeOutputQuery2(String path, RankingOutcome outcome) {
+    public static void writeOutputQuery2(String path, ReasonRankingOutcome outcome) {
         try {
             // output structures
             File file = new File(path);
