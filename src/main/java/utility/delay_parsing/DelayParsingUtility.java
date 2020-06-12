@@ -37,6 +37,7 @@ public class DelayParsingUtility {
     public static Double parseDelay(String dirtyDelay) throws DelayFormatException {
 
         double totalMinutes = 0;
+        boolean foundSomething = false;
         DelayInfo current;
 
         String originalString = dirtyDelay;
@@ -57,19 +58,23 @@ public class DelayParsingUtility {
             int counter = 0;
             for (int i = parts.length - 1; i >= 0; i--) {
                 current = parseCleanDelay(parts[i], singleAsHours);
-                if (current.getHours() != 0 || current.getMinutes() != 0) {
+                if (current != null) {
+                    foundSomething = true;
                     counter++;
                     totalMinutes += (current.getHours()*60) + current.getMinutes();
+                    singleAsHours = current.hasHoursData();
                 }
-                singleAsHours = current.hasHoursData();
             }
             totalMinutes = totalMinutes / counter;
         } else {
             current = parseCleanDelay(dirtyDelay, false);
-            totalMinutes = (current.getHours()*60) + current.getMinutes();
+            if (current != null) {
+                foundSomething = true;
+                totalMinutes = (current.getHours()*60) + current.getMinutes();
+            }
         }
 
-        if (totalMinutes == 0) {
+        if (!foundSomething) {
             throw new DelayFormatException("Could not find any delay information in string: " + originalString);
         } else {
             return totalMinutes;
@@ -80,8 +85,8 @@ public class DelayParsingUtility {
 
     private static DelayInfo parseCleanDelay(String cleanDelay, boolean singleAsHours) {
 
-        long minutes = 0;
-        long hours = 0;
+        Long minutes = null;
+        Long hours = null;
 
         Matcher minMatcher = getMinPattern().matcher(cleanDelay);
         Matcher hourMatcher = getHourPattern().matcher(cleanDelay);
@@ -93,14 +98,17 @@ public class DelayParsingUtility {
             hours = Long.parseLong(hourMatcher.group(1));
         }
         // to avoid typos like 15mins0 (for 15 minutes) or 3hr7 (for 3 hours)
-        if (isolatedMatcher.find() && ((!singleAsHours && minutes == 0) || (singleAsHours && hours == 0))) {
+        if (isolatedMatcher.find() && ((!singleAsHours && minutes == null) || (singleAsHours && hours == null))) {
             if (singleAsHours) {
                 hours = Long.parseLong(isolatedMatcher.group(1));
             } else {
                 minutes = Long.parseLong(isolatedMatcher.group(1));
             }
         }
-
-        return new DelayInfo(hours, minutes, hours != 0);
+        if (hours == null && minutes == null) {
+            return null;
+        } else {
+            return new DelayInfo(hours == null ? 0 : hours, minutes == null ? 0 : minutes, hours != null);
+        }
     }
 }
