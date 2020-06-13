@@ -41,18 +41,8 @@ public class KafkaSingleProducer {
                 key,
                 value);
 
-        // TODO - may need .get()
-        try {
-            RecordMetadata metadataA = producer.send(recordA).get();
-            RecordMetadata metadataB = producer.send(recordB).get();
-
-            System.out.printf("sent record(key=%s value=%s) meta(partition=%d, offset=%d)\n",
-                    recordA.key(), recordA.value(), metadataA.partition(), metadataA.offset());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        producer.send(recordA);
+        producer.send(recordB);
     }
 
     public void close() {

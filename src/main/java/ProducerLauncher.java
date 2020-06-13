@@ -28,8 +28,8 @@ public class ProducerLauncher {
                     String[] info = line.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
                     producer.produce(null, line, format.parse(info[7]).getTime());
-                    //Thread.sleep(SLEEP);
-                } catch (ParseException ignored) {
+                    Thread.sleep(SLEEP);
+                } catch (ParseException | InterruptedException ignored) {
                 }
             }
 

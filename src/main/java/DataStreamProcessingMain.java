@@ -63,6 +63,7 @@ public class DataStreamProcessingMain {
                     @Override
                     public long extractAscendingTimestamp(Tuple2<Long, String> tuple) {
                         // specify event time
+                        // kafka's auto-watermarks generation is only related to offset not to event time
                         return tuple._1();
                     }
                 });

@@ -19,7 +19,7 @@ public class OutputFormatter {
     private static final String NEW_LINE = "\n";
     private static final String AM = "05:00-11:59";
     private static final String PM = "12:00-19:00";
-    private static final String DAILY_HEADER = "DAILY: \t\t";
+    private static final String DAILY_HEADER = "DAILY: \t";
     private static final String WEEKLY_HEADER = "WEEKLY: \t";
     private static final String MONTHLY_HEADER = "MONTHLY: \t";
     private static final String QUERY1_HEADER = "QUERY 1 - ";
