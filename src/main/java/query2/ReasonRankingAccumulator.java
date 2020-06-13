@@ -25,11 +25,12 @@ public class ReasonRankingAccumulator {
         Calendar elem = Calendar.getInstance(Locale.US);
         elem.setTime(date);
 
-        // check if before 05:00
-        threshold.set(Calendar.HOUR_OF_DAY, 5);
         threshold.set(Calendar.MINUTE, 0);
         threshold.set(Calendar.SECOND, 0);
         threshold.set(Calendar.MILLISECOND, 0);
+
+        // check if before 05:00
+        threshold.set(Calendar.HOUR_OF_DAY, 5);
 
         // out of both time intervals
         if (elem.before(threshold)) {
@@ -38,9 +39,6 @@ public class ReasonRankingAccumulator {
 
         // check if after 19:00
         threshold.set(Calendar.HOUR_OF_DAY, 19);
-        threshold.set(Calendar.MINUTE, 0);
-        threshold.set(Calendar.SECOND, 0);
-        threshold.set(Calendar.MILLISECOND, 0);
 
         // out of both time intervals
         if (elem.after(threshold)) {
@@ -49,9 +47,6 @@ public class ReasonRankingAccumulator {
 
         // set threshold at 12:00 of the same day
         threshold.set(Calendar.HOUR_OF_DAY, 12);
-        threshold.set(Calendar.MINUTE, 0);
-        threshold.set(Calendar.SECOND, 0);
-        threshold.set(Calendar.MILLISECOND, 0);
 
         //check if it falls in am or pm
         if (elem.before(threshold)) {

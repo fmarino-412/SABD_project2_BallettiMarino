@@ -15,6 +15,7 @@ import utility.StreamGenerator;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 @SuppressWarnings("Convert2Lambda")
 public class DataStreamProcessingMain {
@@ -38,7 +39,7 @@ public class DataStreamProcessingMain {
                     @Override
                     public void flatMap(String s, Collector<Tuple2<Long, String>> collector) {
                         String[] info = s.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-                        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+                        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
                         try {
                             collector.collect(new Tuple2<>(format.parse(info[7]).getTime(), s));
                         } catch (ParseException ignored) {
