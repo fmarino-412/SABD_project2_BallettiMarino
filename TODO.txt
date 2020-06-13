@@ -5,4 +5,4 @@ Ritardi in giorni?
 
 Tempi latenza e throughput (flink web ui)
 
-Kafka
+Kafka - CHECK EXACTLY ONCE
