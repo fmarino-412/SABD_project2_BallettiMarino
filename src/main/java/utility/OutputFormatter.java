@@ -13,7 +13,7 @@ import java.io.IOException;
 
 @SuppressWarnings({"ResultOfMethodCallIgnored", "DuplicatedCode"})
 public class OutputFormatter {
-    private static final boolean CONSOLE_RESULTS_PRINT = false;
+    private static final boolean CONSOLE_RESULTS_PRINT = true;
     private static final String RESULTS_DIRECTORY = "Results";
     private static final String CSV_SEP = ";";
     private static final String NEW_LINE = "\n";

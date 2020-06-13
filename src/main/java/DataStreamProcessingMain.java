@@ -1,21 +1,28 @@
 import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExtractor;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.flink.util.Collector;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import query1.Query1TopologyBuilder;
 import query2.Query2TopologyBuilder;
 import query3.Query3TopologyBuilder;
 import scala.Tuple2;
+import scala.collection.immutable.Stream;
 import utility.OutputFormatter;
-import utility.StreamGenerator;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.Properties;
+
+import static utility.kafka.KafkaConfig.*;
 
 @SuppressWarnings("Convert2Lambda")
 public class DataStreamProcessingMain {
@@ -31,9 +38,14 @@ public class DataStreamProcessingMain {
         environment.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
         //add the source and handle watermarks
-        StreamGenerator source = new StreamGenerator();
+        Properties props = new Properties();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, CONSUMER_ID);
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+
         DataStream<Tuple2<Long, String>> stream = environment
-                .addSource(source)
+                .addSource(new FlinkKafkaConsumer<>(FLINK_TOPIC, new SimpleStringSchema(), props))
                 .name("stream-source")
                 .flatMap(new FlatMapFunction<String, Tuple2<Long, String>>() {
                     @Override
