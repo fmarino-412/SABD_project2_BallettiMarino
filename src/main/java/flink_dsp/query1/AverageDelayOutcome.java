@@ -1,4 +1,4 @@
-package query1;
+package flink_dsp.query1;
 
 import java.util.Date;
 import java.util.HashMap;

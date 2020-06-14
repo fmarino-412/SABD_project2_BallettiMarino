@@ -9,9 +9,9 @@ import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.flink.util.Collector;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import query1.Query1TopologyBuilder;
-import query2.Query2TopologyBuilder;
-import query3.Query3TopologyBuilder;
+import flink_dsp.query1.Query1TopologyBuilder;
+import flink_dsp.query2.Query2TopologyBuilder;
+import flink_dsp.query3.Query3TopologyBuilder;
 import scala.Tuple2;
 import utility.OutputFormatter;
 

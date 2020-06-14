@@ -30,14 +30,15 @@ public class ProducerLauncher {
                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
                     format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
                     producer.produce(null, line, format.parse(info[7]).getTime());
-                    //Thread.sleep(SLEEP);
-                } catch (ParseException /*| InterruptedException*/ ignored) {
+                    Thread.sleep(SLEEP);
+                } catch (ParseException | InterruptedException ignored) {
                 }
             }
 
             bufferedReader.close();
             file.close();
             producer.close();
+            System.out.println("Producer process completed");
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
         }

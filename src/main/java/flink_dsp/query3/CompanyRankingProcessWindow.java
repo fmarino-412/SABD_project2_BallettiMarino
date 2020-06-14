@@ -1,4 +1,4 @@
-package query2;
+package flink_dsp.query3;
 
 import org.apache.flink.streaming.api.functions.windowing.ProcessAllWindowFunction;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
@@ -8,11 +8,11 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class ReasonRankingProcessWindow extends ProcessAllWindowFunction<ReasonRankingOutcome,
-        ReasonRankingOutcome, TimeWindow> {
+public class CompanyRankingProcessWindow extends ProcessAllWindowFunction<CompanyRankingOutcome,
+        CompanyRankingOutcome, TimeWindow> {
     @Override
-    public void process(Context context, Iterable<ReasonRankingOutcome> iterable,
-                        Collector<ReasonRankingOutcome> collector) {
+    public void process(Context context, Iterable<CompanyRankingOutcome> iterable,
+                        Collector<CompanyRankingOutcome> collector) {
         iterable.forEach(k -> {
             Calendar calendar = Calendar.getInstance(Locale.US);
             calendar.setTimeZone(TimeZone.getTimeZone("America/New_York"));
@@ -22,4 +22,3 @@ public class ReasonRankingProcessWindow extends ProcessAllWindowFunction<ReasonR
         });
     }
 }
-

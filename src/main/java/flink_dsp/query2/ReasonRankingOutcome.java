@@ -1,4 +1,4 @@
-package query2;
+package flink_dsp.query2;
 
 import java.util.ArrayList;
 import java.util.Date;

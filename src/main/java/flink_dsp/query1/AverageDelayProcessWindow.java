@@ -1,4 +1,4 @@
-package query1;
+package flink_dsp.query1;
 
 import org.apache.flink.streaming.api.functions.windowing.ProcessAllWindowFunction;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;

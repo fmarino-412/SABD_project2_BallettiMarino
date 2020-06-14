@@ -1,4 +1,4 @@
-package query3;
+package flink_dsp.query3;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -12,9 +12,6 @@ import utility.OutputFormatter;
 import utility.delay_parsing.DelayFormatException;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-import java.util.TimeZone;
 
 @SuppressWarnings("Convert2Lambda")
 public class Query3TopologyBuilder {

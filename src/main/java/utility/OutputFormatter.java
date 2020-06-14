@@ -1,9 +1,9 @@
 package utility;
 
 import org.apache.commons.io.FileUtils;
-import query1.AverageDelayOutcome;
-import query2.ReasonRankingOutcome;
-import query3.CompanyRankingOutcome;
+import flink_dsp.query1.AverageDelayOutcome;
+import flink_dsp.query2.ReasonRankingOutcome;
+import flink_dsp.query3.CompanyRankingOutcome;
 import scala.Tuple2;
 
 import java.io.BufferedWriter;

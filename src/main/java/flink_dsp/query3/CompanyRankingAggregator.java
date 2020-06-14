@@ -1,4 +1,4 @@
-package query3;
+package flink_dsp.query3;
 
 import org.apache.flink.api.common.functions.AggregateFunction;
 import scala.Tuple2;

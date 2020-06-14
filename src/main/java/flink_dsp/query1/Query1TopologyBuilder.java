@@ -1,4 +1,4 @@
-package query1;
+package flink_dsp.query1;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;

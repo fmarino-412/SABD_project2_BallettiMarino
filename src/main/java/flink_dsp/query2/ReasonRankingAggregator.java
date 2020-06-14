@@ -1,4 +1,4 @@
-package query2;
+package flink_dsp.query2;
 
 import org.apache.flink.api.common.functions.AggregateFunction;
 import utility.BusData;
