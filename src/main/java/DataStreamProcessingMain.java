@@ -13,7 +13,6 @@ import query1.Query1TopologyBuilder;
 import query2.Query2TopologyBuilder;
 import query3.Query3TopologyBuilder;
 import scala.Tuple2;
-import scala.collection.immutable.Stream;
 import utility.OutputFormatter;
 
 import java.text.DateFormat;
