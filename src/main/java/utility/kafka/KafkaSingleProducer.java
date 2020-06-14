@@ -32,11 +32,8 @@ public class KafkaSingleProducer {
 
     public void produce(String key, String value, Long timestamp) {
 
-        final ProducerRecord<String, String> recordA = new ProducerRecord<>(FLINK_TOPIC,
-                null,
-                timestamp,
-                key,
-                value);
+        // no need to put timestamp for Flink
+        final ProducerRecord<String, String> recordA = new ProducerRecord<>(FLINK_TOPIC, key, value);
         final ProducerRecord<String, String> recordB = new ProducerRecord<>(KAFKA_STREAMS_TOPIC,
                 null,
                 timestamp,
