@@ -43,9 +43,6 @@ public class Query3TopologyBuilder {
                 .name("query3-daily-ranking")
                 .addSink(new SinkFunction<CompanyRankingOutcome>() {
                     public void invoke(CompanyRankingOutcome outcome, Context context) {
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US);
-                        format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
-                        System.out.println("DATE: " + format.format(outcome.getStartDate()));
                         OutputFormatter.writeOutputQuery3(OutputFormatter.QUERY3_DAILY_CSV_FILE_PATH, outcome);
                     }
                 });
