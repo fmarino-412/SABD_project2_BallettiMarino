@@ -1,4 +1,6 @@
-package flink_dsp.query3;
+package utility.accumulators;
+
+import flink_dsp.query3.DelayScorer;
 
 import java.util.Date;
 import java.util.HashMap;

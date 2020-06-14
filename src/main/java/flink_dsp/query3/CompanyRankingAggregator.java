@@ -3,6 +3,7 @@ package flink_dsp.query3;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import scala.Tuple2;
 import utility.BusData;
+import utility.accumulators.CompanyRankingAccumulator;
 
 import java.util.Date;
 import java.util.LinkedList;

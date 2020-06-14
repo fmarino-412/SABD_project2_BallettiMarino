@@ -1,4 +1,4 @@
-package flink_dsp.query1;
+package utility.accumulators;
 
 import scala.Tuple2;
 
@@ -7,8 +7,15 @@ import java.util.HashMap;
 
 public class AverageDelayAccumulator {
 
-    private final HashMap<String, Tuple2<Double, Long>> boroMap;
+    // TODO: use another class to do this with a default constructor and getter and setter operations!!
+    private HashMap<String, Tuple2<Double, Long>> boroMap;
     private Date startDate;
+
+    /* SERDE SCOPE */
+    public AverageDelayAccumulator(HashMap<String, Tuple2<Double, Long>> boroMap, Date startDate) {
+        this.boroMap = boroMap;
+        this.startDate = startDate;
+    }
 
     public AverageDelayAccumulator() {
         this.startDate = new Date(Long.MAX_VALUE);
@@ -34,5 +41,9 @@ public class AverageDelayAccumulator {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public void setBoroMap(HashMap<String, Tuple2<Double, Long>> boroMap) {
+        this.boroMap = boroMap;
     }
 }

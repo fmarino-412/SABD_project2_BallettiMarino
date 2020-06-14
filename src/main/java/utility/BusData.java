@@ -3,6 +3,7 @@ package utility;
 import utility.delay_parsing.DelayFormatException;
 import utility.delay_parsing.DelayParsingUtility;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,13 +11,25 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class BusData {
+public class BusData implements Serializable {
 
-    private final Date eventTime;
+    private Date eventTime;
     private Double delay; // expressed in minutes
     private String boro;
     private String reason;
     private String companyName;
+
+    /* SERDES SCOPE */
+    public BusData() {
+    }
+
+    public BusData(Date eventTime, Double delay, String boro, String reason, String companyName) {
+        this.eventTime = eventTime;
+        this.delay = delay;
+        this.boro = boro;
+        this.reason = reason;
+        this.companyName = companyName;
+    }
 
     /* Query 1 scope */
     public BusData(String eventTime, String delay, String boro) throws ParseException, DelayFormatException {
@@ -64,5 +77,25 @@ public class BusData {
 
     public String getCompanyName() {
         return companyName;
+    }
+
+    public void setEventTime(Date eventTime) {
+        this.eventTime = eventTime;
+    }
+
+    public void setDelay(Double delay) {
+        this.delay = delay;
+    }
+
+    public void setBoro(String boro) {
+        this.boro = boro;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

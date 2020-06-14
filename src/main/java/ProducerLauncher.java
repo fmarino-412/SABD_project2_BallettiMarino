@@ -1,4 +1,4 @@
-import utility.kafka.KafkaSingleProducer;
+import kafka_pubsub.KafkaSingleProducer;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -19,6 +19,7 @@ public class ProducerLauncher {
 
         KafkaSingleProducer producer = new KafkaSingleProducer();
         String line;
+        Long eventTime;
 
         try {
             FileReader file = new FileReader(CSV_PATH);
@@ -29,7 +30,8 @@ public class ProducerLauncher {
                     String[] info = line.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
                     format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
-                    producer.produce(null, line, format.parse(info[7]).getTime());
+                    eventTime = format.parse(info[7]).getTime();
+                    producer.produce(eventTime, line, eventTime);
                     Thread.sleep(SLEEP);
                 } catch (ParseException | InterruptedException ignored) {
                 }

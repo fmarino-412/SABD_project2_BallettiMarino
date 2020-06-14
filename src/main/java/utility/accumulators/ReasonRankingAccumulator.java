@@ -1,4 +1,4 @@
-package flink_dsp.query2;
+package utility.accumulators;
 
 import java.util.*;
 

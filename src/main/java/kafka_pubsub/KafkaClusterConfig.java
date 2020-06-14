@@ -1,8 +1,9 @@
-package utility.kafka;
+package kafka_pubsub;
 
-public class KafkaConfig {
+public class KafkaClusterConfig {
     public static final String FLINK_TOPIC = "flink-topic";
     public static final String KAFKA_STREAMS_TOPIC = "kafka-streams-topic";
+    public static final String QUERY_1_DAILY_TOPIC = "kafka-streams-output-topic-query1-daily";
 
     public static final String KAFKA_SINGLE_BROKER = "localhost:9092";
 

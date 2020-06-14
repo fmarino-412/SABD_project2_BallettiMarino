@@ -1,1 +1,5 @@
-1441857600000;05:00-11:59;[Heavy Traffic, Other, Weather Conditions];12:00-19:00;[Heavy Traffic, Mechanical Problem, Other]
+1441944000000;05:00-11:59;[Heavy Traffic, Other, Mechanical Problem];12:00-19:00;[Heavy Traffic, Mechanical Problem, Other]
+1442203200000;05:00-11:59;[Heavy Traffic, Other, Mechanical Problem];12:00-19:00;[Mechanical Problem, Heavy Traffic, Other]
+1442289600000;05:00-11:59;[Heavy Traffic, Other, Mechanical Problem];12:00-19:00;[Mechanical Problem, Heavy Traffic]
+1442376000000;05:00-11:59;[Heavy Traffic, Other, Mechanical Problem];12:00-19:00;[Heavy Traffic, Other, Mechanical Problem]
+1442462400000;05:00-11:59;[Heavy Traffic, Other, Mechanical Problem];12:00-19:00;[Heavy Traffic, Mechanical Problem, Other]
