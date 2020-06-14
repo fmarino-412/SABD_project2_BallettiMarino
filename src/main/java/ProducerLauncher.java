@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.TimeZone;
 
 @SuppressWarnings("BusyWait")
 public class ProducerLauncher {
@@ -27,6 +28,7 @@ public class ProducerLauncher {
                 try {
                     String[] info = line.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
+                    format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
                     producer.produce(null, line, format.parse(info[7]).getTime());
                     Thread.sleep(SLEEP);
                 } catch (ParseException | InterruptedException ignored) {
