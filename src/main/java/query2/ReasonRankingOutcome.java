@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ReasonRankingOutcome {
-    private final Date startDate;
+    private Date startDate;
     private final ArrayList<String> amRanking;
     private final ArrayList<String> pmRanking;
 
@@ -20,6 +20,10 @@ public class ReasonRankingOutcome {
 
     public void addPmRanking(String reason) {
         this.pmRanking.add(reason);
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     public Date getStartDate() {

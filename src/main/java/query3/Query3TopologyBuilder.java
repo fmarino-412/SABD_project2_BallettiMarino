@@ -35,7 +35,7 @@ public class Query3TopologyBuilder {
 
         // 1 day statistics
         stream.timeWindowAll(Time.hours(24))
-                .aggregate(new CompanyRankingAggregator())
+                .aggregate(new CompanyRankingAggregator(), new CompanyRankingProcessWindow())
                 .name("query3-daily-ranking")
                 .addSink(new SinkFunction<CompanyRankingOutcome>() {
                     public void invoke(CompanyRankingOutcome outcome, Context context) {
@@ -45,7 +45,7 @@ public class Query3TopologyBuilder {
 
         // 7 days statistics
         stream.timeWindowAll(Time.days(7))
-                .aggregate(new CompanyRankingAggregator())
+                .aggregate(new CompanyRankingAggregator(), new CompanyRankingProcessWindow())
                 .name("query3-weekly-ranking")
                 .addSink(new SinkFunction<CompanyRankingOutcome>() {
                     public void invoke(CompanyRankingOutcome outcome, Context context) {

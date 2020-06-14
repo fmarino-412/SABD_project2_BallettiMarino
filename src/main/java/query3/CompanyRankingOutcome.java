@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class CompanyRankingOutcome {
 
-    private final Date startDate;
+    private Date startDate;
     private final ArrayList<Tuple2<String, Double>> companyRanking;
 
     public CompanyRankingOutcome(Date startDate) {
@@ -17,6 +17,10 @@ public class CompanyRankingOutcome {
 
     public void addRanking(Tuple2<String, Double> score) {
         this.companyRanking.add(score);
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     public Date getStartDate() {

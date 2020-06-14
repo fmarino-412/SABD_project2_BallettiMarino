@@ -5,6 +5,4 @@ Ritardi in giorni?
 
 Tempi latenza e throughput (flink web ui)
 
-Finestre - take beginning
-
 Kafka - CHECK EXACTLY ONCE

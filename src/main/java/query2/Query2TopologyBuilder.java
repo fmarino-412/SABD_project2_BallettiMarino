@@ -34,7 +34,7 @@ public class Query2TopologyBuilder {
 
         // 1 day statistics
         stream.timeWindowAll(Time.hours(24))
-                .aggregate(new ReasonRankingAggregator())
+                .aggregate(new ReasonRankingAggregator(), new ReasonRankingProcessWindow())
                 .name("query2-daily-ranking")
                 .addSink(new SinkFunction<ReasonRankingOutcome>() {
                     public void invoke(ReasonRankingOutcome outcome, Context context) {
@@ -44,7 +44,7 @@ public class Query2TopologyBuilder {
 
         // 7 days statistics
         stream.timeWindowAll(Time.days(7))
-                .aggregate(new ReasonRankingAggregator())
+                .aggregate(new ReasonRankingAggregator(), new ReasonRankingProcessWindow())
                 .name("query2-weekly-ranking")
                 .addSink(new SinkFunction<ReasonRankingOutcome>() {
                     public void invoke(ReasonRankingOutcome outcome, Context context) {

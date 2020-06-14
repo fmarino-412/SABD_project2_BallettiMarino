@@ -35,7 +35,7 @@ public class Query1TopologyBuilder {
 
         // 1 day statistics
         stream.timeWindowAll(Time.hours(24))
-                .aggregate(new AverageDelayAggregator())
+                .aggregate(new AverageDelayAggregator(), new AverageDelayProcessWindow())
                 .name("query1-daily-mean")
                 .addSink(new SinkFunction<AverageDelayOutcome>() {
                     public void invoke(AverageDelayOutcome outcome, Context context) {
@@ -45,7 +45,7 @@ public class Query1TopologyBuilder {
 
         // 7 days statistics
         stream.timeWindowAll(Time.days(7))
-                .aggregate(new AverageDelayAggregator())
+                .aggregate(new AverageDelayAggregator(), new AverageDelayProcessWindow())
                 .name("query1-weekly-mean")
                 .addSink(new SinkFunction<AverageDelayOutcome>() {
                     public void invoke(AverageDelayOutcome outcome, Context context) {
@@ -55,7 +55,7 @@ public class Query1TopologyBuilder {
 
         // 1 month statistics
         stream.timeWindowAll(Time.days(30))
-                .aggregate(new AverageDelayAggregator())
+                .aggregate(new AverageDelayAggregator(), new AverageDelayProcessWindow())
                 .name("query1-monthly-mean")
                 .addSink(new SinkFunction<AverageDelayOutcome>() {
                     public void invoke(AverageDelayOutcome outcome, Context context) {

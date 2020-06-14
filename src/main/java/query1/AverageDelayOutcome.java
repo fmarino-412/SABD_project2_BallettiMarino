@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class AverageDelayOutcome {
-    private final Date startDate;
+    private Date startDate;
     private final HashMap<String, Double> boroMeans = new HashMap<>();
 
     public AverageDelayOutcome(Date startDate) {
@@ -21,6 +21,10 @@ public class AverageDelayOutcome {
 
     public Date getStartDate() {
         return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     public HashMap<String, Double> getBoroMeans() {
