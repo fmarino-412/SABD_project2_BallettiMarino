@@ -20,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.TimeZone;
 
 import static utility.kafka.KafkaConfig.*;
 
@@ -51,6 +52,7 @@ public class DataStreamProcessingMain {
                     public void flatMap(String s, Collector<Tuple2<Long, String>> collector) {
                         String[] info = s.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
+                        format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
                         try {
                             collector.collect(new Tuple2<>(format.parse(info[7]).getTime(), s));
                         } catch (ParseException ignored) {

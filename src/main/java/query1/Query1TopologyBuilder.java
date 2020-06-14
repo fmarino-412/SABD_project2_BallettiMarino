@@ -3,6 +3,7 @@ package query1;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
 import scala.Tuple2;
@@ -34,7 +35,7 @@ public class Query1TopologyBuilder {
                 .name("stream-query1-decoder");
 
         // 1 day statistics
-        stream.timeWindowAll(Time.hours(24))
+        stream.windowAll(TumblingEventTimeWindows.of(Time.days(1), Time.hours(4)))
                 .aggregate(new AverageDelayAggregator(), new AverageDelayProcessWindow())
                 .name("query1-daily-mean")
                 .addSink(new SinkFunction<AverageDelayOutcome>() {
@@ -44,7 +45,7 @@ public class Query1TopologyBuilder {
                 });
 
         // 7 days statistics
-        stream.timeWindowAll(Time.days(7))
+        stream.windowAll(TumblingEventTimeWindows.of(Time.days(7), Time.hours(4)))
                 .aggregate(new AverageDelayAggregator(), new AverageDelayProcessWindow())
                 .name("query1-weekly-mean")
                 .addSink(new SinkFunction<AverageDelayOutcome>() {
@@ -54,7 +55,7 @@ public class Query1TopologyBuilder {
                 });
 
         // 1 month statistics
-        stream.timeWindowAll(Time.days(30))
+        stream.windowAll(TumblingEventTimeWindows.of(Time.days(30), Time.hours(4)))
                 .aggregate(new AverageDelayAggregator(), new AverageDelayProcessWindow())
                 .name("query1-monthly-mean")
                 .addSink(new SinkFunction<AverageDelayOutcome>() {

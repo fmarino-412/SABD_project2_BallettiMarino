@@ -1,9 +1,6 @@
 package query2;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
+import java.util.*;
 
 public class ReasonRankingAccumulator {
     private Date startDate;
@@ -19,10 +16,12 @@ public class ReasonRankingAccumulator {
     public void add(Date date, String reason, Long counter) {
         //threshold setup
         Calendar threshold = Calendar.getInstance(Locale.US);
+        threshold.setTimeZone(TimeZone.getTimeZone("America/New_York"));
         threshold.setTime(date);
 
         //element setup
         Calendar elem = Calendar.getInstance(Locale.US);
+        elem.setTimeZone(TimeZone.getTimeZone("America/New_York"));
         elem.setTime(date);
 
         threshold.set(Calendar.MINUTE, 0);

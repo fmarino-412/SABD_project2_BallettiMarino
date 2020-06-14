@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class BusData {
 
@@ -20,6 +21,7 @@ public class BusData {
     /* Query 1 scope */
     public BusData(String eventTime, String delay, String boro) throws ParseException, DelayFormatException {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
+        format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
         this.eventTime = format.parse(eventTime);
         this.delay = DelayParsingUtility.parseDelay(delay);
         this.boro = boro;
@@ -28,6 +30,7 @@ public class BusData {
     /* Query 2 scope */
     public BusData(String eventTime, String reason) throws ParseException {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
+        format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
         this.eventTime = format.parse(eventTime);
         this.reason = reason;
     }
@@ -36,6 +39,7 @@ public class BusData {
     public BusData(String eventTime, String delay, String reason, String companyName) throws ParseException,
             DelayFormatException {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
+        format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
         this.eventTime = format.parse(eventTime);
         this.delay = DelayParsingUtility.parseDelay(delay);
         this.reason = reason;

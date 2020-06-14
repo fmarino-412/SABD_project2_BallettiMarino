@@ -6,6 +6,7 @@ import org.apache.flink.util.Collector;
 
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class ReasonRankingProcessWindow extends ProcessAllWindowFunction<ReasonRankingOutcome,
         ReasonRankingOutcome, TimeWindow> {
@@ -14,6 +15,7 @@ public class ReasonRankingProcessWindow extends ProcessAllWindowFunction<ReasonR
                         Collector<ReasonRankingOutcome> collector) {
         iterable.forEach(k -> {
             Calendar calendar = Calendar.getInstance(Locale.US);
+            calendar.setTimeZone(TimeZone.getTimeZone("America/New_York"));
             calendar.setTimeInMillis(context.window().getStart());
             k.setStartDate(calendar.getTime());
             collector.collect(k);

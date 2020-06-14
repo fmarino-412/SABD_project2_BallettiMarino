@@ -3,6 +3,7 @@ package query3;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
 import scala.Tuple2;
@@ -11,6 +12,9 @@ import utility.OutputFormatter;
 import utility.delay_parsing.DelayFormatException;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.TimeZone;
 
 @SuppressWarnings("Convert2Lambda")
 public class Query3TopologyBuilder {
@@ -34,17 +38,20 @@ public class Query3TopologyBuilder {
                 .name("stream-query3-decoder");
 
         // 1 day statistics
-        stream.timeWindowAll(Time.hours(24))
+        stream.windowAll(TumblingEventTimeWindows.of(Time.days(1), Time.hours(4)))
                 .aggregate(new CompanyRankingAggregator(), new CompanyRankingProcessWindow())
                 .name("query3-daily-ranking")
                 .addSink(new SinkFunction<CompanyRankingOutcome>() {
                     public void invoke(CompanyRankingOutcome outcome, Context context) {
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US);
+                        format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+                        System.out.println("DATE: " + format.format(outcome.getStartDate()));
                         OutputFormatter.writeOutputQuery3(OutputFormatter.QUERY3_DAILY_CSV_FILE_PATH, outcome);
                     }
                 });
 
         // 7 days statistics
-        stream.timeWindowAll(Time.days(7))
+        stream.windowAll(TumblingEventTimeWindows.of(Time.days(7), Time.hours(4)))
                 .aggregate(new CompanyRankingAggregator(), new CompanyRankingProcessWindow())
                 .name("query3-weekly-ranking")
                 .addSink(new SinkFunction<CompanyRankingOutcome>() {
