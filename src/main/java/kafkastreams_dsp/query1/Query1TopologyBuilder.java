@@ -69,14 +69,16 @@ public class Query1TopologyBuilder {
                     @Override
                     public KeyValue<String, String> apply(Windowed<String> stringWindowed, AverageDelayAccumulator averageDelayAccumulator) {
                         StringBuilder outcomeBuilder = new StringBuilder();
+                        outcomeBuilder.append(stringWindowed.window().startTime().toEpochMilli());
                         averageDelayAccumulator.getBoroMap().forEach((k, v) -> {
-                            outcomeBuilder.append(k).append(",").append(v).append(",");
+                            outcomeBuilder.append(k).append(",").append(v.getTotal()/v.getCounter()).append(",");
                         });
                         outcomeBuilder.deleteCharAt(outcomeBuilder.length() - 1);
                         return new KeyValue<>(stringWindowed.key(), outcomeBuilder.toString());
                     }
                 });
         stream.to(KafkaClusterConfig.QUERY_1_DAILY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
+
         // 7 days statistics
         // 1 month statistics
     }

@@ -33,14 +33,14 @@ public class AverageDelayAggregator implements AggregateFunction<BusData, Averag
             acc1.setStartDate(acc2.getStartDate());
         }
 
-        acc2.getBoroMap().forEach((k, v) -> acc1.add(k, v._1(), v._2()));
+        acc2.getBoroMap().forEach((k, v) -> acc1.add(k, v.getTotal(), v.getCounter()));
 
         return acc1;
     }
 
     public AverageDelayOutcome getResult(AverageDelayAccumulator accumulator) {
         AverageDelayOutcome outcome = new AverageDelayOutcome(accumulator.getStartDate());
-        accumulator.getBoroMap().forEach((k, v) -> outcome.addMean(k, v._1() / v._2()));
+        accumulator.getBoroMap().forEach((k, v) -> outcome.addMean(k, v.getTotal() / v.getCounter()));
 
         return outcome;
     }

@@ -13,7 +13,6 @@ public class AverageDelayOutcome {
 
     public void addMean(String boro, Double mean) {
         if (boro.equals("")) {
-            //TODO: handle this case
             return;
         }
         this.boroMeans.put(boro, mean);
