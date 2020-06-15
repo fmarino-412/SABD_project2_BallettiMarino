@@ -6,6 +6,7 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
 import utility.BusData;
+import utility.KeyEvaluator;
 import utility.accumulators.AverageDelayAccumulator;
 import utility.delay_parsing.DelayFormatException;
 
@@ -38,19 +39,7 @@ public class Query1TopologyBuilder {
         preprocessed.map(new KeyValueMapper<Long, BusData, KeyValue<String, BusData>>() {
             @Override
             public KeyValue<String, BusData> apply(Long aLong, BusData busData) {
-                StringBuilder newKey = new StringBuilder();
-
-                Calendar calendar = Calendar.getInstance(Locale.US);
-                calendar.setTimeZone(TimeZone.getTimeZone("America/New_York"));
-                calendar.setTime(busData.getEventTime());
-
-                newKey.append(calendar.get(Calendar.DAY_OF_MONTH))
-                        .append("/")
-                        .append(calendar.get(Calendar.MONTH))
-                        .append("/")
-                        .append(calendar.get(Calendar.YEAR));
-
-                return new KeyValue<>(newKey.toString(), busData);
+                return KeyEvaluator.toDailyKeyed(busData);
             }
         }).groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
                 .windowedBy(TimeWindows.of(Duration.ofDays(1)))
@@ -64,17 +53,7 @@ public class Query1TopologyBuilder {
         preprocessed.map(new KeyValueMapper<Long, BusData, KeyValue<String, BusData>>() {
             @Override
             public KeyValue<String, BusData> apply(Long aLong, BusData busData) {
-                StringBuilder newKey = new StringBuilder();
-
-                Calendar calendar = Calendar.getInstance(Locale.US);
-                calendar.setTimeZone(TimeZone.getTimeZone("America/New_York"));
-                calendar.setTime(busData.getEventTime());
-
-                newKey.append(calendar.get(Calendar.WEEK_OF_YEAR))
-                        .append("/")
-                        .append(calendar.get(Calendar.YEAR));
-
-                return new KeyValue<>(newKey.toString(), busData);
+                return KeyEvaluator.toWeeklyKeyed(busData);
             }
         }).groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
                 .windowedBy(TimeWindows.of(Duration.ofDays(7)))
@@ -88,17 +67,7 @@ public class Query1TopologyBuilder {
         preprocessed.map(new KeyValueMapper<Long, BusData, KeyValue<String, BusData>>() {
             @Override
             public KeyValue<String, BusData> apply(Long aLong, BusData busData) {
-                StringBuilder newKey = new StringBuilder();
-
-                Calendar calendar = Calendar.getInstance(Locale.US);
-                calendar.setTimeZone(TimeZone.getTimeZone("America/New_York"));
-                calendar.setTime(busData.getEventTime());
-
-                newKey.append(calendar.get(Calendar.MONTH))
-                        .append("/")
-                        .append(calendar.get(Calendar.YEAR));
-
-                return new KeyValue<>(newKey.toString(), busData);
+                return KeyEvaluator.toMonthlyKeyed(busData);
             }
         }).groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
                 .windowedBy(TimeWindows.of(Duration.ofDays(31)))
@@ -131,7 +100,7 @@ public class Query1TopologyBuilder {
             StringBuilder outcomeBuilder = new StringBuilder();
             outcomeBuilder.append(stringWindowed.window().startTime().toEpochMilli());
             averageDelayAccumulator.getBoroMap().forEach((k, v) -> {
-                outcomeBuilder.append(k).append(",").append(v.getTotal()/v.getCounter()).append(",");
+                outcomeBuilder.append(k).append(";").append(v.getTotal()/v.getCounter()).append(";");
             });
             outcomeBuilder.deleteCharAt(outcomeBuilder.length() - 1);
             return new KeyValue<>(stringWindowed.key(), outcomeBuilder.toString());
