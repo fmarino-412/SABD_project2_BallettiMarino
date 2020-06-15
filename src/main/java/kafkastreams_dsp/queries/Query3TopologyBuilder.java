@@ -60,7 +60,8 @@ public class Query3TopologyBuilder {
 
 	private static class CompanyRankingAggregator implements Aggregator<String, BusData, CompanyRankingAccumulator> {
 		@Override
-		public CompanyRankingAccumulator apply(String s, BusData busData, CompanyRankingAccumulator companyRankingAccumulator) {
+		public CompanyRankingAccumulator apply(String s, BusData busData,
+											   CompanyRankingAccumulator companyRankingAccumulator) {
 			companyRankingAccumulator.add(busData.getCompanyName(), busData.getReason(), busData.getDelay());
 			return companyRankingAccumulator;
 		}
@@ -70,15 +71,12 @@ public class Query3TopologyBuilder {
 			KeyValue<String, String>> {
 
 		@Override
-		public KeyValue<String, String> apply(Windowed<String> stringWindowed, CompanyRankingAccumulator companyRankingAccumulator) {
-			StringBuilder outcomeBuilder = new StringBuilder();
-			outcomeBuilder.append(stringWindowed.window().startTime().toEpochMilli()).append(";");
+		public KeyValue<String, String> apply(Windowed<String> stringWindowed,
+											  CompanyRankingAccumulator companyRankingAccumulator) {
 
-			companyRankingAccumulator.getCompanyRanking().forEach((k, v) ->
-					outcomeBuilder.append(k).append(";").append(v).append(";"));
-
-			outcomeBuilder.deleteCharAt(outcomeBuilder.length() - 1);
-			return new KeyValue<>(stringWindowed.key(), outcomeBuilder.toString());
+			String outcomeBuilder = stringWindowed.window().startTime().toEpochMilli() + ";" +
+					DataCommonTransformation.buildCompanyRankingString(companyRankingAccumulator);
+			return new KeyValue<>(stringWindowed.key(), outcomeBuilder);
 		}
 	}
 }
