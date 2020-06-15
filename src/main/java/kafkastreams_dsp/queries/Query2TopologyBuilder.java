@@ -90,23 +90,36 @@ public class Query2TopologyBuilder {
 					.append(AM)
 					.append(";[");
 
-			for (int i = 0; i < RANK_SIZE; i++) {
-				outcomeBuilder.append(",")
-						.append(amList.get(i).getKey());
-			}
+			addElements(outcomeBuilder, amList);
 
 			outcomeBuilder.append("];")
 					.append(PM)
 					.append(";[");
 
-			for (int i = 0; i < RANK_SIZE; i++) {
-				outcomeBuilder.append(",")
-						.append(pmList.get(i).getKey());
-			}
+			addElements(outcomeBuilder, pmList);
 
 			outcomeBuilder.append("]");
 
 			return new KeyValue<>(stringWindowed.key(), outcomeBuilder.toString());
+		}
+
+		private void addElements(StringBuilder outcomeBuilder, List<Map.Entry<String, Long>> list) {
+			String elem;
+			boolean added = false;
+
+			for (int i = 0; i < RANK_SIZE; i++) {
+				try {
+					elem = list.get(i).getKey();
+					outcomeBuilder.append(elem).append(",");
+					added = true;
+				} catch (IndexOutOfBoundsException ignored) {
+					// Less than RANK_SIZE elements
+				}
+			}
+
+			if (added) {
+				outcomeBuilder.deleteCharAt(outcomeBuilder.length() - 1);
+			}
 		}
 	}
 }
