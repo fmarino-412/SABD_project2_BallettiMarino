@@ -13,8 +13,6 @@ import utility.delay_parsing.DelayFormatException;
 import java.text.ParseException;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
 
 public class Query3TopologyBuilder {
 
@@ -34,20 +32,20 @@ public class Query3TopologyBuilder {
         // 1 day statistics
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
                         KeyEvaluator.toDailyKeyed(busData))
-                .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
+                .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
                 .windowedBy(TimeWindows.of(Duration.ofDays(1)))
                 .aggregate(new CompanyRankingInitializer(), new CompanyRankingAggregator(),
-                        Materialized.with(Serdes.String(), SerDesBuilders.getCompanyRankingAccumulatorSerdes()))
+                        Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(CompanyRankingAccumulator.class)))
                 .toStream()
                 .map(new CompanyRankingMapper())
                 .to(KafkaClusterConfig.QUERY_3_DAILY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
         // 7 day statistics
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
                 KeyEvaluator.toWeeklyKeyed(busData))
-                .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
+                .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
                 .windowedBy(TimeWindows.of(Duration.ofDays(7)))
                 .aggregate(new CompanyRankingInitializer(), new CompanyRankingAggregator(),
-                        Materialized.with(Serdes.String(), SerDesBuilders.getCompanyRankingAccumulatorSerdes()))
+                        Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(CompanyRankingAccumulator.class)))
                 .toStream()
                 .map(new CompanyRankingMapper())
                 .to(KafkaClusterConfig.QUERY_3_WEEKLY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));

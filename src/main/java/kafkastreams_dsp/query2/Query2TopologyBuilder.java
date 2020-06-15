@@ -34,10 +34,10 @@ public class Query2TopologyBuilder {
         // 1 day statistics
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
                         KeyEvaluator.toDailyKeyed(busData)).groupByKey(Grouped.with(Serdes.String(),
-                        SerDesBuilders.getBusDataSerdes()))
+                        SerDesBuilders.getSerdes(BusData.class)))
                 .windowedBy(TimeWindows.of(Duration.ofDays(1)))
                 .aggregate(new ReasonRankingInitializer(), new ReasonRankingAggregator(),
-                        Materialized.with(Serdes.String(), SerDesBuilders.getReasonRankingAccumulatorSerdes()))
+                        Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(ReasonRankingAccumulator.class)))
                 .toStream()
                 .map(new ReasonRankingMapper())
                 .to(KafkaClusterConfig.QUERY_2_DAILY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
@@ -45,10 +45,10 @@ public class Query2TopologyBuilder {
         // 7 days statistics
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
                         KeyEvaluator.toMonthlyKeyed(busData)).groupByKey(Grouped.with(Serdes.String(),
-                        SerDesBuilders.getBusDataSerdes()))
+                        SerDesBuilders.getSerdes(BusData.class)))
                 .windowedBy(TimeWindows.of(Duration.ofDays(7)))
                 .aggregate(new ReasonRankingInitializer(), new ReasonRankingAggregator(),
-                        Materialized.with(Serdes.String(), SerDesBuilders.getReasonRankingAccumulatorSerdes()))
+                        Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(ReasonRankingAccumulator.class)))
                 .toStream()
                 .map(new ReasonRankingMapper())
                 .to(KafkaClusterConfig.QUERY_1_WEEKLY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));

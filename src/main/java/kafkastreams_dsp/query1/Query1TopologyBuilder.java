@@ -32,10 +32,10 @@ public class Query1TopologyBuilder {
         // 1 day statistics
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
                         KeyEvaluator.toDailyKeyed(busData))
-                .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
+                .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
                 .windowedBy(TimeWindows.of(Duration.ofDays(1)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
-                        Materialized.with(Serdes.String(), SerDesBuilders.getAverageDelayAccumulatorSerdes()))
+                        Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(AverageDelayAccumulator.class)))
                 .toStream()
                 .map(new AverageDelayMapper())
                 .to(KafkaClusterConfig.QUERY_1_DAILY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
@@ -43,10 +43,10 @@ public class Query1TopologyBuilder {
         // 7 days statistics
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
                         KeyEvaluator.toWeeklyKeyed(busData))
-                .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
+                .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
                 .windowedBy(TimeWindows.of(Duration.ofDays(7)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
-                        Materialized.with(Serdes.String(), SerDesBuilders.getAverageDelayAccumulatorSerdes()))
+                        Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(AverageDelayAccumulator.class)))
                 .toStream()
                 .map(new AverageDelayMapper())
                 .to(KafkaClusterConfig.QUERY_1_WEEKLY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
@@ -54,10 +54,10 @@ public class Query1TopologyBuilder {
         // 1 month statistics
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
                         KeyEvaluator.toMonthlyKeyed(busData))
-                .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
+                .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
                 .windowedBy(TimeWindows.of(Duration.ofDays(31)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
-                        Materialized.with(Serdes.String(), SerDesBuilders.getAverageDelayAccumulatorSerdes()))
+                        Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(AverageDelayAccumulator.class)))
                 .toStream()
                 .map(new AverageDelayMapper())
                 .to(KafkaClusterConfig.QUERY_1_MONTHLY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
