@@ -6,3 +6,7 @@ Ritardi in giorni?
 Tempi latenza e throughput (flink web ui)
 
 Kafka - CHECK EXACTLY ONCE
+
+Kafka Streams - inizio settimana
+
+Kafka Streams - controllare se funzionano le finestre temporali (1 mese/ 30 gg con key-by)
