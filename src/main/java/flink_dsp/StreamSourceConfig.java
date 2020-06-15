@@ -11,16 +11,16 @@ import static kafka_pubsub.KafkaClusterConfig.CONSUMER_ID;
 
 public class StreamSourceConfig {
 
-    public static Properties getSourceProperties() {
+	public static Properties getSourceProperties() {
 
-        Properties props = new Properties();
+		Properties props = new Properties();
 
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, CONSUMER_ID);
+		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
+		props.put(ConsumerConfig.GROUP_ID_CONFIG, CONSUMER_ID);
 
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
+		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 
-        return props;
-    }
+		return props;
+	}
 }

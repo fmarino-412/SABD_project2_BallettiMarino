@@ -1,4 +1,4 @@
-package kafkastreams_dsp.query1;
+package kafkastreams_dsp.queries;
 
 import kafka_pubsub.KafkaClusterConfig;
 import kafkastreams_dsp.serdes.SerDesBuilders;
@@ -6,7 +6,7 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
 import utility.BusData;
-import utility.KeyEvaluator;
+import utility.DataCommonTransformation;
 import utility.accumulators.AverageDelayAccumulator;
 import utility.delay_parsing.DelayFormatException;
 
@@ -31,7 +31,7 @@ public class Query1TopologyBuilder {
 
         // 1 day statistics
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
-                        KeyEvaluator.toDailyKeyed(busData))
+                        DataCommonTransformation.toDailyKeyed(busData))
                 .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
                 .windowedBy(TimeWindows.of(Duration.ofDays(1)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
@@ -42,7 +42,7 @@ public class Query1TopologyBuilder {
 
         // 7 days statistics
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
-                        KeyEvaluator.toWeeklyKeyed(busData))
+                        DataCommonTransformation.toWeeklyKeyed(busData))
                 .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
                 .windowedBy(TimeWindows.of(Duration.ofDays(7)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
@@ -53,7 +53,7 @@ public class Query1TopologyBuilder {
 
         // 1 month statistics
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
-                        KeyEvaluator.toMonthlyKeyed(busData))
+                        DataCommonTransformation.toMonthlyKeyed(busData))
                 .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
                 .windowedBy(TimeWindows.of(Duration.ofDays(31)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),

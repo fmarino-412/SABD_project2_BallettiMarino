@@ -1,30 +1,30 @@
 package utility.accumulators;
 
 public class AverageDelayStatistics {
-    private Double total;
-    private Long counter;
+	private Double total;
+	private Long counter;
 
-    public AverageDelayStatistics() {
-    }
+	public AverageDelayStatistics() {
+	}
 
-    public AverageDelayStatistics(Double total, Long counter) {
-        this.total = total;
-        this.counter = counter;
-    }
+	public AverageDelayStatistics(Double total, Long counter) {
+		this.total = total;
+		this.counter = counter;
+	}
 
-    public Double getTotal() {
-        return total;
-    }
+	public Double getTotal() {
+		return total;
+	}
 
-    public void setTotal(Double total) {
-        this.total = total;
-    }
+	public void setTotal(Double total) {
+		this.total = total;
+	}
 
-    public Long getCounter() {
-        return counter;
-    }
+	public Long getCounter() {
+		return counter;
+	}
 
-    public void setCounter(Long counter) {
-        this.counter = counter;
-    }
+	public void setCounter(Long counter) {
+		this.counter = counter;
+	}
 }

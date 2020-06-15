@@ -1,4 +1,4 @@
-package flink_dsp.query3;
+package utility.accumulators;
 
 public class DelayScorer {
 
