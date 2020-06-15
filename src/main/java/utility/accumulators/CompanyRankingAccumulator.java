@@ -7,6 +7,8 @@ import java.util.HashMap;
 
 public class CompanyRankingAccumulator {
 
+    private static final int THRESHOLD_FOR_DOUBLE_SCORE = 30;
+    // TODO: check date update basing on new processWindow method
     private Date startDate;
     private final HashMap<String, Double> companyRanking;
 
@@ -15,7 +17,11 @@ public class CompanyRankingAccumulator {
         companyRanking = new HashMap<>();
     }
 
-    public void add(String companyName, String reason, boolean countTwice) {
+    public void add(String companyName, String reason, Double delay) {
+        boolean countTwice = false;
+        if (delay > THRESHOLD_FOR_DOUBLE_SCORE) {
+            countTwice = true;
+        }
         this.companyRanking.merge(companyName, DelayScorer.computeAmount(reason, countTwice), Double::sum);
     }
 

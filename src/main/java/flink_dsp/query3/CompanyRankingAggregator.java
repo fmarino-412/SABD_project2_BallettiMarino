@@ -13,7 +13,6 @@ import java.util.Map;
 public class CompanyRankingAggregator implements AggregateFunction<BusData, CompanyRankingAccumulator, CompanyRankingOutcome> {
 
     private static final int RANK_SIZE = 5;
-    private static final int THRESHOLD_FOR_DOUBLE_SCORE = 30;
 
     @Override
     public CompanyRankingAccumulator createAccumulator() {
@@ -33,7 +32,7 @@ public class CompanyRankingAggregator implements AggregateFunction<BusData, Comp
         accumulator.setStartDate(startDate);
 
         accumulator.add(busData.getCompanyName(), busData.getReason(),
-                busData.getDelay() > THRESHOLD_FOR_DOUBLE_SCORE);
+                busData.getDelay());
 
         return accumulator;
     }

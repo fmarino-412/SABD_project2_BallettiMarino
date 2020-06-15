@@ -6,6 +6,7 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.serialization.Serializer;
 import utility.BusData;
 import utility.accumulators.AverageDelayAccumulator;
+import utility.accumulators.CompanyRankingAccumulator;
 import utility.accumulators.ReasonRankingAccumulator;
 
 import java.util.HashMap;
@@ -47,6 +48,19 @@ public class SerDesBuilders {
         serdeProps.put("JsonPOJOClass", ReasonRankingAccumulator.class);
         serializer.configure(serdeProps, false);
         serdeProps.put("JsonPOJOClass", ReasonRankingAccumulator.class);
+        deserializer.configure(serdeProps, false);
+
+        return Serdes.serdeFrom(serializer, deserializer);
+    }
+
+    public static Serde<CompanyRankingAccumulator> getCompanyRankingAccumulatorSerdes() {
+        Map<String, Object> serdeProps = new HashMap<>();
+
+        Serializer<CompanyRankingAccumulator> serializer = new JsonPOJOSerializer<>();
+        Deserializer<CompanyRankingAccumulator> deserializer = new JsonPOJODeserializer<>();
+        serdeProps.put("JsonPOJOClass", CompanyRankingAccumulator.class);
+        serializer.configure(serdeProps, false);
+        serdeProps.put("JsonPOJOClass", CompanyRankingAccumulator.class);
         deserializer.configure(serdeProps, false);
 
         return Serdes.serdeFrom(serializer, deserializer);

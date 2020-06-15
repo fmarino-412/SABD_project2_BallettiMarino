@@ -13,35 +13,26 @@ import utility.delay_parsing.DelayFormatException;
 import java.text.ParseException;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.TimeZone;
 
 public class Query1TopologyBuilder {
 
     public static void buildTopology(KStream<Long, String> source) {
 
-        KStream<Long, BusData> preprocessed = source.flatMapValues(new ValueMapper<String, Iterable<? extends BusData>>() {
-            @Override
-            public Iterable<? extends BusData> apply(String s) {
-                ArrayList<BusData> result = new ArrayList<>();
-                String[] info = s.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-                try {
-                    result.add(new BusData(info[7], info[11], info[9]));
-                } catch (ParseException | DelayFormatException | NumberFormatException ignored) {
+        KStream<Long, BusData> preprocessed = source.flatMapValues(s -> {
+            ArrayList<BusData> result = new ArrayList<>();
+            String[] info = s.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+            try {
+                result.add(new BusData(info[7], info[11], info[9]));
+            } catch (ParseException | DelayFormatException | NumberFormatException ignored) {
 
-                }
-                return result;
             }
+            return result;
         });
 
         // 1 day statistics
-        preprocessed.map(new KeyValueMapper<Long, BusData, KeyValue<String, BusData>>() {
-            @Override
-            public KeyValue<String, BusData> apply(Long aLong, BusData busData) {
-                return KeyEvaluator.toDailyKeyed(busData);
-            }
-        }).groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
+        preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
+                        KeyEvaluator.toDailyKeyed(busData))
+                .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
                 .windowedBy(TimeWindows.of(Duration.ofDays(1)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getAverageDelayAccumulatorSerdes()))
@@ -50,12 +41,9 @@ public class Query1TopologyBuilder {
                 .to(KafkaClusterConfig.QUERY_1_DAILY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
 
         // 7 days statistics
-        preprocessed.map(new KeyValueMapper<Long, BusData, KeyValue<String, BusData>>() {
-            @Override
-            public KeyValue<String, BusData> apply(Long aLong, BusData busData) {
-                return KeyEvaluator.toWeeklyKeyed(busData);
-            }
-        }).groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
+        preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
+                        KeyEvaluator.toWeeklyKeyed(busData))
+                .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
                 .windowedBy(TimeWindows.of(Duration.ofDays(7)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getAverageDelayAccumulatorSerdes()))
@@ -64,12 +52,9 @@ public class Query1TopologyBuilder {
                 .to(KafkaClusterConfig.QUERY_1_WEEKLY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
 
         // 1 month statistics
-        preprocessed.map(new KeyValueMapper<Long, BusData, KeyValue<String, BusData>>() {
-            @Override
-            public KeyValue<String, BusData> apply(Long aLong, BusData busData) {
-                return KeyEvaluator.toMonthlyKeyed(busData);
-            }
-        }).groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
+        preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
+                        KeyEvaluator.toMonthlyKeyed(busData))
+                .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
                 .windowedBy(TimeWindows.of(Duration.ofDays(31)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getAverageDelayAccumulatorSerdes()))
@@ -98,10 +83,11 @@ public class Query1TopologyBuilder {
         @Override
         public KeyValue<String, String> apply(Windowed<String> stringWindowed, AverageDelayAccumulator averageDelayAccumulator) {
             StringBuilder outcomeBuilder = new StringBuilder();
-            outcomeBuilder.append(stringWindowed.window().startTime().toEpochMilli());
-            averageDelayAccumulator.getBoroMap().forEach((k, v) -> {
-                outcomeBuilder.append(k).append(";").append(v.getTotal()/v.getCounter()).append(";");
-            });
+            outcomeBuilder.append(stringWindowed.window().startTime().toEpochMilli()).append(";");
+
+            averageDelayAccumulator.getBoroMap().forEach((k, v) ->
+                    outcomeBuilder.append(k).append(";").append(v.getTotal()/v.getCounter()).append(";"));
+
             outcomeBuilder.deleteCharAt(outcomeBuilder.length() - 1);
             return new KeyValue<>(stringWindowed.key(), outcomeBuilder.toString());
         }

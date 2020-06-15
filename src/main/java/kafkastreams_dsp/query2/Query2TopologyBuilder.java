@@ -90,17 +90,16 @@ public class Query2TopologyBuilder {
             outcomeBuilder.append(stringWindowed.window().startTime().toEpochMilli())
                     .append(";")
                     .append(AM)
-                    .append("[");
+                    .append(";[");
 
             for (int i = 0; i < RANK_SIZE; i++) {
                 outcomeBuilder.append(",")
                         .append(amList.get(i).getKey());
             }
 
-            outcomeBuilder.append("]")
-                    .append(";")
+            outcomeBuilder.append("];")
                     .append(PM)
-                    .append("[");
+                    .append(";[");
 
             for (int i = 0; i < RANK_SIZE; i++) {
                 outcomeBuilder.append(",")
