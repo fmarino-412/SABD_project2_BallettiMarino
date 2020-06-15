@@ -1,3 +1,4 @@
+import flink_dsp.StreamSourceConfig;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.configuration.Configuration;
@@ -39,11 +40,7 @@ public class FlinkDataStreamProcessingMain {
         environment.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
         //add the source and handle watermarks
-        Properties props = new Properties();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, CONSUMER_ID);
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+        Properties props = StreamSourceConfig.getSourceProperties();
 
         DataStream<Tuple2<Long, String>> stream = environment
                 .addSource(new FlinkKafkaConsumer<>(FLINK_TOPIC, new SimpleStringSchema(), props))
