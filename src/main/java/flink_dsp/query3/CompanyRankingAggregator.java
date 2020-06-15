@@ -21,32 +21,14 @@ public class CompanyRankingAggregator implements AggregateFunction<BusData, Comp
 
 	@Override
 	public CompanyRankingAccumulator add(BusData busData, CompanyRankingAccumulator accumulator) {
-
-		Date startDate = accumulator.getStartDate();
-		Date currentElemDate = busData.getEventTime();
-
-		if (currentElemDate.before(startDate)) {
-			startDate = currentElemDate;
-		}
-
-		accumulator.setStartDate(startDate);
-
-		accumulator.add(busData.getCompanyName(), busData.getReason(),
-				busData.getDelay());
-
+		accumulator.add(busData.getCompanyName(), busData.getReason(), busData.getDelay());
 		return accumulator;
 	}
 
 	@Override
 	public CompanyRankingAccumulator merge(CompanyRankingAccumulator acc1, CompanyRankingAccumulator acc2) {
-		// adjust start date
-		if ((acc2.getStartDate()).before(acc1.getStartDate())) {
-			acc1.setStartDate(acc2.getStartDate());
-		}
-
 		// merge contents
 		acc2.getCompanyRanking().forEach((k, v) -> acc1.getCompanyRanking().merge(k, v, Double::sum));
-
 		return acc1;
 	}
 

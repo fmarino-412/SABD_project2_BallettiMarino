@@ -3,6 +3,7 @@ package utility.accumulators;
 import java.util.Date;
 import java.util.HashMap;
 
+@SuppressWarnings("unused")
 public class AverageDelayAccumulator {
 
 	private HashMap<String, AverageDelayStatistics> boroMap;

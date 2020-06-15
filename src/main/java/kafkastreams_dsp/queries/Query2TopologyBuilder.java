@@ -79,12 +79,10 @@ public class Query2TopologyBuilder {
 		public KeyValue<String, String> apply(Windowed<String> stringWindowed, ReasonRankingAccumulator accumulator) {
 			StringBuilder outcomeBuilder = new StringBuilder();
 
-			// Create the lists from elements of HashMap
+			// Create the lists from elements of HashMap and sort them
 			List<Map.Entry<String, Long>> amList = new LinkedList<>(accumulator.getAmRanking().entrySet());
-			List<Map.Entry<String, Long>> pmList = new LinkedList<>(accumulator.getPmRanking().entrySet());
-
-			// Sort the lists
 			amList.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
+			List<Map.Entry<String, Long>> pmList = new LinkedList<>(accumulator.getPmRanking().entrySet());
 			pmList.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
 
 			outcomeBuilder.append(stringWindowed.window().startTime().toEpochMilli())

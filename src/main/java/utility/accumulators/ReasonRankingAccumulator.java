@@ -2,6 +2,7 @@ package utility.accumulators;
 
 import java.util.*;
 
+@SuppressWarnings("unused")
 public class ReasonRankingAccumulator {
 	private Date startDate;
 	private final HashMap<String, Long> amRanking;

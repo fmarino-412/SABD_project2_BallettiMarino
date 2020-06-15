@@ -3,10 +3,10 @@ package utility.accumulators;
 import java.util.Date;
 import java.util.HashMap;
 
+@SuppressWarnings("unused")
 public class CompanyRankingAccumulator {
 
 	private static final int THRESHOLD_FOR_DOUBLE_SCORE = 30;
-	// TODO: check date update basing on new processWindow method
 	private Date startDate;
 	private final HashMap<String, Double> companyRanking;
 

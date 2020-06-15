@@ -17,31 +17,14 @@ public class ReasonRankingAggregator implements AggregateFunction<BusData, Reaso
 
 	@Override
 	public ReasonRankingAccumulator add(BusData busData, ReasonRankingAccumulator accumulator) {
-
-		Date startDate = accumulator.getStartDate();
-		Date currentElemDate = busData.getEventTime();
-
-		if (currentElemDate.before(startDate)) {
-			startDate = currentElemDate;
-		}
-
-		accumulator.setStartDate(startDate);
-
-		accumulator.add(currentElemDate, busData.getReason(), 1L);
-
+		accumulator.add(busData.getEventTime(), busData.getReason(), 1L);
 		return accumulator;
 	}
 
 	@Override
 	public ReasonRankingAccumulator merge(ReasonRankingAccumulator acc1, ReasonRankingAccumulator acc2) {
-		// adjust start date
-		if ((acc2.getStartDate()).before(acc1.getStartDate())) {
-			acc1.setStartDate(acc2.getStartDate());
-		}
-
 		// merge contents
 		acc1.mergeRankings(acc2.getAmRanking(), acc2.getPmRanking());
-
 		return acc1;
 	}
 

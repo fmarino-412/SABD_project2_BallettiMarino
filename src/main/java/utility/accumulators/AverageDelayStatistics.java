@@ -1,5 +1,6 @@
 package utility.accumulators;
 
+@SuppressWarnings("unused")
 public class AverageDelayStatistics {
 	private Double total;
 	private Long counter;

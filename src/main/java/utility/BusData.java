@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+@SuppressWarnings("unused")
 public class BusData implements Serializable {
 
 	private Date eventTime;
