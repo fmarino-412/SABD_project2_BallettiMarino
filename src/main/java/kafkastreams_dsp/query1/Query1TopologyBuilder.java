@@ -3,17 +3,18 @@ package kafkastreams_dsp.query1;
 import kafka_pubsub.KafkaClusterConfig;
 import kafkastreams_dsp.serdes.SerDesBuilders;
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.common.utils.Bytes;
-import org.apache.kafka.streams.state.KeyValueStore;
-import utility.accumulators.AverageDelayAccumulator;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
 import utility.BusData;
+import utility.accumulators.AverageDelayAccumulator;
 import utility.delay_parsing.DelayFormatException;
 
 import java.text.ParseException;
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class Query1TopologyBuilder {
 
@@ -51,7 +52,7 @@ public class Query1TopologyBuilder {
 
                 return new KeyValue<>(newKey.toString(), busData);
             }
-        }).groupByKey(Serialized.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
+        }).groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
                 .windowedBy(TimeWindows.of(Duration.ofDays(1)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getAverageDelayAccumulatorSerdes()))
@@ -75,7 +76,7 @@ public class Query1TopologyBuilder {
 
                 return new KeyValue<>(newKey.toString(), busData);
             }
-        }).groupByKey(Serialized.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
+        }).groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
                 .windowedBy(TimeWindows.of(Duration.ofDays(7)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getAverageDelayAccumulatorSerdes()))
@@ -99,7 +100,7 @@ public class Query1TopologyBuilder {
 
                 return new KeyValue<>(newKey.toString(), busData);
             }
-        }).groupByKey(Serialized.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
+        }).groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getBusDataSerdes()))
                 .windowedBy(TimeWindows.of(Duration.ofDays(31)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getAverageDelayAccumulatorSerdes()))
