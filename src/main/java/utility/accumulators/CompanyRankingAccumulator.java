@@ -1,5 +1,7 @@
 package utility.accumulators;
 
+import utility.delay_utility.DelayScorer;
+
 import java.util.Date;
 import java.util.HashMap;
 

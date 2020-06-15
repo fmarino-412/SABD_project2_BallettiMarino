@@ -9,7 +9,7 @@ import org.apache.flink.util.Collector;
 import scala.Tuple2;
 import utility.BusData;
 import utility.OutputFormatter;
-import utility.delay_parsing.DelayFormatException;
+import utility.delay_utility.DelayFormatException;
 
 import java.text.ParseException;
 

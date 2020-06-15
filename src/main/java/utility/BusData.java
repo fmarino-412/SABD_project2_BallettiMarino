@@ -1,7 +1,7 @@
 package utility;
 
-import utility.delay_parsing.DelayFormatException;
-import utility.delay_parsing.DelayParsingUtility;
+import utility.delay_utility.DelayFormatException;
+import utility.delay_utility.DelayParsingUtility;
 
 import java.io.Serializable;
 import java.text.DateFormat;
