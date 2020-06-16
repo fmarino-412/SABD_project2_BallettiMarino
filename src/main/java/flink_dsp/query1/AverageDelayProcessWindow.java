@@ -5,9 +5,6 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 import utility.DataCommonTransformation;
 
-import java.util.Calendar;
-import java.util.Locale;
-
 public class AverageDelayProcessWindow extends ProcessAllWindowFunction<AverageDelayOutcome,
 		AverageDelayOutcome, TimeWindow> {
 	@Override

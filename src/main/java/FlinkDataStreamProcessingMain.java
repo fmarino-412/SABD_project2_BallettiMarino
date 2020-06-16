@@ -19,7 +19,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Properties;
-import java.util.TimeZone;
 
 import static kafka_pubsub.KafkaClusterConfig.FLINK_TOPIC;
 

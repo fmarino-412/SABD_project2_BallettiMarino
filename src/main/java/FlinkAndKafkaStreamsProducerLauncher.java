@@ -7,7 +7,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
-import java.util.TimeZone;
 
 @SuppressWarnings("BusyWait")
 public class FlinkAndKafkaStreamsProducerLauncher {
@@ -31,7 +30,7 @@ public class FlinkAndKafkaStreamsProducerLauncher {
 					DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
 					eventTime = format.parse(info[7]).getTime();
 					producer.produce(eventTime, line, eventTime);
-					//Thread.sleep(SLEEP);
+					//Thread.sleep(SLEEP); TODO: UNCOMMENT
 				} catch (ParseException /*| InterruptedException */ignored) {
 				}
 			}

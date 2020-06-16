@@ -23,7 +23,7 @@ import org.apache.kafka.common.serialization.Deserializer;
 import java.util.Map;
 
 public class JsonPOJODeserializer<T> implements Deserializer<T> {
-	private ObjectMapper objectMapper = new ObjectMapper();
+	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	private Class<T> tClass;
 

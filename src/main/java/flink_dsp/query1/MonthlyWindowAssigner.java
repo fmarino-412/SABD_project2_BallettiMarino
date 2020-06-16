@@ -2,13 +2,11 @@ package flink_dsp.query1;
 
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
-import utility.BusData;
 import utility.DataCommonTransformation;
 
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 
 public class MonthlyWindowAssigner extends TumblingEventTimeWindows {
 
@@ -18,7 +16,7 @@ public class MonthlyWindowAssigner extends TumblingEventTimeWindows {
 
 	@Override
 	public Collection<TimeWindow> assignWindows(Object element, long timestamp, WindowAssignerContext context) {
-		BusData busData = (BusData) element;
+		// due to override every result is now considered respect to NY time zone. No need to set any hour offset
 		Calendar calendar = DataCommonTransformation.getCalendarAtTime(timestamp);
 
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -33,8 +31,6 @@ public class MonthlyWindowAssigner extends TumblingEventTimeWindows {
 		calendar.add(Calendar.MONTH, 1);
 		// last day of current month at 23:59:59.999...
 		long endDate = calendar.getTimeInMillis() - 1;
-
-		//System.out.println("Date from TS: " + new Date(timestamp) + " -- Date from BD: " + busData.getEventTime() + " -- Start: " + new Date(startDate) + " -- End: " + new Date(endDate));
 
 		return Collections.singletonList(new TimeWindow(startDate, endDate));
 	}
