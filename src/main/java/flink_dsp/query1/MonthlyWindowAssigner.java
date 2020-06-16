@@ -20,7 +20,7 @@ public class MonthlyWindowAssigner extends TumblingEventTimeWindows {
 		BusData busData = (BusData) element;
 		Calendar calendar = DataCommonTransformation.getCalendarAtTime(busData.getEventTime());
 
-		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
@@ -32,6 +32,8 @@ public class MonthlyWindowAssigner extends TumblingEventTimeWindows {
 		calendar.add(Calendar.MONTH, 1);
 		// last day of current month at 23:59:59.999...
 		long endDate = calendar.getTimeInMillis() - 1;
+
+		//System.out.println("Start monthly window date: " + new Date(startDate) + " end date: " + new Date(endDate));
 
 		return Collections.singletonList(new TimeWindow(startDate, endDate));
 	}
