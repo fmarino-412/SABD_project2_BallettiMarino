@@ -8,6 +8,7 @@ import utility.DataCommonTransformation;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 
 public class MonthlyWindowAssigner extends TumblingEventTimeWindows {
 
@@ -18,7 +19,7 @@ public class MonthlyWindowAssigner extends TumblingEventTimeWindows {
 	@Override
 	public Collection<TimeWindow> assignWindows(Object element, long timestamp, WindowAssignerContext context) {
 		BusData busData = (BusData) element;
-		Calendar calendar = DataCommonTransformation.getCalendarAtTime(busData.getEventTime());
+		Calendar calendar = DataCommonTransformation.getCalendarAtTime(timestamp);
 
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
@@ -33,7 +34,7 @@ public class MonthlyWindowAssigner extends TumblingEventTimeWindows {
 		// last day of current month at 23:59:59.999...
 		long endDate = calendar.getTimeInMillis() - 1;
 
-		//System.out.println("Start monthly window date: " + new Date(startDate) + " end date: " + new Date(endDate));
+		//System.out.println("Date from TS: " + new Date(timestamp) + " -- Date from BD: " + busData.getEventTime() + " -- Start: " + new Date(startDate) + " -- End: " + new Date(endDate));
 
 		return Collections.singletonList(new TimeWindow(startDate, endDate));
 	}
