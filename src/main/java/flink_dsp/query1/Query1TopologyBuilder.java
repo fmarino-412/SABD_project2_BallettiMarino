@@ -60,9 +60,8 @@ public class Query1TopologyBuilder {
 				});
 
 		// 1 month statistics
-		stream.keyBy(busData -> DataCommonTransformation.getMonthlyKey(busData.getEventTime()))
-				.window(TumblingEventTimeWindows.of(Time.days(31), Time.hours(4)))
-				.aggregate(new AverageDelayAggregator(), new AverageDelayProcessKeyedWindow())
+		stream.windowAll(TumblingEventTimeWindows.of(Time.days(30), Time.hours(4)))
+				.aggregate(new AverageDelayAggregator(), new AverageDelayProcessWindow())
 				.name("query1-monthly-mean")
 				.addSink(new SinkFunction<AverageDelayOutcome>() {
 					public void invoke(AverageDelayOutcome outcome, Context context) {

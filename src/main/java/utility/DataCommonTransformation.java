@@ -35,16 +35,12 @@ public class DataCommonTransformation {
 		return new KeyValue<>(newWeeklyKey, busData);
 	}
 
-	public static String getMonthlyKey(Date date) {
-		Calendar calendar = getCalendarAtTime(date);
+	public static KeyValue<String, BusData> toMonthlyKeyed(BusData busData) {
+		Calendar calendar = getCalendarAtTime(busData.getEventTime());
 
-		return calendar.get(Calendar.MONTH) +
+		String newMonthlyKey = calendar.get(Calendar.MONTH) +
 				"/" +
 				calendar.get(Calendar.YEAR);
-	}
-
-	public static KeyValue<String, BusData> toMonthlyKeyed(BusData busData) {
-		String newMonthlyKey = getMonthlyKey(busData.getEventTime());
 
 		return new KeyValue<>(newMonthlyKey, busData);
 	}
