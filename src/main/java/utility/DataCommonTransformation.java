@@ -51,7 +51,6 @@ public class DataCommonTransformation {
 		return calendar;
 	}
 
-	@Deprecated //TODO:check usages in process windows
 	public static Calendar getCalendarAtTime(Long milliseconds) {
 		Calendar calendar = new GregorianCalendar(Locale.US);
 		calendar.setTimeInMillis(milliseconds);
