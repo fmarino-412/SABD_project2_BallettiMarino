@@ -60,7 +60,8 @@ public class Query1TopologyBuilder {
 				});
 
 		// 1 month statistics
-		stream.windowAll(TumblingEventTimeWindows.of(Time.days(30), Time.hours(4)))
+		stream.windowAll(new MonthlyWindowAssigner())
+				.allowedLateness(Time.days(10))
 				.aggregate(new AverageDelayAggregator(), new AverageDelayProcessWindow())
 				.name("query1-monthly-mean")
 				.addSink(new SinkFunction<AverageDelayOutcome>() {

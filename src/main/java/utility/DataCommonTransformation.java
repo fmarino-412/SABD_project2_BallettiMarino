@@ -45,20 +45,15 @@ public class DataCommonTransformation {
 		return new KeyValue<>(newMonthlyKey, busData);
 	}
 
-	private static Calendar getCalendar() {
-		Calendar calendar = Calendar.getInstance(Locale.US);
-		calendar.setTimeZone(TimeZone.getTimeZone("America/New_York"));
-		return calendar;
-	}
-
-	private static Calendar getCalendarAtTime(Date date) {
-		Calendar calendar = getCalendar();
+	public static Calendar getCalendarAtTime(Date date) {
+		Calendar calendar = new GregorianCalendar(Locale.US);
 		calendar.setTime(date);
 		return calendar;
 	}
 
+	@Deprecated //TODO:check usages in process windows
 	public static Calendar getCalendarAtTime(Long milliseconds) {
-		Calendar calendar = getCalendar();
+		Calendar calendar = new GregorianCalendar(Locale.US);
 		calendar.setTimeInMillis(milliseconds);
 		return calendar;
 	}

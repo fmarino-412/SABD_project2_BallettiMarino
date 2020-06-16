@@ -17,12 +17,10 @@ public class ReasonRankingAccumulator {
 	public void add(Date date, String reason, Long counter) {
 		//threshold setup
 		Calendar threshold = Calendar.getInstance(Locale.US);
-		threshold.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		threshold.setTime(date);
 
 		//element setup
 		Calendar elem = Calendar.getInstance(Locale.US);
-		elem.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		elem.setTime(date);
 
 		threshold.set(Calendar.MINUTE, 0);
