@@ -59,6 +59,8 @@ public class Query1TopologyBuilder {
 					}
 				});
 
+		// TODO: since here is all ok
+
 		// 1 month statistics
 		stream.windowAll(new MonthlyWindowAssigner())
 				.allowedLateness(Time.days(10))

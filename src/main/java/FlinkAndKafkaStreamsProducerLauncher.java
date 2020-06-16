@@ -29,8 +29,6 @@ public class FlinkAndKafkaStreamsProducerLauncher {
 				try {
 					String[] info = line.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 					DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
-					// TODO: check
-					format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 					eventTime = format.parse(info[7]).getTime();
 					producer.produce(eventTime, line, eventTime);
 					//Thread.sleep(SLEEP);

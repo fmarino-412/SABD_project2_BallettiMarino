@@ -47,7 +47,6 @@ public class FlinkDataStreamProcessingMain {
 					public void flatMap(String s, Collector<Tuple2<Long, String>> collector) {
 						String[] info = s.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 						DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
-						format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 						try {
 							collector.collect(new Tuple2<>(format.parse(info[7]).getTime(), s));
 						} catch (ParseException ignored) {

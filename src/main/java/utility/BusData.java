@@ -35,7 +35,6 @@ public class BusData implements Serializable {
 	/* Query 1 scope */
 	public BusData(String eventTime, String delay, String boro) throws ParseException, DelayFormatException {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
-		format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		this.eventTime = format.parse(eventTime);
 		this.delay = DelayParsingUtility.parseDelay(delay);
 		this.boro = boro;
@@ -44,7 +43,6 @@ public class BusData implements Serializable {
 	/* Query 2 scope */
 	public BusData(String eventTime, String reason) throws ParseException {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
-		format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		this.eventTime = format.parse(eventTime);
 		this.reason = reason;
 	}
@@ -53,7 +51,6 @@ public class BusData implements Serializable {
 	public BusData(String eventTime, String delay, String reason, String companyName) throws ParseException,
 			DelayFormatException {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
-		format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		this.eventTime = format.parse(eventTime);
 		this.delay = DelayParsingUtility.parseDelay(delay);
 		this.reason = reason;
