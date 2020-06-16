@@ -1,13 +1,18 @@
 package flink_dsp.query1;
 
+import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
+import org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 import scala.Tuple2;
 import utility.BusData;
+import utility.DataCommonTransformation;
 import utility.OutputFormatter;
 import utility.delay_utility.DelayFormatException;
 
@@ -55,8 +60,9 @@ public class Query1TopologyBuilder {
 				});
 
 		// 1 month statistics
-		stream.windowAll(TumblingEventTimeWindows.of(Time.days(30), Time.hours(4)))
-				.aggregate(new AverageDelayAggregator(), new AverageDelayProcessWindow())
+		stream.keyBy(busData -> DataCommonTransformation.getMonthlyKey(busData.getEventTime()))
+				.window(TumblingEventTimeWindows.of(Time.days(31), Time.hours(4)))
+				.aggregate(new AverageDelayAggregator(), new AverageDelayProcessKeyedWindow())
 				.name("query1-monthly-mean")
 				.addSink(new SinkFunction<AverageDelayOutcome>() {
 					public void invoke(AverageDelayOutcome outcome, Context context) {
