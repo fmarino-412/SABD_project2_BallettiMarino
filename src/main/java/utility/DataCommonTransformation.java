@@ -5,6 +5,7 @@ import org.apache.kafka.streams.KeyValue;
 import scala.Tuple2;
 import utility.accumulators.CompanyRankingAccumulator;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class DataCommonTransformation {
@@ -64,6 +65,11 @@ public class DataCommonTransformation {
 		Calendar calendar = getCalendar();
 		calendar.setTimeInMillis(milliseconds);
 		return calendar;
+	}
+
+	public static String formatDate(Long milliseconds) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
+		return format.format(new Date(milliseconds));
 	}
 
 	/* QUERY 3 SCOPE */

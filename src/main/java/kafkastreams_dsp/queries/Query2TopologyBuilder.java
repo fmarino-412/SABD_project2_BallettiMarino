@@ -16,6 +16,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import static utility.DataCommonTransformation.formatDate;
+
 public class Query2TopologyBuilder {
 
 	public static void buildTopology(KStream<Long, String> source) {
@@ -85,7 +87,7 @@ public class Query2TopologyBuilder {
 			List<Map.Entry<String, Long>> pmList = new LinkedList<>(accumulator.getPmRanking().entrySet());
 			pmList.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
 
-			outcomeBuilder.append(stringWindowed.window().startTime().toEpochMilli())
+			outcomeBuilder.append(formatDate(stringWindowed.window().startTime().toEpochMilli()))
 					.append(";")
 					.append(AM)
 					.append(";[");

@@ -14,6 +14,8 @@ import java.text.ParseException;
 import java.time.Duration;
 import java.util.ArrayList;
 
+import static utility.DataCommonTransformation.formatDate;
+
 public class Query1TopologyBuilder {
 
     public static void buildTopology(KStream<Long, String> source) {
@@ -83,10 +85,13 @@ public class Query1TopologyBuilder {
         @Override
         public KeyValue<String, String> apply(Windowed<String> stringWindowed, AverageDelayAccumulator averageDelayAccumulator) {
             StringBuilder outcomeBuilder = new StringBuilder();
-            outcomeBuilder.append(stringWindowed.window().startTime().toEpochMilli()).append(";");
+            outcomeBuilder.append(formatDate(stringWindowed.window().startTime().toEpochMilli())).append(";");
 
             averageDelayAccumulator.getBoroMap().forEach((k, v) ->
-                    outcomeBuilder.append(k).append(";").append(v.getTotal()/v.getCounter()).append(";"));
+                    outcomeBuilder.append(k)
+                            .append(";")
+                            .append(v.getTotal()/v.getCounter())
+                            .append(";"));
 
             outcomeBuilder.deleteCharAt(outcomeBuilder.length() - 1);
             return new KeyValue<>(stringWindowed.key(), outcomeBuilder.toString());

@@ -14,6 +14,8 @@ import java.text.ParseException;
 import java.time.Duration;
 import java.util.ArrayList;
 
+import static utility.DataCommonTransformation.formatDate;
+
 public class Query3TopologyBuilder {
 
 	public static void buildTopology(KStream<Long, String> source) {
@@ -74,7 +76,7 @@ public class Query3TopologyBuilder {
 		public KeyValue<String, String> apply(Windowed<String> stringWindowed,
 											  CompanyRankingAccumulator companyRankingAccumulator) {
 
-			String outcomeBuilder = stringWindowed.window().startTime().toEpochMilli() + ";" +
+			String outcomeBuilder = formatDate(stringWindowed.window().startTime().toEpochMilli()) + ";" +
 					DataCommonTransformation.buildCompanyRankingString(companyRankingAccumulator);
 			return new KeyValue<>(stringWindowed.key(), outcomeBuilder);
 		}

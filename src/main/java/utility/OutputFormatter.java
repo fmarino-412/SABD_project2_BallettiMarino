@@ -1,15 +1,17 @@
 package utility;
 
-import org.apache.commons.io.FileUtils;
 import flink_dsp.query1.AverageDelayOutcome;
 import flink_dsp.query2.ReasonRankingOutcome;
 import flink_dsp.query3.CompanyRankingOutcome;
+import org.apache.commons.io.FileUtils;
 import scala.Tuple2;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import static utility.DataCommonTransformation.formatDate;
 
 @SuppressWarnings({"ResultOfMethodCallIgnored", "DuplicatedCode"})
 public class OutputFormatter {
@@ -72,7 +74,7 @@ public class OutputFormatter {
 			BufferedWriter bw = new BufferedWriter(writer);
 			StringBuilder builder = new StringBuilder();
 
-			builder.append(outcome.getStartDate().getTime());
+			builder.append(formatDate(outcome.getStartDate().getTime()));
 			outcome.getBoroMeans().forEach((k, v) -> builder.append(CSV_SEP).append(k).append(CSV_SEP).append(v));
 			builder.append(NEW_LINE);
 			bw.append(builder.toString());
@@ -120,7 +122,7 @@ public class OutputFormatter {
 			BufferedWriter bw = new BufferedWriter(writer);
 			StringBuilder builder = new StringBuilder();
 
-			builder.append(outcome.getStartDate().getTime());
+			builder.append(formatDate(outcome.getStartDate().getTime()));
 			builder.append(CSV_SEP + AM + CSV_SEP);
 			builder.append(outcome.getAmRanking().toString());
 			builder.append(CSV_SEP + PM + CSV_SEP);
@@ -169,7 +171,7 @@ public class OutputFormatter {
 			BufferedWriter bw = new BufferedWriter(writer);
 			StringBuilder builder = new StringBuilder();
 
-			builder.append(outcome.getStartDate().getTime());
+			builder.append(formatDate(outcome.getStartDate().getTime()));
 			for (Tuple2<String, Double> score : outcome.getCompanyRanking()) {
 				builder.append(CSV_SEP)
 						.append(score._1())
