@@ -1,0 +1,4 @@
+Full load results:
+
+Evaluated mean throughput: 23.724637826156556 tuples/millisecond
+Mean time: 15992.32 milliseconds.

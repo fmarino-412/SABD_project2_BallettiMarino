@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class FlinkMaximumLoadBenchmark {
+public class FlinkFullLoadBenchmark {
 
 	final static int VALID_TUPLE_NUMBER = 379412;
-	final static int RUNS = 10;
+	final static int RUNS = 100;
 
 	public static void main(String[] args) {
 
