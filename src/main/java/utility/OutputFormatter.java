@@ -41,6 +41,10 @@ public class OutputFormatter {
 	public static final String QUERY3_DAILY_CSV_FILE_PATH = "Results/query3_daily.csv";
 	public static final String QUERY3_WEEKLY_CSV_FILE_PATH = "Results/query3_weekly.csv";
 
+	public static final String[] FLINK_OUTPUT_FILES = {QUERY1_DAILY_CSV_FILE_PATH, QUERY1_WEEKLY_CSV_FILE_PATH,
+			QUERY1_MONTHLY_CSV_FILE_PATH, QUERY2_DAILY_CSV_FILE_PATH, QUERY2_WEEKLY_CSV_FILE_PATH,
+			QUERY3_DAILY_CSV_FILE_PATH, QUERY3_WEEKLY_CSV_FILE_PATH};
+
 	/**
 	 * Global scope
 	 * Used to remove old files in Results directory
@@ -60,6 +64,7 @@ public class OutputFormatter {
 	 * @param path where to store csv
 	 * @param outcome to be stored
 	 */
+	@Deprecated
 	public static void writeOutputQuery1(String path, AverageDelayOutcome outcome) {
 		try {
 			// output structures
@@ -108,6 +113,7 @@ public class OutputFormatter {
 	 * @param path where to store csv
 	 * @param outcome to be stored
 	 */
+	@Deprecated
 	public static void writeOutputQuery2(String path, ReasonRankingOutcome outcome) {
 		try {
 			// output structures
@@ -157,6 +163,7 @@ public class OutputFormatter {
 	 * @param path where to store csv
 	 * @param outcome to be stored
 	 */
+	@Deprecated
 	public static void writeOutputQuery3(String path, CompanyRankingOutcome outcome) {
 		try {
 			// output structures

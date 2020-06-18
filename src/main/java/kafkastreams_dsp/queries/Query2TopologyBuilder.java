@@ -45,7 +45,7 @@ public class Query2TopologyBuilder {
 						Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(ReasonRankingAccumulator.class)))
 				.toStream()
 				.map(new ReasonRankingMapper())
-				.to(KafkaClusterConfig.QUERY_2_DAILY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
+				.to(KafkaClusterConfig.KAFKA_QUERY_2_DAILY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
 
 		// 7 days statistics
 		preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
@@ -56,7 +56,7 @@ public class Query2TopologyBuilder {
 						Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(ReasonRankingAccumulator.class)))
 				.toStream()
 				.map(new ReasonRankingMapper())
-				.to(KafkaClusterConfig.QUERY_2_WEEKLY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
+				.to(KafkaClusterConfig.KAFKA_QUERY_2_WEEKLY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
 	}
 
 	private static class ReasonRankingInitializer implements Initializer<ReasonRankingAccumulator> {

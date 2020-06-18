@@ -2,14 +2,27 @@ package kafka_pubsub;
 
 public class KafkaClusterConfig {
 	public static final String FLINK_TOPIC = "flink-topic";
+	public static final String FLINK_QUERY_1_DAILY_TOPIC = "flink-output-topic-query1-daily";
+	public static final String FLINK_QUERY_1_WEEKLY_TOPIC = "flink-output-topic-query1-weekly";
+	public static final String FLINK_QUERY_1_MONTHLY_TOPIC = "flink-output-topic-query1-monthly";
+	public static final String FLINK_QUERY_2_DAILY_TOPIC = "flink-output-topic-query2-daily";
+	public static final String FLINK_QUERY_2_WEEKLY_TOPIC = "flink-output-topic-query2-weekly";
+	public static final String FLINK_QUERY_3_DAILY_TOPIC = "flink-output-topic-query3-daily";
+	public static final String FLINK_QUERY_3_WEEKLY_TOPIC = "flink-output-topic-query3-weekly";
 	public static final String KAFKA_STREAMS_TOPIC = "kafka-streams-topic";
-	public static final String QUERY_1_DAILY_TOPIC = "kafka-streams-output-topic-query1-daily";
-	public static final String QUERY_1_WEEKLY_TOPIC = "kafka-streams-output-topic-query1-weekly";
-	public static final String QUERY_1_MONTHLY_TOPIC = "kafka-streams-output-topic-query1-monthly";
-	public static final String QUERY_2_DAILY_TOPIC = "kafka-streams-output-topic-query2-daily";
-	public static final String QUERY_2_WEEKLY_TOPIC = "kafka-streams-output-topic-query2-weekly";
-	public static final String QUERY_3_DAILY_TOPIC = "kafka-streams-output-topic-query3-daily";
-	public static final String QUERY_3_WEEKLY_TOPIC = "kafka-streams-output-topic-query3-weekly";
+	public static final String KAFKA_QUERY_1_DAILY_TOPIC = "kafka-streams-output-topic-query1-daily";
+	public static final String KAFKA_QUERY_1_WEEKLY_TOPIC = "kafka-streams-output-topic-query1-weekly";
+	public static final String KAFKA_QUERY_1_MONTHLY_TOPIC = "kafka-streams-output-topic-query1-monthly";
+	public static final String KAFKA_QUERY_2_DAILY_TOPIC = "kafka-streams-output-topic-query2-daily";
+	public static final String KAFKA_QUERY_2_WEEKLY_TOPIC = "kafka-streams-output-topic-query2-weekly";
+	public static final String KAFKA_QUERY_3_DAILY_TOPIC = "kafka-streams-output-topic-query3-daily";
+	public static final String KAFKA_QUERY_3_WEEKLY_TOPIC = "kafka-streams-output-topic-query3-weekly";
+	public static final String[] FLINK_TOPICS = {FLINK_QUERY_1_DAILY_TOPIC, FLINK_QUERY_1_WEEKLY_TOPIC,
+			FLINK_QUERY_1_MONTHLY_TOPIC, FLINK_QUERY_2_DAILY_TOPIC, FLINK_QUERY_2_WEEKLY_TOPIC,
+			FLINK_QUERY_3_DAILY_TOPIC, FLINK_QUERY_3_WEEKLY_TOPIC};
+	public static final String[] KAFKA_TOPICS = {KAFKA_QUERY_1_DAILY_TOPIC, KAFKA_QUERY_1_WEEKLY_TOPIC,
+			KAFKA_QUERY_1_MONTHLY_TOPIC, KAFKA_QUERY_2_DAILY_TOPIC, KAFKA_QUERY_2_WEEKLY_TOPIC,
+			KAFKA_QUERY_3_DAILY_TOPIC, KAFKA_QUERY_3_WEEKLY_TOPIC};
 
 
 	public static final String KAFKA_BROKER_1 = "localhost:9092";
