@@ -37,9 +37,4 @@ public class DailyTimeWindows extends CustomTimeWindows {
     public long size() {
         return Duration.ofDays(1).toMillis();
     }
-
-    @Override
-    public long gracePeriodMs() {
-        return grace;
-    }
 }

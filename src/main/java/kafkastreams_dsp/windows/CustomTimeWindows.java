@@ -21,4 +21,9 @@ public abstract class CustomTimeWindows extends Windows<TimeWindow> {
 	protected long toEpochMilli(final ZonedDateTime zonedDateTime) {
 		return zonedDateTime.toInstant().toEpochMilli();
 	}
+
+	@Override
+	public long gracePeriodMs() {
+		return grace;
+	}
 }
