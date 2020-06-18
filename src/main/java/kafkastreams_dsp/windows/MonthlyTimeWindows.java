@@ -11,10 +11,18 @@ import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+//Implementation of a monthly custom window with a given timezone
 public class MonthlyTimeWindows extends CustomTimeWindows {
 
+	// maximum size is of 31 days, it's shorter for February, June, September, November
+	private final static long SIZE_IN_MILLIS = Duration.ofDays(31L).toMillis();
+
+	@SuppressWarnings("deprecation")
 	public MonthlyTimeWindows(final ZoneId zoneId, final Duration grace) {
 		super(zoneId, grace);
+
+		// use of a deprecated method is the only possible solution to define a retention time different from 1 day
+		this.until(SIZE_IN_MILLIS);
 	}
 
 	@Override
@@ -40,7 +48,6 @@ public class MonthlyTimeWindows extends CustomTimeWindows {
 
 	@Override
 	public long size() {
-		// maximum size is of 31 days, it's shorter for February, June, September, November
-		return Duration.ofDays(31).toMillis();
+		return SIZE_IN_MILLIS;
 	}
 }

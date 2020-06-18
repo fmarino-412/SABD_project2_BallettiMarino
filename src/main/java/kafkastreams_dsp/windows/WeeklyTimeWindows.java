@@ -15,8 +15,14 @@ import static utility.DataCommonTransformation.getCalendarAtTime;
 //Implementation of a weekly custom window with a given timezone
 public class WeeklyTimeWindows extends CustomTimeWindows {
 
+    private final static long SIZE_IN_MILLIS = Duration.ofDays(7L).toMillis();
+
+    @SuppressWarnings("deprecation")
     public WeeklyTimeWindows(final ZoneId zoneId, final Duration grace) {
         super(zoneId, grace);
+
+        // use of a deprecated method is the only possible solution to define a retention time different from 1 day
+        this.until(SIZE_IN_MILLIS);
     }
 
     @Override
@@ -42,7 +48,7 @@ public class WeeklyTimeWindows extends CustomTimeWindows {
 
     @Override
     public long size() {
-        return Duration.ofDays(7).toMillis();
+        return SIZE_IN_MILLIS;
     }
 
 }
