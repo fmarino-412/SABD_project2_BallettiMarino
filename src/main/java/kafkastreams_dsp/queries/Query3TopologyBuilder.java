@@ -2,6 +2,8 @@ package kafkastreams_dsp.queries;
 
 import kafka_pubsub.KafkaClusterConfig;
 import kafkastreams_dsp.serdes.SerDesBuilders;
+import kafkastreams_dsp.windows.DailyTimeWindows;
+import kafkastreams_dsp.windows.WeeklyTimeWindows;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
@@ -12,6 +14,7 @@ import utility.delay_utility.DelayFormatException;
 
 import java.text.ParseException;
 import java.time.Duration;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 import static utility.DataCommonTransformation.formatDate;
@@ -35,7 +38,7 @@ public class Query3TopologyBuilder {
 		preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
 					DataCommonTransformation.toDailyKeyed(busData))
 				.groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
-				.windowedBy(TimeWindows.of(Duration.ofDays(1)))
+				.windowedBy(new DailyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(0L)))
 				.aggregate(new CompanyRankingInitializer(), new CompanyRankingAggregator(),
 						Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(CompanyRankingAccumulator.class)))
 				.toStream()
@@ -45,7 +48,7 @@ public class Query3TopologyBuilder {
 		preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
 					DataCommonTransformation.toWeeklyKeyed(busData))
 				.groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
-				.windowedBy(TimeWindows.of(Duration.ofDays(7)))
+				.windowedBy(new WeeklyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(0L)))
 				.aggregate(new CompanyRankingInitializer(), new CompanyRankingAggregator(),
 						Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(CompanyRankingAccumulator.class)))
 				.toStream()

@@ -3,6 +3,7 @@ package kafkastreams_dsp.queries;
 import kafka_pubsub.KafkaClusterConfig;
 import kafkastreams_dsp.serdes.SerDesBuilders;
 import kafkastreams_dsp.windows.DailyTimeWindows;
+import kafkastreams_dsp.windows.WeeklyTimeWindows;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
@@ -48,7 +49,7 @@ public class Query1TopologyBuilder {
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
                         DataCommonTransformation.toWeeklyKeyed(busData))
                 .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
-                .windowedBy(TimeWindows.of(Duration.ofDays(7)))
+                .windowedBy(new WeeklyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(0L)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(AverageDelayAccumulator.class)))
                 .toStream()
