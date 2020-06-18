@@ -1,6 +1,5 @@
 package kafkastreams_dsp.windows;
 
-import org.apache.kafka.streams.kstream.Windows;
 import org.apache.kafka.streams.kstream.internals.TimeWindow;
 
 import java.time.Duration;
@@ -16,7 +15,7 @@ import static utility.DataCommonTransformation.getCalendarAtTime;
 //Implementation of a weekly custom window with a given timezone
 public class WeeklyTimeWindows extends CustomTimeWindows {
 
-    public WeeklyTimeWindows(ZoneId zoneId, Duration grace) {
+    public WeeklyTimeWindows(final ZoneId zoneId, final Duration grace) {
         super(zoneId, grace);
     }
 
