@@ -12,6 +12,7 @@ import utility.delay_utility.DelayFormatException;
 
 import java.text.ParseException;
 import java.time.Duration;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 import static utility.DataCommonTransformation.formatDate;
@@ -35,7 +36,7 @@ public class Query1TopologyBuilder {
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
                         DataCommonTransformation.toDailyKeyed(busData))
                 .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
-                .windowedBy(TimeWindows.of(Duration.ofDays(1)))
+                .windowedBy(new DailyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(0L)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(AverageDelayAccumulator.class)))
                 .toStream()
@@ -87,11 +88,14 @@ public class Query1TopologyBuilder {
             StringBuilder outcomeBuilder = new StringBuilder();
             outcomeBuilder.append(formatDate(stringWindowed.window().startTime().toEpochMilli())).append(";");
 
-            averageDelayAccumulator.getBoroMap().forEach((k, v) ->
+            averageDelayAccumulator.getBoroMap().forEach((k, v) -> {
+                if (!String.valueOf(k).equals("")) {
                     outcomeBuilder.append(k)
                             .append(";")
-                            .append(v.getTotal()/v.getCounter())
-                            .append(";"));
+                            .append(v.getTotal() / v.getCounter())
+                            .append(";");
+                }
+            });
 
             outcomeBuilder.deleteCharAt(outcomeBuilder.length() - 1);
             return new KeyValue<>(stringWindowed.key(), outcomeBuilder.toString());
