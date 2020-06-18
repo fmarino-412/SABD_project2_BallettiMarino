@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 @SuppressWarnings("BusyWait")
-public class FlinkAndKafkaStreamsProducerLauncher {
+public class ProducerLauncher {
 
 	private static final String CSV_PATH = "data/dataset.csv";
 	private static final Long SLEEP = 10L;

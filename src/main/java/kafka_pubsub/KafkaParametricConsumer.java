@@ -15,7 +15,7 @@ import java.util.Properties;
 
 public class KafkaParametricConsumer implements Runnable {
 
-	private final static boolean PRINT_KAFKA_ON_CONSOLE = false;
+	private final static boolean PRINT_KAFKA_ON_CONSOLE = true;
 	private final static int POLL_WAIT_TIME = 1000;
 	private final static int CYCLE_INTERVAL_TIME = 5000;
 	private String CONSUMER_GROUP_ID = "-topics-consumers";
@@ -24,6 +24,7 @@ public class KafkaParametricConsumer implements Runnable {
 	private final String topic;
 	private final boolean flink;
 	private String path;
+	private boolean running = true;
 
 	private Consumer<String, String> createConsumer() {
 		Properties props = new Properties();
@@ -65,11 +66,11 @@ public class KafkaParametricConsumer implements Runnable {
 		}
 	}
 
-	@SuppressWarnings({"BusyWait", "InfiniteLoopStatement"})
+	@SuppressWarnings({"BusyWait"})
 	private void runKafkaStreamsConsumer() {
 		System.out.println("Kafka Consumer " + CONSUMER_GROUP_ID + "-ID" + id + " running...");
 		try {
-			while (true) {
+			while (running) {
 				Thread.sleep(CYCLE_INTERVAL_TIME);
 				ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(POLL_WAIT_TIME));
 				if (PRINT_KAFKA_ON_CONSOLE) {
@@ -83,14 +84,15 @@ public class KafkaParametricConsumer implements Runnable {
 
 		} finally {
 			consumer.close();
+			System.out.println("Kafka Consumer " + CONSUMER_GROUP_ID + "-ID" + id + " stopped");
 		}
 	}
 
-	@SuppressWarnings({"BusyWait", "ResultOfMethodCallIgnored", "InfiniteLoopStatement"})
+	@SuppressWarnings({"BusyWait", "ResultOfMethodCallIgnored"})
 	private void runFlinkConsumer() {
 		System.out.println("Flink Consumer " + CONSUMER_GROUP_ID + "-ID" + id + " running...");
 		try {
-			while (true) {
+			while (running) {
 				Thread.sleep(CYCLE_INTERVAL_TIME);
 				ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(POLL_WAIT_TIME));
 
@@ -122,6 +124,11 @@ public class KafkaParametricConsumer implements Runnable {
 			System.err.println("Could not export result to " + path);
 		}finally {
 			consumer.close();
+			System.out.println("Flink Consumer " + CONSUMER_GROUP_ID + "-ID" + id + " stopped");
 		}
+	}
+
+	public void stop() {
+		this.running = false;
 	}
 }
