@@ -2,6 +2,7 @@ package kafkastreams_dsp.queries;
 
 import kafka_pubsub.KafkaClusterConfig;
 import kafkastreams_dsp.serdes.SerDesBuilders;
+import kafkastreams_dsp.windows.DailyTimeWindows;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;

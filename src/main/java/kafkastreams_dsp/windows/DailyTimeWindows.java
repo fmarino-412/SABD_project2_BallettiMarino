@@ -1,6 +1,5 @@
-package kafkastreams_dsp.queries;
+package kafkastreams_dsp.windows;
 
-import org.apache.kafka.streams.kstream.Windows;
 import org.apache.kafka.streams.kstream.internals.TimeWindow;
 
 import java.time.Duration;
@@ -11,16 +10,13 @@ import java.time.temporal.ChronoUnit;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-//Implementation of a daily custom window starting at given hour (like daily windows starting at 6pm) with a given timezone
-public class DailyTimeWindows extends Windows<TimeWindow> {
+//Implementation of a daily custom window with a given timezone
+public class DailyTimeWindows extends CustomTimeWindows {
 
-    private final ZoneId zoneId;
-    private final long grace;
     private final int startHour;
 
     public DailyTimeWindows(final ZoneId zoneId, final Duration grace) {
-        this.zoneId = zoneId;
-        this.grace = grace.toMillis();
+        super(zoneId, grace);
         this.startHour = 0;
     }
 
@@ -45,9 +41,5 @@ public class DailyTimeWindows extends Windows<TimeWindow> {
     @Override
     public long gracePeriodMs() {
         return grace;
-    }
-
-    private long toEpochMilli(final ZonedDateTime zonedDateTime) {
-        return zonedDateTime.toInstant().toEpochMilli();
     }
 }
