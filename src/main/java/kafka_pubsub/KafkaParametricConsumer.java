@@ -13,15 +13,16 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.Properties;
 
-public class ProcessingConsumers implements Runnable {
+public class KafkaParametricConsumer implements Runnable {
 
 	private final static boolean PRINT_KAFKA_ON_CONSOLE = false;
-	private final static int INTERVAL_TIME = 1000;
+	private final static int POLL_WAIT_TIME = 1000;
+	private final static int CYCLE_INTERVAL_TIME = 5000;
 	private String CONSUMER_GROUP_ID = "-topics-consumers";
-	private Consumer<String, String> consumer;
-	private int id;
-	private String topic;
-	private boolean flink;
+	private final Consumer<String, String> consumer;
+	private final int id;
+	private final String topic;
+	private final boolean flink;
 	private String path;
 
 	private Consumer<String, String> createConsumer() {
@@ -40,7 +41,7 @@ public class ProcessingConsumers implements Runnable {
 		consumer.subscribe(Collections.singletonList(topic));
 	}
 
-	public ProcessingConsumers(int id, String topic, boolean flink, @Nullable String path) {
+	public KafkaParametricConsumer(int id, String topic, boolean flink, @Nullable String path) {
 		this.flink = flink;
 		if (flink) {
 			CONSUMER_GROUP_ID = "flink" + CONSUMER_GROUP_ID;
@@ -64,13 +65,13 @@ public class ProcessingConsumers implements Runnable {
 		}
 	}
 
-	@SuppressWarnings("BusyWait")
+	@SuppressWarnings({"BusyWait", "InfiniteLoopStatement"})
 	private void runKafkaStreamsConsumer() {
 		System.out.println("Kafka Consumer " + CONSUMER_GROUP_ID + "-ID" + id + " running...");
 		try {
 			while (true) {
-				Thread.sleep(INTERVAL_TIME);
-				ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(INTERVAL_TIME));
+				Thread.sleep(CYCLE_INTERVAL_TIME);
+				ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(POLL_WAIT_TIME));
 				if (PRINT_KAFKA_ON_CONSOLE) {
 					for (ConsumerRecord<String, String> record : records) {
 						System.out.println("[" + id + "] Consuming Kafka record at topic: " + topic +
@@ -85,13 +86,13 @@ public class ProcessingConsumers implements Runnable {
 		}
 	}
 
-	@SuppressWarnings({"BusyWait", "ResultOfMethodCallIgnored"})
+	@SuppressWarnings({"BusyWait", "ResultOfMethodCallIgnored", "InfiniteLoopStatement"})
 	private void runFlinkConsumer() {
 		System.out.println("Flink Consumer " + CONSUMER_GROUP_ID + "-ID" + id + " running...");
 		try {
 			while (true) {
-				Thread.sleep(INTERVAL_TIME);
-				ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(INTERVAL_TIME));
+				Thread.sleep(CYCLE_INTERVAL_TIME);
+				ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(POLL_WAIT_TIME));
 
 				if (!records.isEmpty()) {
 
