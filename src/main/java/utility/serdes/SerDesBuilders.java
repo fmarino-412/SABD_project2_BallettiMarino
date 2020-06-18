@@ -1,4 +1,4 @@
-package kafkastreams_dsp.serdes;
+package utility.serdes;
 
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serde;

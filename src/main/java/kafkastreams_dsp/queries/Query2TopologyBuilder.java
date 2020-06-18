@@ -1,7 +1,7 @@
 package kafkastreams_dsp.queries;
 
 import kafka_pubsub.KafkaClusterConfig;
-import kafkastreams_dsp.serdes.SerDesBuilders;
+import utility.serdes.SerDesBuilders;
 import kafkastreams_dsp.windows.DailyTimeWindows;
 import kafkastreams_dsp.windows.WeeklyTimeWindows;
 import org.apache.kafka.common.serialization.Serdes;

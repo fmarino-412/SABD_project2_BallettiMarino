@@ -5,6 +5,7 @@ import flink_dsp.query2.ReasonRankingOutcome;
 import flink_dsp.query3.CompanyRankingOutcome;
 import org.apache.commons.io.FileUtils;
 import scala.Tuple2;
+import utility.accumulators.AverageDelayAccumulator;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -56,6 +57,14 @@ public class OutputFormatter {
 			e.printStackTrace();
 			System.err.println("Could not clean Results directory");
 		}
+	}
+
+	public static String query1OutcomeFormatter(AverageDelayOutcome outcome) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(formatDate(outcome.getStartDate().getTime()));
+		outcome.getBoroMeans().forEach((k, v) -> builder.append(CSV_SEP).append(k).append(CSV_SEP).append(v));
+		return builder.toString();
+
 	}
 
 	/**

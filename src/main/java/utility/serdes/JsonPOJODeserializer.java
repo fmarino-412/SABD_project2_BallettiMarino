@@ -14,41 +14,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kafkastreams_dsp.serdes;
+package utility.serdes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.errors.SerializationException;
-import org.apache.kafka.common.serialization.Serializer;
+import org.apache.kafka.common.serialization.Deserializer;
 
 import java.util.Map;
 
-public class JsonPOJOSerializer<T> implements Serializer<T> {
+public class JsonPOJODeserializer<T> implements Deserializer<T> {
 	private final ObjectMapper objectMapper = new ObjectMapper();
+
+	private Class<T> tClass;
 
 	/**
 	 * Default constructor needed by Kafka
 	 */
-	public JsonPOJOSerializer() {
+	public JsonPOJODeserializer() {
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void configure(Map<String, ?> props, boolean isKey) {
+		tClass = (Class<T>) props.get("JsonPOJOClass");
 	}
 
 	@Override
-	public byte[] serialize(String topic, T data) {
-		if (data == null)
+	public T deserialize(String topic, byte[] bytes) {
+		if (bytes == null)
 			return null;
 
+		T data;
 		try {
-			return objectMapper.writeValueAsBytes(data);
+			data = objectMapper.readValue(bytes, tClass);
 		} catch (Exception e) {
-			throw new SerializationException("Error serializing JSON message", e);
+			throw new SerializationException(e);
 		}
+
+		return data;
 	}
 
 	@Override
 	public void close() {
-	}
 
+	}
 }
