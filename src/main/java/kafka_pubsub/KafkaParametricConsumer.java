@@ -110,6 +110,7 @@ public class KafkaParametricConsumer implements Runnable {
 
 					for (ConsumerRecord<String, String> record : records) {
 						bw.append(record.value());
+						bw.append("\n");
 					}
 
 					bw.close();

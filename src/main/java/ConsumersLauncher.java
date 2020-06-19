@@ -9,6 +9,10 @@ public class ConsumersLauncher {
 
 	public static void main(String[] args) {
 
+		//cleaning result directory to store data results
+		OutputFormatter.cleanResultsFolder();
+		System.out.println("Result directory prepared");
+
 		ArrayList<KafkaParametricConsumer> consumers = new ArrayList<>();
 
 		int id = 0;

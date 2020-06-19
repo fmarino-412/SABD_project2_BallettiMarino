@@ -27,9 +27,6 @@ public class FlinkDataStreamProcessingMain {
 
 	public static void main(String[] args) {
 
-		//cleaning result directory to store data results
-		OutputFormatter.cleanResultsFolder();
-
 		//setup flink environment
 		Configuration conf = new Configuration();
 		StreamExecutionEnvironment environment = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(conf);
