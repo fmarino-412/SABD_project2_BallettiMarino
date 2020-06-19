@@ -60,7 +60,6 @@ public class Query3TopologyBuilder {
 						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
 	}
 
-
 	private static class ExtractStringMapper implements MapFunction<CompanyRankingOutcome, String> {
 
 		@Override
