@@ -5,7 +5,6 @@ import flink_dsp.query2.ReasonRankingOutcome;
 import flink_dsp.query3.CompanyRankingOutcome;
 import org.apache.commons.io.FileUtils;
 import scala.Tuple2;
-import utility.accumulators.AverageDelayAccumulator;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -64,7 +63,26 @@ public class OutputFormatter {
 		builder.append(formatDate(outcome.getStartDate().getTime()));
 		outcome.getBoroMeans().forEach((k, v) -> builder.append(CSV_SEP).append(k).append(CSV_SEP).append(v));
 		return builder.toString();
+	}
 
+	public static String query2OutcomeFormatter(ReasonRankingOutcome outcome) {
+		return formatDate(outcome.getStartDate().getTime()) +
+				CSV_SEP + AM + CSV_SEP +
+				outcome.getAmRanking().toString() +
+				CSV_SEP + PM + CSV_SEP +
+				outcome.getPmRanking().toString();
+	}
+
+	public static String query3OutcomeFormatter(CompanyRankingOutcome outcome) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(formatDate(outcome.getStartDate().getTime()));
+		for (Tuple2<String, Double> score : outcome.getCompanyRanking()) {
+			builder.append(CSV_SEP)
+					.append(score._1())
+					.append(CSV_SEP)
+					.append(score._2());
+		}
+		return builder.toString();
 	}
 
 	/**
@@ -194,7 +212,7 @@ public class OutputFormatter {
 						.append(CSV_SEP)
 						.append(score._2());
 			}
-			builder.append("\n");
+			builder.append(NEW_LINE);
 
 			bw.append(builder.toString());
 			bw.close();

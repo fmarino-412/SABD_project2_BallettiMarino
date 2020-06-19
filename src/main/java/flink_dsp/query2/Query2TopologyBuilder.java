@@ -1,14 +1,17 @@
 package flink_dsp.query2;
 
+import kafka_pubsub.KafkaClusterConfig;
 import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 import org.apache.flink.util.Collector;
 import scala.Tuple2;
 import utility.BusData;
 import utility.OutputFormatter;
+import utility.serdes.FlinkStringToKafkaSerializer;
 
 import java.text.ParseException;
 
@@ -37,20 +40,30 @@ public class Query2TopologyBuilder {
 		stream.windowAll(TumblingEventTimeWindows.of(Time.days(1), Time.hours(4)))
 				.aggregate(new ReasonRankingAggregator(), new ReasonRankingProcessWindow())
 				.name("query2-daily-ranking")
-				.addSink(new SinkFunction<ReasonRankingOutcome>() {
-					public void invoke(ReasonRankingOutcome outcome, Context context) {
-						OutputFormatter.writeOutputQuery2(OutputFormatter.QUERY2_DAILY_CSV_FILE_PATH, outcome);
-					}
-				});
+				.map(new Query2TopologyBuilder.ExtractStringMapper())
+				.addSink(new FlinkKafkaProducer<>(KafkaClusterConfig.FLINK_QUERY_2_DAILY_TOPIC,
+						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_2_DAILY_TOPIC),
+						FlinkStringToKafkaSerializer.getProperties("producer" +
+								KafkaClusterConfig.FLINK_QUERY_2_DAILY_TOPIC),
+						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
 
 		// 7 days statistics
 		stream.windowAll(TumblingEventTimeWindows.of(Time.days(7), Time.hours(4)))
 				.aggregate(new ReasonRankingAggregator(), new ReasonRankingProcessWindow())
 				.name("query2-weekly-ranking")
-				.addSink(new SinkFunction<ReasonRankingOutcome>() {
-					public void invoke(ReasonRankingOutcome outcome, Context context) {
-						OutputFormatter.writeOutputQuery2(OutputFormatter.QUERY2_WEEKLY_CSV_FILE_PATH, outcome);
-					}
-				});
+				.map(new Query2TopologyBuilder.ExtractStringMapper())
+				.addSink(new FlinkKafkaProducer<>(KafkaClusterConfig.FLINK_QUERY_2_WEEKLY_TOPIC,
+						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_2_WEEKLY_TOPIC),
+						FlinkStringToKafkaSerializer.getProperties("producer" +
+								KafkaClusterConfig.FLINK_QUERY_2_WEEKLY_TOPIC),
+						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
+	}
+
+	private static class ExtractStringMapper implements MapFunction<ReasonRankingOutcome, String> {
+
+		@Override
+		public String map(ReasonRankingOutcome reasonRankingOutcome) {
+			return OutputFormatter.query2OutcomeFormatter(reasonRankingOutcome);
+		}
 	}
 }

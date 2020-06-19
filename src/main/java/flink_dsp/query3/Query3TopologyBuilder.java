@@ -1,15 +1,18 @@
 package flink_dsp.query3;
 
+import kafka_pubsub.KafkaClusterConfig;
 import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 import org.apache.flink.util.Collector;
 import scala.Tuple2;
 import utility.BusData;
 import utility.OutputFormatter;
 import utility.delay_utility.DelayFormatException;
+import utility.serdes.FlinkStringToKafkaSerializer;
 
 import java.text.ParseException;
 
@@ -38,20 +41,31 @@ public class Query3TopologyBuilder {
 		stream.windowAll(TumblingEventTimeWindows.of(Time.days(1), Time.hours(4)))
 				.aggregate(new CompanyRankingAggregator(), new CompanyRankingProcessWindow())
 				.name("query3-daily-ranking")
-				.addSink(new SinkFunction<CompanyRankingOutcome>() {
-					public void invoke(CompanyRankingOutcome outcome, Context context) {
-						OutputFormatter.writeOutputQuery3(OutputFormatter.QUERY3_DAILY_CSV_FILE_PATH, outcome);
-					}
-				});
+				.map(new Query3TopologyBuilder.ExtractStringMapper())
+				.addSink(new FlinkKafkaProducer<>(KafkaClusterConfig.FLINK_QUERY_3_DAILY_TOPIC,
+						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_3_DAILY_TOPIC),
+						FlinkStringToKafkaSerializer.getProperties("producer" +
+								KafkaClusterConfig.FLINK_QUERY_3_DAILY_TOPIC),
+						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
 
 		// 7 days statistics
 		stream.windowAll(TumblingEventTimeWindows.of(Time.days(7), Time.hours(4)))
 				.aggregate(new CompanyRankingAggregator(), new CompanyRankingProcessWindow())
 				.name("query3-weekly-ranking")
-				.addSink(new SinkFunction<CompanyRankingOutcome>() {
-					public void invoke(CompanyRankingOutcome outcome, Context context) {
-						OutputFormatter.writeOutputQuery3(OutputFormatter.QUERY3_WEEKLY_CSV_FILE_PATH, outcome);
-					}
-				});
+				.map(new Query3TopologyBuilder.ExtractStringMapper())
+				.addSink(new FlinkKafkaProducer<>(KafkaClusterConfig.FLINK_QUERY_3_WEEKLY_TOPIC,
+						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_3_WEEKLY_TOPIC),
+						FlinkStringToKafkaSerializer.getProperties("producer" +
+								KafkaClusterConfig.FLINK_QUERY_3_WEEKLY_TOPIC),
+						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
+	}
+
+
+	private static class ExtractStringMapper implements MapFunction<CompanyRankingOutcome, String> {
+
+		@Override
+		public String map(CompanyRankingOutcome companyRankingOutcome) {
+			return OutputFormatter.query3OutcomeFormatter(companyRankingOutcome);
+		}
 	}
 }
