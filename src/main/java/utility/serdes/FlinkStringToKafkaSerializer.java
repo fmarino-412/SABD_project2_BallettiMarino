@@ -1,17 +1,14 @@
 package utility.serdes;
 
-import kafka_pubsub.KafkaClusterConfig;
 import org.apache.flink.streaming.connectors.kafka.KafkaSerializationSchema;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 import javax.annotation.Nullable;
 import java.nio.charset.StandardCharsets;
-import java.util.Properties;
 
 public class FlinkStringToKafkaSerializer implements KafkaSerializationSchema<String> {
 
-	private String topic;
+	private final String topic;
 
 	public FlinkStringToKafkaSerializer(String topic) {
 		super();

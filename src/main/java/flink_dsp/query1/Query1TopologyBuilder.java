@@ -64,7 +64,7 @@ public class Query1TopologyBuilder {
 				.aggregate(new AverageDelayAggregator(), new AverageDelayProcessWindow())
 				.name("query1-monthly-mean")
 				.map(new ExtractStringMapper())
-				.addSink(new FlinkKafkaProducer<String>(KafkaClusterConfig.FLINK_QUERY_1_MONTHLY_TOPIC,
+				.addSink(new FlinkKafkaProducer<>(KafkaClusterConfig.FLINK_QUERY_1_MONTHLY_TOPIC,
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_1_MONTHLY_TOPIC),
 						KafkaClusterConfig.getFlinkSinkProperties("producer" +
 								KafkaClusterConfig.FLINK_QUERY_1_MONTHLY_TOPIC),
