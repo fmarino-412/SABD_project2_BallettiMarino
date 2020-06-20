@@ -1,7 +1,9 @@
 package kafka_pubsub;
 
-import org.apache.kafka.clients.consumer.*;
-import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.clients.consumer.Consumer;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
 
 import javax.annotation.Nullable;
 import java.io.BufferedWriter;
@@ -27,14 +29,7 @@ public class KafkaParametricConsumer implements Runnable {
 	private boolean running = true;
 
 	private Consumer<String, String> createConsumer() {
-		Properties props = new Properties();
-		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaClusterConfig.BOOTSTRAP_SERVERS);
-		props.put(ConsumerConfig.GROUP_ID_CONFIG, CONSUMER_GROUP_ID);
-		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-				StringDeserializer.class.getName());
-		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-				StringDeserializer.class.getName());
-
+		Properties props = KafkaClusterConfig.getKafkaParametricConsumerProperties(CONSUMER_GROUP_ID);
 		return new KafkaConsumer<>(props);
 	}
 

@@ -44,7 +44,7 @@ public class Query3TopologyBuilder {
 				.map(new Query3TopologyBuilder.ExtractStringMapper())
 				.addSink(new FlinkKafkaProducer<>(KafkaClusterConfig.FLINK_QUERY_3_DAILY_TOPIC,
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_3_DAILY_TOPIC),
-						FlinkStringToKafkaSerializer.getProperties("producer" +
+						KafkaClusterConfig.getFlinkSinkProperties("producer" +
 								KafkaClusterConfig.FLINK_QUERY_3_DAILY_TOPIC),
 						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
 
@@ -55,11 +55,10 @@ public class Query3TopologyBuilder {
 				.map(new Query3TopologyBuilder.ExtractStringMapper())
 				.addSink(new FlinkKafkaProducer<>(KafkaClusterConfig.FLINK_QUERY_3_WEEKLY_TOPIC,
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_3_WEEKLY_TOPIC),
-						FlinkStringToKafkaSerializer.getProperties("producer" +
+						KafkaClusterConfig.getFlinkSinkProperties("producer" +
 								KafkaClusterConfig.FLINK_QUERY_3_WEEKLY_TOPIC),
 						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
 	}
-
 
 	private static class ExtractStringMapper implements MapFunction<CompanyRankingOutcome, String> {
 

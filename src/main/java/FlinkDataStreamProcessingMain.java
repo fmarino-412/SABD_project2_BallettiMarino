@@ -1,7 +1,7 @@
-import flink_dsp.StreamSourceConfig;
 import flink_dsp.query1.Query1TopologyBuilder;
 import flink_dsp.query2.Query2TopologyBuilder;
 import flink_dsp.query3.Query3TopologyBuilder;
+import kafka_pubsub.KafkaClusterConfig;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.configuration.Configuration;
@@ -12,7 +12,6 @@ import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExt
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.flink.util.Collector;
 import scala.Tuple2;
-import utility.OutputFormatter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -25,6 +24,8 @@ import static kafka_pubsub.KafkaClusterConfig.FLINK_TOPIC;
 @SuppressWarnings("Convert2Lambda")
 public class FlinkDataStreamProcessingMain {
 
+	private static final String CONSUMER_GROUP_ID = "single-flink-consumer";
+
 	public static void main(String[] args) {
 
 		//setup flink environment
@@ -33,7 +34,7 @@ public class FlinkDataStreamProcessingMain {
 		environment.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
 		//add the source and handle watermarks
-		Properties props = StreamSourceConfig.getSourceProperties();
+		Properties props = KafkaClusterConfig.getFlinkSourceProperties(CONSUMER_GROUP_ID);
 
 		DataStream<Tuple2<Long, String>> stream = environment
 				.addSource(new FlinkKafkaConsumer<>(FLINK_TOPIC, new SimpleStringSchema(), props))
