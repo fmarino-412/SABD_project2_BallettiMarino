@@ -34,6 +34,7 @@ public class KafkaParametricConsumer implements Runnable {
 				StringDeserializer.class.getName());
 		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
 				StringDeserializer.class.getName());
+		props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, KafkaClusterConfig.CONSUMER_FIRST_OFFSET);
 
 		return new KafkaConsumer<>(props);
 	}

@@ -43,7 +43,7 @@ public class Query2TopologyBuilder {
 				.map(new Query2TopologyBuilder.ExtractStringMapper())
 				.addSink(new FlinkKafkaProducer<>(KafkaClusterConfig.FLINK_QUERY_2_DAILY_TOPIC,
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_2_DAILY_TOPIC),
-						FlinkStringToKafkaSerializer.getProperties("producer" +
+						KafkaClusterConfig.getFlinkSinkProperties("producer" +
 								KafkaClusterConfig.FLINK_QUERY_2_DAILY_TOPIC),
 						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
 
@@ -54,7 +54,7 @@ public class Query2TopologyBuilder {
 				.map(new Query2TopologyBuilder.ExtractStringMapper())
 				.addSink(new FlinkKafkaProducer<>(KafkaClusterConfig.FLINK_QUERY_2_WEEKLY_TOPIC,
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_2_WEEKLY_TOPIC),
-						FlinkStringToKafkaSerializer.getProperties("producer" +
+						KafkaClusterConfig.getFlinkSinkProperties("producer" +
 								KafkaClusterConfig.FLINK_QUERY_2_WEEKLY_TOPIC),
 						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
 	}

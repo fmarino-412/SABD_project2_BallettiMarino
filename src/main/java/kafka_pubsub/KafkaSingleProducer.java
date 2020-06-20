@@ -11,6 +11,7 @@ import java.util.Properties;
 
 public class KafkaSingleProducer {
 
+	private static final String PRODUCER_ID = "single-producer";
 	private final Producer<Long, String> producer;
 
 	public KafkaSingleProducer() {
@@ -20,7 +21,7 @@ public class KafkaSingleProducer {
 	private static Producer<Long, String> createProducer() {
 		Properties props = new Properties();
 		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaClusterConfig.BOOTSTRAP_SERVERS);
-		props.put(ProducerConfig.CLIENT_ID_CONFIG, KafkaClusterConfig.PRODUCER_ID);
+		props.put(ProducerConfig.CLIENT_ID_CONFIG, PRODUCER_ID);
 		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
 		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 

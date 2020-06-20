@@ -22,11 +22,4 @@ public class FlinkStringToKafkaSerializer implements KafkaSerializationSchema<St
 	public ProducerRecord<byte[], byte[]> serialize(String value, @Nullable Long aLong) {
 		return new ProducerRecord<>(topic, value.getBytes(StandardCharsets.UTF_8));
 	}
-
-	public static Properties getProperties(String producerId) {
-		Properties props = new Properties();
-		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaClusterConfig.BOOTSTRAP_SERVERS);
-		props.put(ProducerConfig.CLIENT_ID_CONFIG, producerId);
-		return props;
-	}
 }

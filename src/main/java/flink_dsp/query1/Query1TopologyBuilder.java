@@ -44,7 +44,7 @@ public class Query1TopologyBuilder {
 				.map(new ExtractStringMapper())
 				.addSink(new FlinkKafkaProducer<>(KafkaClusterConfig.FLINK_QUERY_1_DAILY_TOPIC,
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_1_DAILY_TOPIC),
-						FlinkStringToKafkaSerializer.getProperties("producer" +
+						KafkaClusterConfig.getFlinkSinkProperties("producer" +
 								KafkaClusterConfig.FLINK_QUERY_1_DAILY_TOPIC),
 						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
 
@@ -55,7 +55,7 @@ public class Query1TopologyBuilder {
 				.map(new ExtractStringMapper())
 				.addSink(new FlinkKafkaProducer<>(KafkaClusterConfig.FLINK_QUERY_1_WEEKLY_TOPIC,
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_1_WEEKLY_TOPIC),
-						FlinkStringToKafkaSerializer.getProperties("producer" +
+						KafkaClusterConfig.getFlinkSinkProperties("producer" +
 								KafkaClusterConfig.FLINK_QUERY_1_WEEKLY_TOPIC),
 						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
 
@@ -66,7 +66,7 @@ public class Query1TopologyBuilder {
 				.map(new ExtractStringMapper())
 				.addSink(new FlinkKafkaProducer<String>(KafkaClusterConfig.FLINK_QUERY_1_MONTHLY_TOPIC,
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_1_MONTHLY_TOPIC),
-						FlinkStringToKafkaSerializer.getProperties("producer" +
+						KafkaClusterConfig.getFlinkSinkProperties("producer" +
 								KafkaClusterConfig.FLINK_QUERY_1_MONTHLY_TOPIC),
 						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
 
