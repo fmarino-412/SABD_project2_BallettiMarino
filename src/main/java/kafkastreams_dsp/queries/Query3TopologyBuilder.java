@@ -45,6 +45,7 @@ public class Query3TopologyBuilder {
 				.toStream()
 				.map(new CompanyRankingMapper())
 				.to(KafkaClusterConfig.KAFKA_QUERY_3_DAILY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
+
 		// 7 day statistics
 		preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
 					DataCommonTransformation.toWeeklyKeyed(busData))
