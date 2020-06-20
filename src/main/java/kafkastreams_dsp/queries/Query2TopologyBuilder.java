@@ -50,7 +50,7 @@ public class Query2TopologyBuilder {
 
 		// 7 days statistics
 		preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
-					DataCommonTransformation.toMonthlyKeyed(busData)).groupByKey(Grouped.with(Serdes.String(),
+					DataCommonTransformation.toWeeklyKeyed(busData)).groupByKey(Grouped.with(Serdes.String(),
 					SerDesBuilders.getSerdes(BusData.class)))
 				.windowedBy(new WeeklyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(5L)))
 				.aggregate(new ReasonRankingInitializer(), new ReasonRankingAggregator(),
