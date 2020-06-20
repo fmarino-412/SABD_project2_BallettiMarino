@@ -24,6 +24,8 @@ import static kafka_pubsub.KafkaClusterConfig.FLINK_TOPIC;
 @SuppressWarnings("Convert2Lambda")
 public class FlinkDataStreamProcessingMain {
 
+	private static final String CONSUMER_GROUP_ID = "single-flink-consumer";
+
 	public static void main(String[] args) {
 
 		//setup flink environment
@@ -32,7 +34,7 @@ public class FlinkDataStreamProcessingMain {
 		environment.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
 		//add the source and handle watermarks
-		Properties props = KafkaClusterConfig.getFlinkSourceProperties();
+		Properties props = KafkaClusterConfig.getFlinkSourceProperties(CONSUMER_GROUP_ID);
 
 		DataStream<Tuple2<Long, String>> stream = environment
 				.addSource(new FlinkKafkaConsumer<>(FLINK_TOPIC, new SimpleStringSchema(), props))
