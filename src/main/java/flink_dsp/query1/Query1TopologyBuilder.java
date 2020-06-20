@@ -46,7 +46,8 @@ public class Query1TopologyBuilder {
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_1_DAILY_TOPIC),
 						KafkaClusterConfig.getFlinkSinkProperties("producer" +
 								KafkaClusterConfig.FLINK_QUERY_1_DAILY_TOPIC),
-						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
+						FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
+				.name("query1-daily-mean-sink");
 
 		// 7 days statistics
 		stream.windowAll(TumblingEventTimeWindows.of(Time.days(7), Time.hours(4)))
@@ -57,7 +58,8 @@ public class Query1TopologyBuilder {
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_1_WEEKLY_TOPIC),
 						KafkaClusterConfig.getFlinkSinkProperties("producer" +
 								KafkaClusterConfig.FLINK_QUERY_1_WEEKLY_TOPIC),
-						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
+						FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
+				.name("query1-weekly-mean-sink");
 
 		// 1 month statistics
 		stream.windowAll(new MonthlyWindowAssigner())
@@ -68,7 +70,8 @@ public class Query1TopologyBuilder {
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_1_MONTHLY_TOPIC),
 						KafkaClusterConfig.getFlinkSinkProperties("producer" +
 								KafkaClusterConfig.FLINK_QUERY_1_MONTHLY_TOPIC),
-						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
+						FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
+				.name("query1-monthly-mean-sink");
 
 	}
 

@@ -38,7 +38,6 @@ public class FlinkDataStreamProcessingMain {
 
 		DataStream<Tuple2<Long, String>> stream = environment
 				.addSource(new FlinkKafkaConsumer<>(FLINK_TOPIC, new SimpleStringSchema(), props))
-				.name("stream-source")
 				.flatMap(new FlatMapFunction<String, Tuple2<Long, String>>() {
 					@Override
 					public void flatMap(String s, Collector<Tuple2<Long, String>> collector) {
@@ -58,7 +57,8 @@ public class FlinkDataStreamProcessingMain {
 						// kafka's auto-watermarks generation is only related to offset not to event time
 						return tuple._1();
 					}
-				});
+				})
+				.name("stream-source");
 
 		//build query 1 topology
 		Query1TopologyBuilder.buildTopology(stream);

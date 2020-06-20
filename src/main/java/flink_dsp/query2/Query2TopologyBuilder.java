@@ -45,7 +45,8 @@ public class Query2TopologyBuilder {
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_2_DAILY_TOPIC),
 						KafkaClusterConfig.getFlinkSinkProperties("producer" +
 								KafkaClusterConfig.FLINK_QUERY_2_DAILY_TOPIC),
-						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
+						FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
+				.name("query2-daily-ranking-sink");
 
 		// 7 days statistics
 		stream.windowAll(TumblingEventTimeWindows.of(Time.days(7), Time.hours(4)))
@@ -56,7 +57,8 @@ public class Query2TopologyBuilder {
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_2_WEEKLY_TOPIC),
 						KafkaClusterConfig.getFlinkSinkProperties("producer" +
 								KafkaClusterConfig.FLINK_QUERY_2_WEEKLY_TOPIC),
-						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
+						FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
+				.name("query2-weekly-ranking-sink");
 	}
 
 	private static class ExtractStringMapper implements MapFunction<ReasonRankingOutcome, String> {

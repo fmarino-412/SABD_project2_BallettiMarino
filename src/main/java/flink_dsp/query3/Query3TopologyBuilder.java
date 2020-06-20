@@ -31,7 +31,6 @@ public class Query3TopologyBuilder {
 							data = new BusData(info[7], info[11], info[5], info[10]);
 							collector.collect(data);
 						} catch (ParseException | DelayFormatException | NumberFormatException ignored) {
-							// ignored
 						}
 					}
 				})
@@ -46,7 +45,8 @@ public class Query3TopologyBuilder {
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_3_DAILY_TOPIC),
 						KafkaClusterConfig.getFlinkSinkProperties("producer" +
 								KafkaClusterConfig.FLINK_QUERY_3_DAILY_TOPIC),
-						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
+						FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
+				.name("query3-daily-ranking-sink");
 
 		// 7 days statistics
 		stream.windowAll(TumblingEventTimeWindows.of(Time.days(7), Time.hours(4)))
@@ -57,7 +57,8 @@ public class Query3TopologyBuilder {
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_3_WEEKLY_TOPIC),
 						KafkaClusterConfig.getFlinkSinkProperties("producer" +
 								KafkaClusterConfig.FLINK_QUERY_3_WEEKLY_TOPIC),
-						FlinkKafkaProducer.Semantic.EXACTLY_ONCE));
+						FlinkKafkaProducer.Semantic.EXACTLY_ONCE))
+				.name("query3-weekly-ranking-sink");
 	}
 
 	private static class ExtractStringMapper implements MapFunction<CompanyRankingOutcome, String> {
