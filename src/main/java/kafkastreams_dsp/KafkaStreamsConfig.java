@@ -8,8 +8,6 @@ import java.util.Properties;
 
 public class KafkaStreamsConfig {
 
-	final static private String PROCESSING_GUARANTEE = "exactly_once";
-
 	public static Properties createStreamProperties() {
 
 		Properties props = new Properties();
