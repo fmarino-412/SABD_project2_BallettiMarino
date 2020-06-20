@@ -18,6 +18,8 @@ public class KafkaStreamsConfig {
 		props.put(StreamsConfig.CLIENT_ID_CONFIG, "kafka-streams-queries-client");
 		// list of brokers
 		props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaClusterConfig.BOOTSTRAP_SERVERS);
+		// increase commit interval to avoid window intermediate result flush
+		props.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 60000);
 
 		// key and value serdes
 		props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.Long().getClass().getName());
