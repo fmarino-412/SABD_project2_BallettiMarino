@@ -39,9 +39,10 @@ public class Query1TopologyBuilder {
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
                         DataCommonTransformation.toDailyKeyed(busData))
                 .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
-                .windowedBy(new DailyTimeWindows(ZoneId.systemDefault(), Duration.ofHours(8L)))
+                .windowedBy(new DailyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(0L)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(AverageDelayAccumulator.class)))
+                .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
                 .toStream()
                 .map(new AverageDelayMapper())
                 .to(KafkaClusterConfig.KAFKA_QUERY_1_DAILY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
@@ -53,6 +54,7 @@ public class Query1TopologyBuilder {
                 .windowedBy(new WeeklyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(7L)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(AverageDelayAccumulator.class)))
+                .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
                 .toStream()
                 .map(new AverageDelayMapper())
                 .to(KafkaClusterConfig.KAFKA_QUERY_1_WEEKLY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
@@ -64,6 +66,7 @@ public class Query1TopologyBuilder {
                 .windowedBy(new MonthlyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(20L)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(AverageDelayAccumulator.class)))
+                .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
                 .toStream()
                 .map(new AverageDelayMapper())
                 .to(KafkaClusterConfig.KAFKA_QUERY_1_MONTHLY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));

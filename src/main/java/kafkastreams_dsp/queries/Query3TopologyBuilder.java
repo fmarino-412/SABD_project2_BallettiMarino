@@ -41,6 +41,7 @@ public class Query3TopologyBuilder {
 				.windowedBy(new DailyTimeWindows(ZoneId.systemDefault(), Duration.ofHours(8L)))
 				.aggregate(new CompanyRankingInitializer(), new CompanyRankingAggregator(),
 						Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(CompanyRankingAccumulator.class)))
+				.suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
 				.toStream()
 				.map(new CompanyRankingMapper())
 				.to(KafkaClusterConfig.KAFKA_QUERY_3_DAILY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
@@ -51,6 +52,7 @@ public class Query3TopologyBuilder {
 				.windowedBy(new WeeklyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(5L)))
 				.aggregate(new CompanyRankingInitializer(), new CompanyRankingAggregator(),
 						Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(CompanyRankingAccumulator.class)))
+				.suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
 				.toStream()
 				.map(new CompanyRankingMapper())
 				.to(KafkaClusterConfig.KAFKA_QUERY_3_WEEKLY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));

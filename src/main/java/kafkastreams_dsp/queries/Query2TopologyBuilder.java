@@ -43,6 +43,7 @@ public class Query2TopologyBuilder {
 				.windowedBy(new DailyTimeWindows(ZoneId.systemDefault(), Duration.ofHours(8L)))
 				.aggregate(new ReasonRankingInitializer(), new ReasonRankingAggregator(),
 						Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(ReasonRankingAccumulator.class)))
+				.suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
 				.toStream()
 				.map(new ReasonRankingMapper())
 				.to(KafkaClusterConfig.KAFKA_QUERY_2_DAILY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
@@ -54,6 +55,7 @@ public class Query2TopologyBuilder {
 				.windowedBy(new WeeklyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(5L)))
 				.aggregate(new ReasonRankingInitializer(), new ReasonRankingAggregator(),
 						Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(ReasonRankingAccumulator.class)))
+				.suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
 				.toStream()
 				.map(new ReasonRankingMapper())
 				.to(KafkaClusterConfig.KAFKA_QUERY_2_WEEKLY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
