@@ -40,7 +40,7 @@ public class Query2TopologyBuilder {
 		preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
 					DataCommonTransformation.toDailyKeyed(busData)).groupByKey(Grouped.with(Serdes.String(),
 					SerDesBuilders.getSerdes(BusData.class)))
-				.windowedBy(new DailyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(0L)))
+				.windowedBy(new DailyTimeWindows(ZoneId.systemDefault(), Duration.ofHours(8L)))
 				.aggregate(new ReasonRankingInitializer(), new ReasonRankingAggregator(),
 						Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(ReasonRankingAccumulator.class)))
 				.toStream()
@@ -51,7 +51,7 @@ public class Query2TopologyBuilder {
 		preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
 					DataCommonTransformation.toMonthlyKeyed(busData)).groupByKey(Grouped.with(Serdes.String(),
 					SerDesBuilders.getSerdes(BusData.class)))
-				.windowedBy(new WeeklyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(0L)))
+				.windowedBy(new WeeklyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(5L)))
 				.aggregate(new ReasonRankingInitializer(), new ReasonRankingAggregator(),
 						Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(ReasonRankingAccumulator.class)))
 				.toStream()

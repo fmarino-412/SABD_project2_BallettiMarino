@@ -22,7 +22,7 @@ public class MonthlyTimeWindows extends CustomTimeWindows {
 		super(zoneId, grace);
 
 		// use of a deprecated method is the only possible solution to define a retention time different from 1 day
-		this.until(SIZE_IN_MILLIS);
+		this.until(SIZE_IN_MILLIS + grace.toMillis());
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class MonthlyTimeWindows extends CustomTimeWindows {
 		final Instant instant = Instant.ofEpochMilli(timestamp);
 		final ZonedDateTime zonedDateTime = instant.atZone(zoneId);
 
-		Calendar calendar = DataCommonTransformation.getCalendarAtTime(toEpochMilli(zonedDateTime));
+		final Calendar calendar = DataCommonTransformation.getCalendarAtTime(toEpochMilli(zonedDateTime));
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);

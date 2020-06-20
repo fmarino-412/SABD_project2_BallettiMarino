@@ -13,11 +13,15 @@ import java.util.Map;
 //Implementation of a daily custom window with a given timezone
 public class DailyTimeWindows extends CustomTimeWindows {
 
+    private final static long SIZE_IN_MILLIS = Duration.ofDays(1L).toMillis();
     private final int startHour;
 
+    @SuppressWarnings("deprecation")
     public DailyTimeWindows(final ZoneId zoneId, final Duration grace) {
         super(zoneId, grace);
         this.startHour = 0;
+
+        this.until(SIZE_IN_MILLIS + grace.toMillis());
     }
 
     @Override

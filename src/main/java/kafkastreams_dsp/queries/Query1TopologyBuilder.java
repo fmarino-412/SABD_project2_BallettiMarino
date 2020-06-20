@@ -39,7 +39,7 @@ public class Query1TopologyBuilder {
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
                         DataCommonTransformation.toDailyKeyed(busData))
                 .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
-                .windowedBy(new DailyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(0L)))
+                .windowedBy(new DailyTimeWindows(ZoneId.systemDefault(), Duration.ofHours(8L)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(AverageDelayAccumulator.class)))
                 .toStream()
@@ -50,7 +50,7 @@ public class Query1TopologyBuilder {
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
                         DataCommonTransformation.toWeeklyKeyed(busData))
                 .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
-                .windowedBy(new WeeklyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(0L)))
+                .windowedBy(new WeeklyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(7L)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(AverageDelayAccumulator.class)))
                 .toStream()
@@ -61,7 +61,7 @@ public class Query1TopologyBuilder {
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
                         DataCommonTransformation.toMonthlyKeyed(busData))
                 .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
-                .windowedBy(new MonthlyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(0L)))
+                .windowedBy(new MonthlyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(20L)))
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(AverageDelayAccumulator.class)))
                 .toStream()
