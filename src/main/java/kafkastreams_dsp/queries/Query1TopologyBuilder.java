@@ -1,7 +1,6 @@
 package kafkastreams_dsp.queries;
 
 import kafka_pubsub.KafkaClusterConfig;
-import utility.serdes.SerDesBuilders;
 import kafkastreams_dsp.windows.DailyTimeWindows;
 import kafkastreams_dsp.windows.MonthlyTimeWindows;
 import kafkastreams_dsp.windows.WeeklyTimeWindows;
@@ -12,6 +11,7 @@ import utility.BusData;
 import utility.DataCommonTransformation;
 import utility.accumulators.AverageDelayAccumulator;
 import utility.delay_utility.DelayFormatException;
+import utility.serdes.SerDesBuilders;
 
 import java.text.ParseException;
 import java.time.Duration;
@@ -104,6 +104,10 @@ public class Query1TopologyBuilder {
             });
 
             outcomeBuilder.deleteCharAt(outcomeBuilder.length() - 1);
+
+            // For benchmark purposes
+            // SynchronizedCounter.incrementCounter();
+
             return new KeyValue<>(stringWindowed.key(), outcomeBuilder.toString());
         }
     }
