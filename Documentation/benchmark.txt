@@ -18,3 +18,6 @@ Query 2 - Weekly mean operator: 0.071 tuples/second
 
 Query 3 - Daily mean operator: 0.338 tuples/second
 Query 3 - Weekly mean operator: 0.071 tuples/second
+
+Kafka Streams JConsole Monitoring:
+
