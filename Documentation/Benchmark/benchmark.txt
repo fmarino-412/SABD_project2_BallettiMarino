@@ -4,7 +4,7 @@ Evaluated mean throughput: 23.724637826156556 tuples/millisecond
 Mean time: 15992.32 milliseconds.
 
 
-Flink UI results:
+Flink UI throughput results:
 
 Delay between tuples publish on Kafka : 10ms
 Common source: 253,7 tuples/second
@@ -12,6 +12,21 @@ Common source: 253,7 tuples/second
 Query 1 - Daily mean operator: 0.338 tuples/second
 Query 1 - Weekly mean operator: 0.071 tuples/second
 Query 1 - Monthly mean operator: 0.016 tuples/second
+
+Query 2 - Daily mean operator: 0.344 tuples/second
+Query 2 - Weekly mean operator: 0.071 tuples/second
+
+Query 3 - Daily mean operator: 0.338 tuples/second
+Query 3 - Weekly mean operator: 0.071 tuples/second
+
+Flink Experimental results:
+
+Query 1 - Daily mean operator throughput: 0.285 tuples/second
+Query 1 - Daily mean operator latency: 3.508 seconds/tuple
+Query 1 - Weekly mean operator throughput: 0.062 tuples/second
+Query 1 - Weekly mean operator latency: 16.05 seconds/tuple
+Query 1 - Monthly mean operator throughput: 0.016 tuples/second
+Query 1 - Monthly mean operator latency: 60.800 seconds/tuple
 
 Query 2 - Daily mean operator: 0.344 tuples/second
 Query 2 - Weekly mean operator: 0.071 tuples/second
