@@ -52,12 +52,7 @@ Query 2 - Daily mean operator latency: 3.01 seconds/tuple
 Query 2 - Weekly mean operator throughput: 0.066 tuples/second
 Query 2 - Weekly mean operator latency: 15.2 seconds/tuple
 
---------------------------------------------------------------------------------
-
-Query 3 - Daily mean operator throughput: 0.283 tuples/second
-Query 3 - Daily mean operator latency: 3.575 seconds/tuple
-
---------------------------------------------------------------------------------
-
-Query 3 - Weekly mean operator throughput: 0.064 tuples/second
-Query 3 - Weekly mean operator latency: 15.83 seconds/tuple
+Query 3 - Daily mean operator throughput: 0.321 tuples/second
+Query 3 - Daily mean operator latency: 3.120 seconds/tuple
+Query 3 - Weekly mean operator throughput: 0.066 tuples/second
+Query 3 - Weekly mean operator latency: 15.23 seconds/tuple
