@@ -1,8 +1,9 @@
-Full load results:
+Flink full load results:
 
 Evaluated mean throughput: 23.724637826156556 tuples/millisecond
 Mean time: 15992.32 milliseconds.
 
+------------------------------------------------------------------------------------------------------------------------
 
 Flink UI throughput results:
 
@@ -18,6 +19,17 @@ Query 2 - Weekly mean operator: 0.071 tuples/second
 
 Query 3 - Daily mean operator: 0.338 tuples/second
 Query 3 - Weekly mean operator: 0.071 tuples/second
+
+------------------------------------------------------------------------------------------------------------------------
+
+Kafka Streams JConsole Monitoring:
+
+Mean commit latency: 164.625
+Mean commit rate: 0.03187 operations/second
+Mean process latency: 0.09288
+Mean process rate: 567.7903 process-operations/second
+
+------------------------------------------------------------------------------------------------------------------------
 
 Flink Experimental results:
 
@@ -38,7 +50,9 @@ Query 3 - Daily mean operator latency: 3.575 seconds/tuple
 Query 3 - Weekly mean operator throughput: 0.064 tuples/second
 Query 3 - Weekly mean operator latency: 15.83 seconds/tuple
 
-Kafka Streams JConsole Monitoring:
+------------------------------------------------------------------------------------------------------------------------
+
+Kafka Streams Experimental Results:
 
 Query 1 - Daily mean operator throughput: 0.344 tuples/second
 Query 1 - Daily mean operator latency: 3.04 seconds/tuple
