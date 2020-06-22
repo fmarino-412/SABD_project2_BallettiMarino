@@ -1,7 +1,6 @@
 package kafkastreams_dsp.queries;
 
 import kafka_pubsub.KafkaClusterConfig;
-import utility.serdes.SerDesBuilders;
 import kafkastreams_dsp.windows.DailyTimeWindows;
 import kafkastreams_dsp.windows.WeeklyTimeWindows;
 import org.apache.kafka.common.serialization.Serdes;
@@ -10,6 +9,7 @@ import org.apache.kafka.streams.kstream.*;
 import utility.BusData;
 import utility.DataCommonTransformation;
 import utility.accumulators.ReasonRankingAccumulator;
+import utility.serdes.SerDesBuilders;
 
 import java.text.ParseException;
 import java.time.Duration;
@@ -106,6 +106,9 @@ public class Query2TopologyBuilder {
 			addElements(outcomeBuilder, pmList);
 
 			outcomeBuilder.append("]");
+
+			// For benchmark purposes
+			//SynchronizedCounter.incrementCounter();
 
 			return new KeyValue<>(stringWindowed.key(), outcomeBuilder.toString());
 		}
