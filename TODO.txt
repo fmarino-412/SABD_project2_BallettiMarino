@@ -4,5 +4,3 @@ Watermarks
 Ritardi in giorni?
 
 TODO: OutputFileFormatter e DataCommonTransformation overlapping
-
-TODO: Dates in accumulators can be removed
