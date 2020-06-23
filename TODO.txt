@@ -1,6 +1,3 @@
-Lateness - non serve
-Watermarks
-
 Ritardi in giorni?
 
 TODO: OutputFileFormatter e DataCommonTransformation overlapping
