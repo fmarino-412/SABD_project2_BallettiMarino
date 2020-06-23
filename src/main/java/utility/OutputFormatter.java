@@ -28,16 +28,22 @@ public class OutputFormatter {
 	private static final String QUERY2_HEADER = "QUERY 2 - ";
 	private static final String QUERY3_HEADER = "QUERY 3 - ";
 
-	/* Query1 scope */
+	/**
+	 * Scope: Flink - Query 1
+	 */
 	public static final String QUERY1_DAILY_CSV_FILE_PATH = "Results/query1_daily.csv";
 	public static final String QUERY1_WEEKLY_CSV_FILE_PATH = "Results/query1_weekly.csv";
 	public static final String QUERY1_MONTHLY_CSV_FILE_PATH = "Results/query1_monthly.csv";
 
-	/* Query2 scope */
+	/**
+	 * Scope: Flink - Query 2
+	 */
 	public static final String QUERY2_DAILY_CSV_FILE_PATH = "Results/query2_daily.csv";
 	public static final String QUERY2_WEEKLY_CSV_FILE_PATH = "Results/query2_weekly.csv";
 
-	/* Query3 scope */
+	/**
+	 * Scope: Flink - Query 3
+	 */
 	public static final String QUERY3_DAILY_CSV_FILE_PATH = "Results/query3_daily.csv";
 	public static final String QUERY3_WEEKLY_CSV_FILE_PATH = "Results/query3_weekly.csv";
 
@@ -46,7 +52,7 @@ public class OutputFormatter {
 			QUERY3_DAILY_CSV_FILE_PATH, QUERY3_WEEKLY_CSV_FILE_PATH};
 
 	/**
-	 * Global scope
+	 * Scope: Global
 	 * Used to remove old files in Results directory
 	 */
 	public static void cleanResultsFolder() {
@@ -58,6 +64,12 @@ public class OutputFormatter {
 		}
 	}
 
+	/**
+	 * Scope: Flink - Query 1
+	 * Formats the processing outcome as a string to be published to Kafka
+	 * @param outcome to format
+	 * @return formatted string
+	 */
 	public static String query1OutcomeFormatter(AverageDelayOutcome outcome) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(formatDate(outcome.getStartDate().getTime()));
@@ -65,6 +77,12 @@ public class OutputFormatter {
 		return builder.toString();
 	}
 
+	/**
+	 * Scope: Flink - Query 2
+	 * Formats the processing outcome as a string to be published to Kafka
+	 * @param outcome to format
+	 * @return formatted string
+	 */
 	public static String query2OutcomeFormatter(ReasonRankingOutcome outcome) {
 		return formatDate(outcome.getStartDate().getTime()) +
 				CSV_SEP + AM + CSV_SEP +
@@ -73,6 +91,12 @@ public class OutputFormatter {
 				outcome.getPmRanking().toString();
 	}
 
+	/**
+	 * Scope: Flink - Query 3
+	 * Formats the processing outcome as a string to be published to Kafka
+	 * @param outcome to format
+	 * @return formatted string
+	 */
 	public static String query3OutcomeFormatter(CompanyRankingOutcome outcome) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(formatDate(outcome.getStartDate().getTime()));
@@ -86,7 +110,8 @@ public class OutputFormatter {
 	}
 
 	/**
-	 * Query1 scope
+	 * @deprecated - needed before Kafka Flink output topic creation
+	 * Scope: Flink - Query 1
 	 * Save outcome to csv file and print result
 	 * @param path where to store csv
 	 * @param outcome to be stored
@@ -113,7 +138,7 @@ public class OutputFormatter {
 			bw.close();
 			writer.close();
 
-			//print output formatted
+			// prints formatted output
 			if (CONSOLE_RESULTS_PRINT) {
 				switch (path) {
 					case QUERY1_DAILY_CSV_FILE_PATH:
@@ -135,7 +160,8 @@ public class OutputFormatter {
 	}
 
 	/**
-	 * Query2 scope
+	 * @deprecated - needed before Kafka Flink output topic creation
+	 * Scope: Flink - Query 2
 	 * Save outcome to csv file and print result
 	 * @param path where to store csv
 	 * @param outcome to be stored
@@ -166,7 +192,7 @@ public class OutputFormatter {
 			bw.close();
 			writer.close();
 
-			//print output formatted
+			// prints formatted output
 			if (CONSOLE_RESULTS_PRINT) {
 				switch (path) {
 					case QUERY2_DAILY_CSV_FILE_PATH:
@@ -185,7 +211,8 @@ public class OutputFormatter {
 	}
 
 	/**
-	 * Query3 scope
+	 * @deprecated - needed before Kafka Flink output topic creation
+	 * Scope: Flink - Query 3
 	 * Save outcome to csv file and print result
 	 * @param path where to store csv
 	 * @param outcome to be stored
@@ -218,7 +245,7 @@ public class OutputFormatter {
 			bw.close();
 			writer.close();
 
-			//print output formatted
+			// prints formatted output
 			if (CONSOLE_RESULTS_PRINT) {
 				switch (path) {
 					case QUERY3_DAILY_CSV_FILE_PATH:

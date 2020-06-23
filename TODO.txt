@@ -3,8 +3,6 @@ Watermarks
 
 Ritardi in giorni?
 
-Tempi latenza e throughput (flink web ui)
+TODO: OutputFileFormatter e DataCommonTransformation overlapping
 
-Kafka Streams - controllare se funzionano le finestre temporali (1 mese/ 30 gg con key-by)
-
-Kafka producer - exactly once
+TODO: Dates in accumulators can be removed

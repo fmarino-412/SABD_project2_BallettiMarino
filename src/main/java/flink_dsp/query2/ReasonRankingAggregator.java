@@ -30,7 +30,7 @@ public class ReasonRankingAggregator implements AggregateFunction<BusData, Reaso
 	 */
 	@Override
 	public ReasonRankingAccumulator add(BusData busData, ReasonRankingAccumulator accumulator) {
-		accumulator.add(busData.getEventTime(), busData.getReason(), 1L);
+		accumulator.add(busData.getEventTime(), busData.getReason());
 		return accumulator;
 	}
 

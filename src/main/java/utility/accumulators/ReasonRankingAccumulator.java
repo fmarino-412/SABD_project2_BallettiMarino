@@ -2,24 +2,40 @@ package utility.accumulators;
 
 import java.util.*;
 
+/**
+ * Scope: Global - Query 2
+ * Accumulator used on time windows for delay reason ranking
+ */
 @SuppressWarnings("unused")
 public class ReasonRankingAccumulator {
+	// evaluation start date
 	private Date startDate;
+	// ranking of morning hours as couples [reason - occurrences]
 	private final HashMap<String, Long> amRanking;
+	// ranking of afternoon hours as couples [reason - occurrences]
 	private final HashMap<String, Long> pmRanking;
 
+	/**
+	 * No arguments constructor
+	 */
 	public ReasonRankingAccumulator() {
 		this.startDate = new Date(Long.MAX_VALUE);
+		// initialize structures
 		this.amRanking = new HashMap<>();
 		this.pmRanking = new HashMap<>();
 	}
 
-	public void add(Date date, String reason, Long counter) {
-		//threshold setup
+	/**
+	 * Adds new info to the current delay reason ranking
+	 * @param date event date (with hours and minutes too)
+	 * @param reason of the delay
+	 */
+	public void add(Date date, String reason) {
+		// threshold setup
 		Calendar threshold = Calendar.getInstance(Locale.US);
 		threshold.setTime(date);
 
-		//element setup
+		// current event date setup
 		Calendar elem = Calendar.getInstance(Locale.US);
 		elem.setTime(date);
 
@@ -48,12 +64,19 @@ public class ReasonRankingAccumulator {
 
 		//check if it falls in am or pm
 		if (elem.before(threshold)) {
-			this.amRanking.merge(reason, counter, Long::sum);
+			// add to morning ranking
+			this.amRanking.merge(reason, 1L, Long::sum);
 		} else {
-			this.pmRanking.merge(reason, counter, Long::sum);
+			// add to afternoon ranking
+			this.pmRanking.merge(reason, 1L, Long::sum);
 		}
 	}
 
+	/**
+	 * Merge ranking maps to the current ones
+	 * @param am morning ranking map
+	 * @param pm afternoon ranking map
+	 */
 	public void mergeRankings(HashMap<String, Long> am, HashMap<String, Long> pm) {
 		am.forEach((k, v) -> this.amRanking.merge(k, v, Long::sum));
 		pm.forEach((k, v) -> this.pmRanking.merge(k, v, Long::sum));

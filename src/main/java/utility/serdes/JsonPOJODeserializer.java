@@ -22,6 +22,11 @@ import org.apache.kafka.common.serialization.Deserializer;
 
 import java.util.Map;
 
+/**
+ * Scope: Kafka Streams
+ * Class used to deserialize objects from Json format
+ * @param <T> Class to deserialize
+ */
 public class JsonPOJODeserializer<T> implements Deserializer<T> {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 

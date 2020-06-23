@@ -71,7 +71,7 @@ public class Query2TopologyBuilder {
 	private static class ReasonRankingAggregator implements Aggregator<String, BusData, ReasonRankingAccumulator> {
 		@Override
 		public ReasonRankingAccumulator apply(String s, BusData busData, ReasonRankingAccumulator accumulator) {
-			accumulator.add(busData.getEventTime(), busData.getReason(), 1L);
+			accumulator.add(busData.getEventTime(), busData.getReason());
 			return accumulator;
 		}
 	}

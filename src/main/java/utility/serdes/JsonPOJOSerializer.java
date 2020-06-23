@@ -22,6 +22,11 @@ import org.apache.kafka.common.serialization.Serializer;
 
 import java.util.Map;
 
+/**
+ * Scope: Kafka Streams
+ * Class used to serialize objects to a Json format
+ * @param <T> Class to serialize
+ */
 public class JsonPOJOSerializer<T> implements Serializer<T> {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
