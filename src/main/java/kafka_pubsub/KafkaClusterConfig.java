@@ -9,7 +9,11 @@ import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Properties;
 
+/**
+ * Class with all the topics' name and the getter for all the kind of properties
+ */
 public class KafkaClusterConfig {
+	// topics
 	public static final String FLINK_TOPIC = "flink-topic";
 	public static final String FLINK_QUERY_1_DAILY_TOPIC = "flink-output-topic-query1-daily";
 	public static final String FLINK_QUERY_1_WEEKLY_TOPIC = "flink-output-topic-query1-weekly";
@@ -26,6 +30,7 @@ public class KafkaClusterConfig {
 	public static final String KAFKA_QUERY_2_WEEKLY_TOPIC = "kafka-streams-output-topic-query2-weekly";
 	public static final String KAFKA_QUERY_3_DAILY_TOPIC = "kafka-streams-output-topic-query3-daily";
 	public static final String KAFKA_QUERY_3_WEEKLY_TOPIC = "kafka-streams-output-topic-query3-weekly";
+
 	public static final String[] FLINK_TOPICS = {FLINK_QUERY_1_DAILY_TOPIC, FLINK_QUERY_1_WEEKLY_TOPIC,
 			FLINK_QUERY_1_MONTHLY_TOPIC, FLINK_QUERY_2_DAILY_TOPIC, FLINK_QUERY_2_WEEKLY_TOPIC,
 			FLINK_QUERY_3_DAILY_TOPIC, FLINK_QUERY_3_WEEKLY_TOPIC};
@@ -39,13 +44,13 @@ public class KafkaClusterConfig {
 	private static final boolean ENABLE_PRODUCER_EXACTLY_ONCE = true;
 	private static final String ENABLE_CONSUMER_EXACTLY_ONCE = "read_committed";
 
+	// brokers
 	public static final String KAFKA_BROKER_1 = "localhost:9092";
 	public static final String KAFKA_BROKER_2 = "localhost:9093";
 	public static final String KAFKA_BROKER_3 = "localhost:9094";
 
-	public static final String BOOTSTRAP_SERVERS = KAFKA_BROKER_1 + "," +
-			KAFKA_BROKER_2 + "," +
-			KAFKA_BROKER_3;
+	// bootstrap servers
+	public static final String BOOTSTRAP_SERVERS = KAFKA_BROKER_1 + "," + KAFKA_BROKER_2 + "," + KAFKA_BROKER_3;
 
 	/**
 	 * Creates properties for a Kafka Consumer representing the Flink stream source
