@@ -12,24 +12,37 @@ import java.util.Map;
 
 import static utility.DataCommonTransformation.getCalendarAtTime;
 
-//Implementation of a weekly custom window with a given timezone
+/**
+ * Implementation of a weekly custom window with a given timezone
+ */
 public class WeeklyTimeWindows extends CustomTimeWindows {
 
     private final static long SIZE_IN_MILLIS = Duration.ofDays(7L).toMillis();
 
+    /**
+     * Default constructor
+     * @param zoneId to be setted
+     * @param grace Duration representing the grace period
+     */
     @SuppressWarnings("deprecation")
     public WeeklyTimeWindows(final ZoneId zoneId, final Duration grace) {
         super(zoneId, grace);
 
-        // use of a deprecated method is the only possible solution to define a retention time different from 1 day
+        // set up retention time
         this.until(SIZE_IN_MILLIS + grace.toMillis());
     }
 
+    /**
+     * Function that assign an event to the correct weekly window based on the timestamp
+     * @param timestamp of the event
+     * @return the map of the windows
+     */
     @Override
     public Map<Long, TimeWindow> windowsFor(final long timestamp) {
         final Instant instant = Instant.ofEpochMilli(timestamp);
         final ZonedDateTime zonedDateTime = instant.atZone(zoneId);
 
+        // get first instant of the current week (monday-sunday)
         final Calendar calendar = getCalendarAtTime(toEpochMilli(zonedDateTime));
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -38,6 +51,7 @@ public class WeeklyTimeWindows extends CustomTimeWindows {
         calendar.set(Calendar.MILLISECOND, 0);
         final long startTime = calendar.getTimeInMillis();
 
+        // get last instant of the current week
         calendar.add(Calendar.WEEK_OF_YEAR, 1);
         final long endTime = calendar.getTimeInMillis() - 1;
 
@@ -46,6 +60,10 @@ public class WeeklyTimeWindows extends CustomTimeWindows {
         return windows;
     }
 
+    /**
+     * Getter for the size
+     * @return the size of the window
+     */
     @Override
     public long size() {
         return SIZE_IN_MILLIS;
