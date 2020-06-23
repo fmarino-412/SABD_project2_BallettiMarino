@@ -17,7 +17,7 @@ import utility.serdes.FlinkStringToKafkaSerializer;
 import java.text.ParseException;
 
 /**
- * Class that build the topology for the third query
+ * Class that build the topology for the third query in flink
  */
 @SuppressWarnings("Convert2Lambda")
 public class Query3TopologyBuilder {

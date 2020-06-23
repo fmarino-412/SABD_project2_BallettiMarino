@@ -6,8 +6,15 @@ import kafka_pubsub.KafkaClusterConfig;
 
 import java.util.Properties;
 
+/**
+ * Class used only to get the properties for kafka streams
+ */
 public class KafkaStreamsConfig {
 
+	/**
+	 * Create properties used in kafka streams
+	 * @return the properties
+	 */
 	public static Properties createStreamProperties() {
 
 		Properties props = new Properties();

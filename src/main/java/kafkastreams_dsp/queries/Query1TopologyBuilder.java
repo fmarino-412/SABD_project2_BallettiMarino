@@ -20,10 +20,18 @@ import java.util.ArrayList;
 
 import static utility.DataCommonTransformation.formatDate;
 
+/**
+ * Class that build the topology for the first query in kafka streams
+ */
 public class Query1TopologyBuilder {
 
+    /**
+     * Based on a source it constructs the correct transformation to the data stream for the first query topology in
+     * kafka streams
+     * @param source DataStream to be transformed
+     */
     public static void buildTopology(KStream<Long, String> source) {
-
+        // parse the correct information needed in the first query, ignoring all the malformed lines
         KStream<Long, BusData> preprocessed = source.flatMapValues(s -> {
             ArrayList<BusData> result = new ArrayList<>();
             String[] info = s.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
@@ -39,39 +47,54 @@ public class Query1TopologyBuilder {
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
                         DataCommonTransformation.toDailyKeyed(busData))
                 .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
+                // used a custom daily window
                 .windowedBy(new DailyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(0L)))
+                // set up function to aggregate daily data for average delay
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(AverageDelayAccumulator.class)))
                 .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
                 .toStream()
+                // parse the aggregate outcome to a string
                 .map(new AverageDelayMapper())
+                // publish results to the correct kafka topic
                 .to(KafkaClusterConfig.KAFKA_QUERY_1_DAILY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
 
         // 7 days statistics
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
                         DataCommonTransformation.toWeeklyKeyed(busData))
                 .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
+                // used a custom weekly window
                 .windowedBy(new WeeklyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(7L)))
+                // set up function to aggregate weekly data for average delay
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(AverageDelayAccumulator.class)))
                 .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
                 .toStream()
+                // parse the aggregate outcome to a string
                 .map(new AverageDelayMapper())
+                // publish results to the correct kafka topic
                 .to(KafkaClusterConfig.KAFKA_QUERY_1_WEEKLY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
 
         // 1 month statistics
         preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
                         DataCommonTransformation.toMonthlyKeyed(busData))
                 .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
+                // used a custom monthly window
                 .windowedBy(new MonthlyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(20L)))
+                // set up function to aggregate monthly data for average delay
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(AverageDelayAccumulator.class)))
                 .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
                 .toStream()
+                // parse the aggregate outcome to a string
                 .map(new AverageDelayMapper())
+                // publish results to the correct kafka topic
                 .to(KafkaClusterConfig.KAFKA_QUERY_1_MONTHLY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
     }
 
+    /**
+     * Custom initializer that create a new AverageDelayAccumulator
+     */
     private static class AverageDelayInitializer implements Initializer<AverageDelayAccumulator> {
         @Override
         public AverageDelayAccumulator apply() {
@@ -79,6 +102,9 @@ public class Query1TopologyBuilder {
         }
     }
 
+    /**
+     * Custom aggregator that calls the AverageDelayAccumulator's add
+     */
     private static class AverageDelayAggregator implements Aggregator<String, BusData, AverageDelayAccumulator> {
         @Override
         public AverageDelayAccumulator apply(String s, BusData busData, AverageDelayAccumulator averageDelayAccumulator) {
@@ -87,6 +113,9 @@ public class Query1TopologyBuilder {
         }
     }
 
+    /**
+     * Mapper used to extract the result string form the AverageDelayAccumulator
+     */
     private static class AverageDelayMapper implements KeyValueMapper<Windowed<String>, AverageDelayAccumulator,
             KeyValue<String, String>> {
         @Override

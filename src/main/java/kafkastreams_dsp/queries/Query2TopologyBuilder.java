@@ -21,10 +21,18 @@ import java.util.Map;
 
 import static utility.DataCommonTransformation.formatDate;
 
+/**
+ * Class that build the topology for the second query in kafka streams
+ */
 public class Query2TopologyBuilder {
 
+	/**
+	 * Based on a source it constructs the correct transformation to the data stream for the second query topology in
+	 * kafka streams
+	 * @param source DataStream to be transformed
+	 */
 	public static void buildTopology(KStream<Long, String> source) {
-
+		// parse the correct information needed in the first query, ignoring all the malformed lines
 		KStream<Long, BusData> preprocessed = source.flatMapValues(s -> {
 			ArrayList<BusData> result = new ArrayList<>();
 			String[] info = s.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
@@ -40,27 +48,38 @@ public class Query2TopologyBuilder {
 		preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
 					DataCommonTransformation.toDailyKeyed(busData)).groupByKey(Grouped.with(Serdes.String(),
 					SerDesBuilders.getSerdes(BusData.class)))
+				// used a custom daily window
 				.windowedBy(new DailyTimeWindows(ZoneId.systemDefault(), Duration.ofHours(8L)))
+				// set up function to aggregate daily data for reasons ranking
 				.aggregate(new ReasonRankingInitializer(), new ReasonRankingAggregator(),
 						Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(ReasonRankingAccumulator.class)))
 				.suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
 				.toStream()
+				// parse the aggregate outcome to a string
 				.map(new ReasonRankingMapper())
+				// publish results to the correct kafka topic
 				.to(KafkaClusterConfig.KAFKA_QUERY_2_DAILY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
 
 		// 7 days statistics
 		preprocessed.map((KeyValueMapper<Long, BusData, KeyValue<String, BusData>>) (aLong, busData) ->
 					DataCommonTransformation.toWeeklyKeyed(busData)).groupByKey(Grouped.with(Serdes.String(),
 					SerDesBuilders.getSerdes(BusData.class)))
+				// used a custom weekly window
 				.windowedBy(new WeeklyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(5L)))
+				// set up function to aggregate weekly data for reasons ranking
 				.aggregate(new ReasonRankingInitializer(), new ReasonRankingAggregator(),
 						Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(ReasonRankingAccumulator.class)))
 				.suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
 				.toStream()
+				// parse the aggregate outcome to a string
 				.map(new ReasonRankingMapper())
+				// publish results to the correct kafka topic
 				.to(KafkaClusterConfig.KAFKA_QUERY_2_WEEKLY_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
 	}
 
+	/**
+	 * Custom initializer that create a new ReasonRankingAccumulator
+	 */
 	private static class ReasonRankingInitializer implements Initializer<ReasonRankingAccumulator> {
 		@Override
 		public ReasonRankingAccumulator apply() {
@@ -68,6 +87,9 @@ public class Query2TopologyBuilder {
 		}
 	}
 
+	/**
+	 * Custom aggregator that calls the ReasonRankingAccumulator's add
+	 */
 	private static class ReasonRankingAggregator implements Aggregator<String, BusData, ReasonRankingAccumulator> {
 		@Override
 		public ReasonRankingAccumulator apply(String s, BusData busData, ReasonRankingAccumulator accumulator) {
@@ -76,6 +98,9 @@ public class Query2TopologyBuilder {
 		}
 	}
 
+	/**
+	 * Mapper used to extract the result string form the ReasonRankingAccumulator
+	 */
 	private static class ReasonRankingMapper implements KeyValueMapper<Windowed<String>, ReasonRankingAccumulator,
 			KeyValue<String, String>> {
 		private static final String AM = "05:00-11:59";
@@ -113,6 +138,11 @@ public class Query2TopologyBuilder {
 			return new KeyValue<>(stringWindowed.key(), outcomeBuilder.toString());
 		}
 
+		/**
+		 * Method to add list's elements to a string builder separated by a comma
+		 * @param outcomeBuilder where to append elements
+		 * @param list
+		 */
 		private void addElements(StringBuilder outcomeBuilder, List<Map.Entry<String, Long>> list) {
 			String elem;
 			boolean added = false;
