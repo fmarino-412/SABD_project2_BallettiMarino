@@ -14,6 +14,15 @@ public class AverageDelayAccumulator {
 	private HashMap<String, AverageDelayStatistics> boroMap;
 
 	/**
+	 * Scope: Kafka Streams' serdes - needed due to nested class serialization (AverageDelayStatistics)
+	 * Default constructor
+	 * @param boroMap neighbourhood statistics hash map
+	 */
+	public AverageDelayAccumulator(HashMap<String, AverageDelayStatistics> boroMap) {
+		this.boroMap = boroMap;
+	}
+
+	/**
 	 * No arguments constructor
 	 */
 	public AverageDelayAccumulator() {
