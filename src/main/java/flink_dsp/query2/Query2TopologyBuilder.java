@@ -15,11 +15,18 @@ import utility.serdes.FlinkStringToKafkaSerializer;
 
 import java.text.ParseException;
 
+/**
+ * Class that build the topology for the second query
+ */
 @SuppressWarnings("Convert2Lambda")
 public class Query2TopologyBuilder {
 
+	/**
+	 * Based on a source it constructs the correct transformation to the data stream for the second query topology
+	 * @param source DataStream to be transformed
+	 */
 	public static void buildTopology(DataStream<Tuple2<Long, String>> source) {
-
+		// parse the correct information needed in the second query, ignoring all the malformed lines
 		DataStream<BusData> stream = source
 				.flatMap(new FlatMapFunction<Tuple2<Long, String>, BusData>() {
 					@Override
@@ -38,9 +45,12 @@ public class Query2TopologyBuilder {
 
 		// 1 day statistics
 		stream.windowAll(TumblingEventTimeWindows.of(Time.days(1), Time.hours(4)))
+				// specify the aggregation function and the process window to correctly assign start date fo the window
 				.aggregate(new ReasonRankingAggregator(), new ReasonRankingProcessWindow())
 				.name("query2-daily-ranking")
+				// parse the ReasonRankingOutcome to a String
 				.map(new Query2TopologyBuilder.ExtractStringMapper())
+				// write the output string to the correct topic in kafka
 				.addSink(new FlinkKafkaProducer<>(KafkaClusterConfig.FLINK_QUERY_2_DAILY_TOPIC,
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_2_DAILY_TOPIC),
 						KafkaClusterConfig.getFlinkSinkProperties("producer" +
@@ -50,9 +60,12 @@ public class Query2TopologyBuilder {
 
 		// 7 days statistics
 		stream.windowAll(TumblingEventTimeWindows.of(Time.days(7), Time.hours(4)))
+				// specify the aggregation function and the process window to correctly assign start date fo the window
 				.aggregate(new ReasonRankingAggregator(), new ReasonRankingProcessWindow())
 				.name("query2-weekly-ranking")
+				// parse the ReasonRankingOutcome to a String
 				.map(new Query2TopologyBuilder.ExtractStringMapper())
+				// write the output string to the correct topic in kafka
 				.addSink(new FlinkKafkaProducer<>(KafkaClusterConfig.FLINK_QUERY_2_WEEKLY_TOPIC,
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_2_WEEKLY_TOPIC),
 						KafkaClusterConfig.getFlinkSinkProperties("producer" +
@@ -61,8 +74,10 @@ public class Query2TopologyBuilder {
 				.name("query2-weekly-ranking-sink");
 	}
 
+	/**
+	 * Class used to extract the result string form the ReasonRankingOutcome
+	 */
 	private static class ExtractStringMapper implements MapFunction<ReasonRankingOutcome, String> {
-
 		@Override
 		public String map(ReasonRankingOutcome reasonRankingOutcome) {
 			return OutputFormatter.query2OutcomeFormatter(reasonRankingOutcome);

@@ -5,8 +5,11 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 import utility.DataCommonTransformation;
 
-public class CompanyRankingProcessWindow extends ProcessAllWindowFunction<CompanyRankingOutcome,
-		CompanyRankingOutcome, TimeWindow> {
+/**
+ * Used to add the correct window start date to the CompanyRankingOutcome
+ */
+public class CompanyRankingProcessWindow extends ProcessAllWindowFunction<CompanyRankingOutcome, CompanyRankingOutcome,
+		TimeWindow> {
 	@Override
 	public void process(Context context, Iterable<CompanyRankingOutcome> iterable,
 						Collector<CompanyRankingOutcome> collector) {

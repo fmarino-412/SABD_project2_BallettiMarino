@@ -16,11 +16,18 @@ import utility.serdes.FlinkStringToKafkaSerializer;
 
 import java.text.ParseException;
 
+/**
+ * Class that build the topology for the third query
+ */
 @SuppressWarnings("Convert2Lambda")
 public class Query3TopologyBuilder {
 
+	/**
+	 * Based on a source it constructs the correct transformation to the data stream for the third query topology
+	 * @param source DataStream to be transformed
+	 */
 	public static void buildTopology(DataStream<Tuple2<Long, String>> source) {
-
+		// parse the correct information needed in the third query, ignoring all the malformed lines
 		DataStream<BusData> stream = source
 				.flatMap(new FlatMapFunction<Tuple2<Long, String>, BusData>() {
 					@Override
@@ -38,9 +45,12 @@ public class Query3TopologyBuilder {
 
 		// 1 day statistics
 		stream.windowAll(TumblingEventTimeWindows.of(Time.days(1), Time.hours(4)))
+				// specify the aggregation function and the process window to correctly assign start date fo the window
 				.aggregate(new CompanyRankingAggregator(), new CompanyRankingProcessWindow())
 				.name("query3-daily-ranking")
+				// parse the CompanyRankingOutcome to a String
 				.map(new Query3TopologyBuilder.ExtractStringMapper())
+				// write the output string to the correct topic in kafka
 				.addSink(new FlinkKafkaProducer<>(KafkaClusterConfig.FLINK_QUERY_3_DAILY_TOPIC,
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_3_DAILY_TOPIC),
 						KafkaClusterConfig.getFlinkSinkProperties("producer" +
@@ -50,9 +60,12 @@ public class Query3TopologyBuilder {
 
 		// 7 days statistics
 		stream.windowAll(TumblingEventTimeWindows.of(Time.days(7), Time.hours(4)))
+				// specify the aggregation function and the process window to correctly assign start date fo the window
 				.aggregate(new CompanyRankingAggregator(), new CompanyRankingProcessWindow())
 				.name("query3-weekly-ranking")
+				// parse the CompanyRankingOutcome to a String
 				.map(new Query3TopologyBuilder.ExtractStringMapper())
+				// write the output string to the correct topic in kafka
 				.addSink(new FlinkKafkaProducer<>(KafkaClusterConfig.FLINK_QUERY_3_WEEKLY_TOPIC,
 						new FlinkStringToKafkaSerializer(KafkaClusterConfig.FLINK_QUERY_3_WEEKLY_TOPIC),
 						KafkaClusterConfig.getFlinkSinkProperties("producer" +
@@ -61,8 +74,10 @@ public class Query3TopologyBuilder {
 				.name("query3-weekly-ranking-sink");
 	}
 
+	/**
+	 * Class used to extract the result string form the CompanyRankingOutcome
+	 */
 	private static class ExtractStringMapper implements MapFunction<CompanyRankingOutcome, String> {
-
 		@Override
 		public String map(CompanyRankingOutcome companyRankingOutcome) {
 			return OutputFormatter.query3OutcomeFormatter(companyRankingOutcome);

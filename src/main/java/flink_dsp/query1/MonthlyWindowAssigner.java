@@ -8,6 +8,9 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * Custom tumbling window, this class correctly assign a tuple to the correct window based on the month
+ */
 public class MonthlyWindowAssigner extends TumblingEventTimeWindows {
 
 	protected MonthlyWindowAssigner() {

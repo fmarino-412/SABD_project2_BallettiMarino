@@ -5,8 +5,11 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 import utility.DataCommonTransformation;
 
-public class AverageDelayProcessWindow extends ProcessAllWindowFunction<AverageDelayOutcome,
-		AverageDelayOutcome, TimeWindow> {
+/**
+ * Used to add the correct window start date to the AverageDelayOutcome
+ */
+public class AverageDelayProcessWindow extends ProcessAllWindowFunction<AverageDelayOutcome, AverageDelayOutcome,
+		TimeWindow> {
 	@Override
 	public void process(Context context, Iterable<AverageDelayOutcome> iterable,
 						Collector<AverageDelayOutcome> collector) {

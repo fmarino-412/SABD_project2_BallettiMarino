@@ -5,8 +5,11 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 import utility.DataCommonTransformation;
 
-public class ReasonRankingProcessWindow extends ProcessAllWindowFunction<ReasonRankingOutcome,
-		ReasonRankingOutcome, TimeWindow> {
+/**
+ * Used to add the correct window start date to the ReasonRankingOutcome
+ */
+public class ReasonRankingProcessWindow extends ProcessAllWindowFunction<ReasonRankingOutcome, ReasonRankingOutcome,
+		TimeWindow> {
 	@Override
 	public void process(Context context, Iterable<ReasonRankingOutcome> iterable,
 						Collector<ReasonRankingOutcome> collector) {
