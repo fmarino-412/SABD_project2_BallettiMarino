@@ -13,10 +13,8 @@ public class ReasonRankingOutcome {
 
 	/**
 	 * Constructor for the outcome that sets the start date and initializes the lists
-	 * @param startDate to be set
 	 */
-	public ReasonRankingOutcome(Date startDate) {
-		this.startDate = startDate;
+	public ReasonRankingOutcome() {
 		this.amRanking = new ArrayList<>();
 		this.pmRanking = new ArrayList<>();
 	}

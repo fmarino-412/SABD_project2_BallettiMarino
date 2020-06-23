@@ -15,10 +15,8 @@ public class CompanyRankingOutcome {
 
 	/**
 	 * Constructor for the outcome that sets the start date and initializes the lists
-	 * @param startDate to be set
 	 */
-	public CompanyRankingOutcome(Date startDate) {
-		this.startDate = startDate;
+	public CompanyRankingOutcome() {
 		this.companyRanking = new ArrayList<>();
 	}
 

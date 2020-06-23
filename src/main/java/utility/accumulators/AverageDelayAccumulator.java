@@ -12,26 +12,11 @@ public class AverageDelayAccumulator {
 
 	// map of [neighbourhood - statistics] couples
 	private HashMap<String, AverageDelayStatistics> boroMap;
-	// evaluation start date
-	private Date startDate;
-
-	/**
-	 * Scope: Kafka Streams' serdes
-	 * Default constructor
-	 * @param boroMap neighbourhood statistics hash map
-	 * @param startDate evaluation start date
-	 */
-	public AverageDelayAccumulator(HashMap<String, AverageDelayStatistics> boroMap, Date startDate) {
-		this.boroMap = boroMap;
-		this.startDate = startDate;
-	}
 
 	/**
 	 * No arguments constructor
 	 */
 	public AverageDelayAccumulator() {
-		// max possible start date, it will be then set to evaluation window start date
-		this.startDate = new Date(Long.MAX_VALUE);
 		// create the neighbourhood map
 		this.boroMap = new HashMap<>();
 	}
@@ -57,17 +42,6 @@ public class AverageDelayAccumulator {
 
 	public HashMap<String, AverageDelayStatistics> getBoroMap() {
 		return boroMap;
-	}
-
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	/**
-	 * Scope: Kafka Streams' serdes
-	 */
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
 	}
 
 	/**

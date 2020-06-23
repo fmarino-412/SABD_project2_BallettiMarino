@@ -63,7 +63,7 @@ public class ReasonRankingAggregator implements AggregateFunction<BusData, Reaso
 		pmList.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
 
 		// Generating outcome
-		ReasonRankingOutcome outcome = new ReasonRankingOutcome(accumulator.getStartDate());
+		ReasonRankingOutcome outcome = new ReasonRankingOutcome();
 		for (int i = 0; i < RANK_SIZE; i++) {
 			try {
 				outcome.addAmRanking(amList.get(i).getKey());

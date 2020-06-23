@@ -4,6 +4,8 @@ import org.apache.flink.api.common.functions.AggregateFunction;
 import utility.BusData;
 import utility.accumulators.AverageDelayAccumulator;
 
+import java.util.Date;
+
 /**
  * Class used to aggregate data for the first query
  */
@@ -45,7 +47,7 @@ public class AverageDelayAggregator implements AggregateFunction<BusData, Averag
 	 * @return an AverageDelayOutcome with the results
 	 */
 	public AverageDelayOutcome getResult(AverageDelayAccumulator accumulator) {
-		AverageDelayOutcome outcome = new AverageDelayOutcome(accumulator.getStartDate());
+		AverageDelayOutcome outcome = new AverageDelayOutcome();
 		accumulator.getBoroMap().forEach((k, v) -> outcome.addMean(k, v.getTotal() / v.getCounter()));
 		return outcome;
 	}
