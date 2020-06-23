@@ -21,23 +21,26 @@ import java.util.Properties;
 
 import static kafka_pubsub.KafkaClusterConfig.FLINK_TOPIC;
 
-@SuppressWarnings("Convert2Lambda")
-public class FlinkDataStreamProcessingMain {
+/**
+ * Class used to start Flink data stream processing
+ */
+public class FlinkDSPMain {
 
 	private static final String CONSUMER_GROUP_ID = "single-flink-consumer";
 
 	public static void main(String[] args) {
 
-		//setup flink environment
+		// setup flink environment
 		Configuration conf = new Configuration();
 		StreamExecutionEnvironment environment = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(conf);
 		environment.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
-		//add the source and handle watermarks
+		// add the source and handle watermarks
 		Properties props = KafkaClusterConfig.getFlinkSourceProperties(CONSUMER_GROUP_ID);
 
 		DataStream<Tuple2<Long, String>> stream = environment
 				.addSource(new FlinkKafkaConsumer<>(FLINK_TOPIC, new SimpleStringSchema(), props))
+				// extract event timestamp and set it as key
 				.flatMap(new FlatMapFunction<String, Tuple2<Long, String>>() {
 					@Override
 					public void flatMap(String s, Collector<Tuple2<Long, String>> collector) {
@@ -50,6 +53,7 @@ public class FlinkDataStreamProcessingMain {
 						}
 					}
 				})
+				// assign timestamp to every tuple to enable watermarking system
 				.assignTimestampsAndWatermarks(new AscendingTimestampExtractor<Tuple2<Long, String>>() {
 					@Override
 					public long extractAscendingTimestamp(Tuple2<Long, String> tuple) {

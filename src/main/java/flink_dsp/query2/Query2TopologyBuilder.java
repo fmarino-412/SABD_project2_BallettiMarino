@@ -18,7 +18,6 @@ import java.text.ParseException;
 /**
  * Class that build the topology for the second query in flink
  */
-@SuppressWarnings("Convert2Lambda")
 public class Query2TopologyBuilder {
 
 	/**
