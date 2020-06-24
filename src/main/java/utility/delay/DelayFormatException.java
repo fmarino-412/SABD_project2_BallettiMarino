@@ -1,4 +1,4 @@
-package utility.delay_utility;
+package utility.delay;
 
 /**
  * Exception for information gain failure during delay parsing

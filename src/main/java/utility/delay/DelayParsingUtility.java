@@ -1,4 +1,4 @@
-package utility.delay_utility;
+package utility.delay;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
