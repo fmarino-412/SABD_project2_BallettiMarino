@@ -86,7 +86,7 @@ This package contains classes for queries' topologies building and execution usi
 This package contains configurations for the Kafka publish-subscribe service and classes for Consumers and Producers instantiation:
 
 * [KafkaClusterConfig.java](src/main/java/kafka_pubsub/KafkaClusterConfig.java) containing topics name and properties builders (for publishers and subscribers),
-* [KafkaParametricConsumers.java](src/main/java/kafka_pubsub/KafkaParametricConsumers.java) used to create and start consumers registered to Kafka topics (of DSP outputs) and
+* [KafkaParametricConsumer.java](src/main/java/kafka_pubsub/KafkaParametricConsumer.java) used to create and start consumers registered to Kafka topics (of DSP outputs) and
 * [KafkaSingleProducer.java](src/main/java/kafka_pubsub/KafkaSingleProducer.java) creates a producer that publishes DSP input tuples to Kafka topics.
 
 ### [kafkastreams_dsp package](src/main/java/kafkastreams_dsp)
@@ -139,7 +139,7 @@ This package contains utilities for latency and throughput evaluation:
 This package contains utilities for delay string parsing and delay type ranking:
 
 * [`DelayFormatException.java`](src/main/java/utility/delay/DelayFormatException.java) that is a custom Java Exception for failure on gaining information from delay strings,
-* [`DealyInfo.java`](src/main/java/utility/delay/DealyInfo.java) representing a single parsed delay information,
+* [`DealyInfo.java`](src/main/java/utility/delay/DelayInfo.java) representing a single parsed delay information,
 * [`DelayParsingUtility.java`](src/main/java/utility/delay/DelayParsingUtility.java) that contains delay strings parsing logic and
 * [`DelayScorer.java`](src/main/java/utility/delay/DelayScorer.java) used to assign a score on delay and reason basis (third query).
 
