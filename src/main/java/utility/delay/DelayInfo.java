@@ -1,7 +1,7 @@
 package utility.delay;
 
 /**
- * Class representing parsed delay informations
+ * Class representing parsed delay information
  */
 public class DelayInfo {
 
