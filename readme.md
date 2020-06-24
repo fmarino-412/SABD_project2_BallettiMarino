@@ -76,7 +76,7 @@ This package contains classes for queries' topologies building and execution usi
 
 #### [flink_dsp.query3 package](src/main/java/flink_dsp/query3)
 
-* [`CompanyRankingAggregator.java](src/main/java/flink_dsp/query3/CompanyRankingAggregator.java) used to aggregate data for the third query using daily and weekly windows,
+* [`CompanyRankingAggregator.java`](src/main/java/flink_dsp/query3/CompanyRankingAggregator.java) used to aggregate data for the third query using daily and weekly windows,
 * [`CompanyRankingOutcome.java`](src/main/java/flink_dsp/query3/CompanyRankingOutcome.java) representing the aggregation result,
 * [`CompanyRankingProcessWindow.java`](src/main/java/flink_dsp/query3/CompanyRankingProcessWindow.java) used to set correctly windows' start times and
 * [`Query3TopologyBuilder.java`](src/main/java/flink_dsp/query3/Query3TopologyBuilder.java) that builds the topology of the third query.
