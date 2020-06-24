@@ -131,23 +131,23 @@ This package contains classes used as accumulators for both Flink and Kafka Stre
 
 This package contains utilities for latency and throughput evaluation:
 
-* `BenchmarkFlinkSink.java` representing a sink that can be used in Flink topology to evaluate performances and
-* `SynchronizedCounter.java` that is a static counter for benchmark evaluation (counts tuples and time).
+* [`BenchmarkFlinkSink.java`](src/main/java/utility/benchmarks/BenchmarkFlinkSink.java) representing a sink that can be used in Flink topology to evaluate performances and
+* [`SynchronizedCounter.java`](src/main/java/utility/benchmarks/SynchronizedCounter.java) that is a static counter for benchmark evaluation (counts tuples and time).
 
 #### [utility.delay package](src/main/java/utility/delay)
 
 This package contains utilities for delay string parsing and delay type ranking:
 
-* `DelayFormatException.java` that is a custom Java Exception for failure on gaining information from delay strings,
-* `DealyInfo.java` representing a single parsed delay information,
-* `DelayParsingUtility.java` that contains delay strings parsing logic and
-* `DelayScorer.java` used to assign a score on delay and reason basis (third query).
+* [`DelayFormatException.java`](src/main/java/utility/delay/DelayFormatException.java) that is a custom Java Exception for failure on gaining information from delay strings,
+* [`DealyInfo.java`](src/main/java/utility/delay/DealyInfo.java) representing a single parsed delay information,
+* [`DelayParsingUtility.java`](src/main/java/utility/delay/DelayParsingUtility.java) that contains delay strings parsing logic and
+* [`DelayScorer.java`](src/main/java/utility/delay/DelayScorer.java) used to assign a score on delay and reason basis (third query).
 
-#### utility.serdes package
+#### [utility.serdes package](src/main/java/utility/serdes)
 
 This package contains data serialization and deserialization utilities:
 
-* `FlinkStringToKafkaSerializer.java` needed to serialize Flink output strings for publication Kafka topics,
-* `JsonPOJODeserializer.java` used to deserialize custom object from JSON format,
-* `JsonPOJOSerializer.java` used to serialize custom object to JSON format and
-* `SerDesBuilders.java` used to build ser-des for Kafka Streams.
+* [`FlinkStringToKafkaSerializer.java`](src/main/java/utility/serdes/FlinkStringToKafkaSerializer.java) needed to serialize Flink output strings for publication Kafka topics,
+* [`JsonPOJODeserializer.java`](src/main/java/utility/serdes/JsonPOJODeserializer.java) used to deserialize custom object from JSON format,
+* [`JsonPOJOSerializer.java`](src/main/java/utility/serdes/JsonPOJOSerializer.java) used to serialize custom object to JSON format and
+* [`SerDesBuilders.java`](src/main/java/utility/serdes/SerDesBuilders.java) used to build ser-des for Kafka Streams.
