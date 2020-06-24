@@ -11,9 +11,9 @@ Folder containing the input dataset as a CSV file ([`dataset.csv`](data/dataset.
 
 Folder containing scripts and file for a container based execution of the project architecture:
 
-1. `start-dockers.sh` creates the Kafka Cluster and necessary Kafka topics,
-2. `stop-dockers.sh` stops and deletes the Kafka Cluster after the created topics deletion and
-3. `docker-compose.yml` is the Docker Compose file used to create the container infrastructure.
+1. [`start-dockers.sh`](docker-env/start-dockers.sh) creates the Kafka Cluster and necessary Kafka topics,
+2. [`stop-dockers.sh`](docker-env/stop-dockers.sh) stops and deletes the Kafka Cluster after the created topics deletion and
+3. [`docker-compose.yml`](docker-env/docker-compose.yml) is the Docker Compose file used to create the container infrastructure.
 
 ### [Documentation](Documentation)
 
