@@ -1,5 +1,5 @@
 # SABD 2019/2020 second project
-Authors: Marco Balletti, Francesco Marino
+Authors: [Marco Balletti](https://github.com/marcobaleno96), [Francesco Marino](https://github.com/francescom412)
 
 <h2>Project structure descritption</h2>
 
