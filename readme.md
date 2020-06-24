@@ -138,7 +138,7 @@ This package contains utilities for latency and throughput evaluation:
 
 This package contains utilities for delay string parsing and delay type ranking:
 
-* `DelayFormatException.java` that is a custom exception for failure on gaining information from delay strings,
+* `DelayFormatException.java` that is a custom Java Exception for failure on gaining information from delay strings,
 * `DealyInfo.java` representing a single parsed delay information,
 * `DelayParsingUtility.java` that contains delay strings parsing logic and
 * `DelayScorer.java` used to assign a score on delay and reason basis (third query).
@@ -147,7 +147,7 @@ This package contains utilities for delay string parsing and delay type ranking:
 
 This package contains data serialization and deserialization utilities:
 
-* `FlinkStringToKafkaSerializer.java` needed to serialize Flink output strings for Kafka publication,
+* `FlinkStringToKafkaSerializer.java` needed to serialize Flink output strings for publication Kafka topics,
 * `JsonPOJODeserializer.java` used to deserialize custom object from JSON format,
 * `JsonPOJOSerializer.java` used to serialize custom object to JSON format and
 * `SerDesBuilders.java` used to build ser-des for Kafka Streams.
