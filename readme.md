@@ -110,31 +110,31 @@ This package contains custom Kafka Streams windows:
 * `MonthlyTimeWindows.java` that implements a monthly time window (aligned to the first day of a month in a given time zone) and
 * `WeeklyTimeWindows.java` implementing a weekly time window (starts on Monday and ends on Sunday aligned to a given time zone).
 
-### utility package
+### [utility package](src/main/java/utility)
 
 This package contains classes needed for queries' execution support, in particular:
 
-* `BusData.java` structure representing tuple information needed for evaluation,
-* `DataCommonTransformation.java` containing common method needed for queries processing and
-* `OutputFormatter.java` needed for query outcomes formatting in order to be published on Kafka.
+* [`BusData.java`](src/main/java/utility/BusData.java) structure representing tuple information needed for evaluation,
+* [`DataCommonTransformation.java`](src/main/java/utility/DataCommonTransformation.java) containing common method needed for queries processing and
+* [`OutputFormatter.java`](src/main/java/utility/OutputFormatter.java) needed for query outcomes formatting in order to be published on Kafka.
 
-#### utility.accumulators package
+#### [utility.accumulators package](src/main/java/utility/accumulators)
 
 This package contains classes used as accumulators for both Flink and Kafka Streams processing:
 
-* `AverageDelayAccumulator.java` used for average delay statistics grouped by neighbourhood (first query),
-* `AverageDelayStatistics.java` used to maintain information about per neighbourhood delay (first query),
-* `CompanyRankingAccumulator.java` used for company name ranking on delay basis (third query) and
-* `ReasonRankingAccumulator.java` needed for delay reason rankings (second query).
+* [`AverageDelayAccumulator.java`](src/main/java/utility/accumulators/AverageDelayAccumulator.java) used for average delay statistics grouped by neighbourhood (first query),
+* [`AverageDelayStatistics.java`](src/main/java/utility/accumulators/AverageDelayStatistics.java) used to maintain information about per neighbourhood delay (first query),
+* [`CompanyRankingAccumulator.java`](src/main/java/utility/accumulators/CompanyRankingAccumulator.java) used for company name ranking on delay basis (third query) and
+* [`ReasonRankingAccumulator.java`](src/main/java/utility/accumulators/ReasonRankingAccumulator.java) needed for delay reason rankings (second query).
 
-#### utility.benchmarks package
+#### [utility.benchmarks package](src/main/java/utility/benchmarks)
 
 This package contains utilities for latency and throughput evaluation:
 
 * `BenchmarkFlinkSink.java` representing a sink that can be used in Flink topology to evaluate performances and
 * `SynchronizedCounter.java` that is a static counter for benchmark evaluation (counts tuples and time).
 
-#### utility.delay package
+#### [utility.delay package](src/main/java/utility/delay)
 
 This package contains utilities for delay string parsing and delay type ranking:
 
