@@ -8,8 +8,6 @@ import java.util.*;
  */
 @SuppressWarnings("unused")
 public class ReasonRankingAccumulator {
-	// evaluation start date
-	private Date startDate;
 	// ranking of morning hours as couples [reason - occurrences]
 	private final HashMap<String, Long> amRanking;
 	// ranking of afternoon hours as couples [reason - occurrences]
@@ -19,7 +17,6 @@ public class ReasonRankingAccumulator {
 	 * No arguments constructor
 	 */
 	public ReasonRankingAccumulator() {
-		this.startDate = new Date(Long.MAX_VALUE);
 		// initialize structures
 		this.amRanking = new HashMap<>();
 		this.pmRanking = new HashMap<>();
@@ -80,14 +77,6 @@ public class ReasonRankingAccumulator {
 	public void mergeRankings(HashMap<String, Long> am, HashMap<String, Long> pm) {
 		am.forEach((k, v) -> this.amRanking.merge(k, v, Long::sum));
 		pm.forEach((k, v) -> this.pmRanking.merge(k, v, Long::sum));
-	}
-
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
 	}
 
 	public HashMap<String, Long> getAmRanking() {

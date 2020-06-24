@@ -130,7 +130,7 @@ public class DataCommonTransformation {
 		List<Map.Entry<String, Double>> ranking = buildCompanyRanking(accumulator.getCompanyRanking());
 
 		// Generating outcome
-		CompanyRankingOutcome outcome = new CompanyRankingOutcome(accumulator.getStartDate());
+		CompanyRankingOutcome outcome = new CompanyRankingOutcome();
 		for (int i = 0; i < RANK_SIZE; i++) {
 			try {
 				outcome.addRanking(new Tuple2<>(ranking.get(i).getKey(), ranking.get(i).getValue()));

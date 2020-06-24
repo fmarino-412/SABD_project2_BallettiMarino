@@ -14,8 +14,6 @@ public class CompanyRankingAccumulator {
 
 	// delay time threshold (in minutes) over which the score has a double value
 	private static final int THRESHOLD_FOR_DOUBLE_SCORE = 30;
-	// evaluation start date
-	private Date startDate;
 	// map of [company - score] couples
 	private final HashMap<String, Double> companyRanking;
 
@@ -23,8 +21,6 @@ public class CompanyRankingAccumulator {
 	 * No arguments constructor
 	 */
 	public CompanyRankingAccumulator() {
-		// max possible start date, it will be then set to evaluation window start date
-		this.startDate = new Date(Long.MAX_VALUE);
 		// hash map initialization
 		companyRanking = new HashMap<>();
 	}
@@ -43,17 +39,6 @@ public class CompanyRankingAccumulator {
 		}
 		// add new evaluated score to the previous one
 		this.companyRanking.merge(companyName, DelayScorer.computeAmount(reason, countTwice), Double::sum);
-	}
-
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	/**
-	 * Scope: Kafka Streams' serdes
-	 */
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
 	}
 
 	public HashMap<String, Double> getCompanyRanking() {

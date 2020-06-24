@@ -13,10 +13,8 @@ public class AverageDelayOutcome {
 
 	/**
 	 * Default constructor
-	 * @param startDate to be set
 	 */
-	public AverageDelayOutcome(Date startDate) {
-		this.startDate = startDate;
+	public AverageDelayOutcome() {
 	}
 
 	/**

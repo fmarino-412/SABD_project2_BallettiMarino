@@ -36,6 +36,10 @@ public abstract class CustomTimeWindows extends Windows<TimeWindow> {
 		return zonedDateTime.toInstant().toEpochMilli();
 	}
 
+	/**
+	 * Getter for the grace period
+	 * @return grace period in milliseconds
+	 */
 	@Override
 	public long gracePeriodMs() {
 		return grace;

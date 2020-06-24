@@ -8,6 +8,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+/**
+ * Class used to start a producer that reads from file and send tuples to Kafka topics
+ */
 @SuppressWarnings("BusyWait")
 public class ProducerLauncher {
 
@@ -16,20 +19,25 @@ public class ProducerLauncher {
 
 	public static void main(String[] args) {
 
+		// create producer
 		KafkaSingleProducer producer = new KafkaSingleProducer();
+
 		String line;
 		Long eventTime;
 
 		try {
+			// read from file
 			FileReader file = new FileReader(CSV_PATH);
 			BufferedReader bufferedReader = new BufferedReader(file);
 
 			while ((line = bufferedReader.readLine()) != null) {
 				try {
+					// produce tuples simulating a data stream processing source
 					String[] info = line.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 					DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
 					eventTime = format.parse(info[7]).getTime();
 					producer.produce(eventTime, line, eventTime);
+					// for real data stream processing source simulation
 					Thread.sleep(SLEEP);
 				} catch (ParseException | InterruptedException ignored) {
 				}
