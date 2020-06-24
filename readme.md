@@ -50,10 +50,10 @@ It is recommended to open the entire directory with an IDE for better code navig
 
 In the main folder there are processing architecture launchers:
 
-* [ConsumersLauncher.java](src/main/java/ConsumersLauncher.java) that launches consumers for Kafka Streams and Flink outputs,
-* [FlinkDSPMain.java](src/main/java/FlinkDSPMain.java) that starts Flink data stream processing,
-* [KafkaStreamsDSPMain.java](src/main/java/KafkaStreamsDSPMain.java) that starts Kafka Streams processing and
-* [ProducerLauncher.java](src/main/java/ProducerLauncher.java) used to start a producer that reads from file and publish tuples to Kafka topics simulating a real time data source.
+* [`ConsumersLauncher.java`](src/main/java/ConsumersLauncher.java) that launches consumers for Kafka Streams and Flink outputs,
+* [`FlinkDSPMain.java`](src/main/java/FlinkDSPMain.java) that starts Flink data stream processing,
+* [`KafkaStreamsDSPMain.java`](src/main/java/KafkaStreamsDSPMain.java) that starts Kafka Streams processing and
+* [`ProducerLauncher.java`](src/main/java/ProducerLauncher.java) used to start a producer that reads from file and publish tuples to Kafka topics simulating a real time data source.
 
 ### [flink_dsp package](src/main/java/flink_dsp)
 
@@ -61,54 +61,54 @@ This package contains classes for queries' topologies building and execution usi
 
 #### [flink_dsp.query1 package](src/main/java/flink_dsp/query1)
 
-* [AverageDelayAggregator.java](src/main/java/flink_dsp/query1/AverageDelayAggregator.java) used to aggregate data for the first query using daily, weekly and monthly windows,
-* [AverageDelayOutcome.java](src/main/java/flink_dsp/query1/AverageDelayOutcome.java) representing the aggregation result,
-* [AverageDelayProcessWindow.java](src/main/java/flink_dsp/query1/AverageDelayProcessWindow.java) used to set correctly windows' start times,
-* [MonthlyWindowAssigner.java](src/main/java/flink_dsp/query1/MonthlyWindowAssigner.java) contains a custom thumbling window assigner for tuples separation by event time month (this was necessary due to differences in month durations) and
-* [Query1TopologyBuilder.java](src/main/java/flink_dsp/query1/Query1TopologyBuilder.java) that builds the topology of the first query.
+* [`AverageDelayAggregator.java`](src/main/java/flink_dsp/query1/AverageDelayAggregator.java) used to aggregate data for the first query using daily, weekly and monthly windows,
+* [`AverageDelayOutcome.java`](src/main/java/flink_dsp/query1/AverageDelayOutcome.java) representing the aggregation result,
+* [`AverageDelayProcessWindow.java`](src/main/java/flink_dsp/query1/AverageDelayProcessWindow.java) used to set correctly windows' start times,
+* [`MonthlyWindowAssigner.java`](src/main/java/flink_dsp/query1/MonthlyWindowAssigner.java) contains a custom thumbling window assigner for tuples separation by event time month (this was necessary due to differences in month durations) and
+* [`Query1TopologyBuilder.java`](src/main/java/flink_dsp/query1/Query1TopologyBuilder.java) that builds the topology of the first query.
 
 #### [flink_dsp.query2 package](src/main/java/flink_dsp/query2)
 
-* [ReasonRankingAggregator.java](src/main/java/flink_dsp/query2/ReasonRankingAggregator.java) used to aggregate data for the second query using daily and weekly windows,
-* [ReasonRankingOutcome.java](src/main/java/flink_dsp/query2/ReasonRankingOutcome.java) representing the aggregation result,
-* [ReasonRankingProcessWindow.java](src/main/java/flink_dsp/query2/ReasonRankingProcessWindow.java) used to set correctly windows' start times and
-* [Query2TopologyBuilder.java](src/main/java/flink_dsp/query2/Query2TopologyBuilder.java) that builds the topology of the second query.
+* [`ReasonRankingAggregator.java`](src/main/java/flink_dsp/query2/ReasonRankingAggregator.java) used to aggregate data for the second query using daily and weekly windows,
+* [`ReasonRankingOutcome.java`](src/main/java/flink_dsp/query2/ReasonRankingOutcome.java) representing the aggregation result,
+* [`ReasonRankingProcessWindow.java`](src/main/java/flink_dsp/query2/ReasonRankingProcessWindow.java) used to set correctly windows' start times and
+* [`Query2TopologyBuilder.java`](src/main/java/flink_dsp/query2/Query2TopologyBuilder.java) that builds the topology of the second query.
 
 #### [flink_dsp.query3 package](src/main/java/flink_dsp/query3)
 
-* [CompanyRankingAggregator.java](src/main/java/flink_dsp/query3/CompanyRankingAggregator.java) used to aggregate data for the third query using daily and weekly windows,
-* [CompanyRankingOutcome.java](src/main/java/flink_dsp/query3/CompanyRankingOutcome.java) representing the aggregation result,
-* [CompanyRankingProcessWindow.java](src/main/java/flink_dsp/query3/CompanyRankingProcessWindow.java) used to set correctly windows' start times and
-* [Query3TopologyBuilder.java](src/main/java/flink_dsp/query3/Query3TopologyBuilder.java) that builds the topology of the third query.
+* [`CompanyRankingAggregator.java](src/main/java/flink_dsp/query3/CompanyRankingAggregator.java) used to aggregate data for the third query using daily and weekly windows,
+* [`CompanyRankingOutcome.java`](src/main/java/flink_dsp/query3/CompanyRankingOutcome.java) representing the aggregation result,
+* [`CompanyRankingProcessWindow.java`](src/main/java/flink_dsp/query3/CompanyRankingProcessWindow.java) used to set correctly windows' start times and
+* [`Query3TopologyBuilder.java`](src/main/java/flink_dsp/query3/Query3TopologyBuilder.java) that builds the topology of the third query.
 
 ### [kafka_pubsub package](src/main/java/kafka_pubsub)
 
 This package contains configurations for the Kafka publish-subscribe service and classes for Consumers and Producers instantiation:
 
-* [KafkaClusterConfig.java](src/main/java/kafka_pubsub/KafkaClusterConfig.java) containing topics name and properties builders (for publishers and subscribers),
-* [KafkaParametricConsumer.java](src/main/java/kafka_pubsub/KafkaParametricConsumer.java) used to create and start consumers registered to Kafka topics (of DSP outputs) and
-* [KafkaSingleProducer.java](src/main/java/kafka_pubsub/KafkaSingleProducer.java) creates a producer that publishes DSP input tuples to Kafka topics.
+* [`KafkaClusterConfig.java`](src/main/java/kafka_pubsub/KafkaClusterConfig.java) containing topics name and properties builders (for publishers and subscribers),
+* [`KafkaParametricConsumer.java`](src/main/java/kafka_pubsub/KafkaParametricConsumer.java) used to create and start consumers registered to Kafka topics (of DSP outputs) and
+* [`KafkaSingleProducer.java`](src/main/java/kafka_pubsub/KafkaSingleProducer.java) creates a producer that publishes DSP input tuples to Kafka topics.
 
 ### [kafkastreams_dsp package](src/main/java/kafkastreams_dsp)
 
-This package contains classes for queries' topologies building and execution using Kafka Streams as DSP library and the [KafkaStreamsConfig.java](src/main/java/kafkastreams_dsp/KafkaStreamsConfig.java) used to get properties for the stream processing library execution.
+This package contains classes for queries' topologies building and execution using Kafka Streams as DSP library and the [`KafkaStreamsConfig.java`](src/main/java/kafkastreams_dsp/KafkaStreamsConfig.java) used to get properties for the stream processing library execution.
 
 #### [kafkastreams_dsp.queries package](src/main/java/kafkastreams_dsp/queries)
 
 This package contains classes for queries' topologies creation:
 
-* [Query1TopologyBuilder.java](src/main/java/kafkastreams_dsp/queries/Query1TopologyBuilder.java) that builds the topology of the first query,
-* [Query2TopologyBuilder.java](src/main/java/kafkastreams_dsp/queries/Query2TopologyBuilder.java) that builds the topology of the second query and
-* [Query3TopologyBuilder.java](src/main/java/kafkastreams_dsp/queries/Query3TopologyBuilder.java) that builds the topology of the third query.
+* [`Query1TopologyBuilder.java`](src/main/java/kafkastreams_dsp/queries/Query1TopologyBuilder.java) that builds the topology of the first query,
+* [`Query2TopologyBuilder.java`](src/main/java/kafkastreams_dsp/queries/Query2TopologyBuilder.java) that builds the topology of the second query and
+* [`Query3TopologyBuilder.java`](src/main/java/kafkastreams_dsp/queries/Query3TopologyBuilder.java) that builds the topology of the third query.
 
 #### [kafkastreams_dsp.windows package](src/main/java/kafkastreams_dsp/windows)
 
 This package contains custom Kafka Streams windows:
 
-* [CustomTimeWindows.java](src/main/java/kafkastreams_dsp/windows/CustomTimeWindows.java) that is an abstract class representing a generic custom duration time window,
-* [DailyTimeWindows.java](src/main/java/kafkastreams_dsp/windows/DailyTimeWindows.java) that implements a daily time window aligned to a given time zone,
-* [MonthlyTimeWindows.java](src/main/java/kafkastreams_dsp/windows/MonthlyTimeWindows.java) that implements a monthly time window (aligned to the first day of a month in a given time zone) and
-* [WeeklyTimeWindows.java](src/main/java/kafkastreams_dsp/windows/WeeklyTimeWindows.java) implementing a weekly time window (starts on Monday and ends on Sunday aligned to a given time zone).
+* [`CustomTimeWindows.java`](src/main/java/kafkastreams_dsp/windows/CustomTimeWindows.java) that is an abstract class representing a generic custom duration time window,
+* [`DailyTimeWindows.java`](src/main/java/kafkastreams_dsp/windows/DailyTimeWindows.java) that implements a daily time window aligned to a given time zone,
+* [`MonthlyTimeWindows.java`](src/main/java/kafkastreams_dsp/windows/MonthlyTimeWindows.java) that implements a monthly time window (aligned to the first day of a month in a given time zone) and
+* [`WeeklyTimeWindows.java`](src/main/java/kafkastreams_dsp/windows/WeeklyTimeWindows.java) implementing a weekly time window (starts on Monday and ends on Sunday aligned to a given time zone).
 
 ### [utility package](src/main/java/utility)
 
