@@ -1,4 +1,4 @@
-package utility.delay_utility;
+package utility.delay;
 
 /**
  * Scope: Query 3
