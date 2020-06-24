@@ -17,7 +17,7 @@ Folder containing scripts and file for a container based execution of the projec
 
 ### [Documentation](Documentation)
 
-Folder containing benchmark results (under `Benchmark` directory), project report and presentation slides.
+Folder containing benchmark results (under [`Benchmark`](Documentation/Benchmark) directory), project report and presentation slides.
 
 ### [Results](Results)
 
@@ -33,7 +33,7 @@ Folder containing Flink computation results as CSV files:
 
 **Results are evaluated from the entire dataset content**
 
-### src
+### [src](src)
 
 This directory contains in its subdirectories Java code for:
 
@@ -50,10 +50,10 @@ It is recommended to open the entire directory with an IDE for better code navig
 
 In the main folder there are processing architecture launchers:
 
-* ConsumersLauncher.java that launches consumers for Kafka Streams and Flink outputs,
-* FlinkDSPMain.java that starts Flink data stream processing,
-* KafkaStreamsDSPMain.java that starts Kafka Streams processing and
-* ProducerLauncher.java used to start a producer that reads from file and publish tuples to Kafka topics simulating a real time data source.
+* [ConsumersLauncher.java](src/main/java/ConsumersLauncher.java) that launches consumers for Kafka Streams and Flink outputs,
+* [FlinkDSPMain.java](src/main/java/FlinkDSPMain.java) that starts Flink data stream processing,
+* [KafkaStreamsDSPMain.java](src/main/java/KafkaStreamsDSPMain.java) that starts Kafka Streams processing and
+* [ProducerLauncher.java](src/main/java/ProducerLauncher.java) used to start a producer that reads from file and publish tuples to Kafka topics simulating a real time data source.
 
 ### [flink_dsp package](src/main/java/flink_dsp)
 
@@ -91,7 +91,7 @@ This package contains configurations for the Kafka publish-subscribe service and
 
 ### [kafkastreams_dsp package](src/main/java/kafkastreams_dsp)
 
-This package contains classes for queries' topologies building and execution using Kafka Streams as DSP library and the KafkaStreamsConfig.java used to get properties for the stream processing library execution.
+This package contains classes for queries' topologies building and execution using Kafka Streams as DSP library and the [KafkaStreamsConfig.java](src/main/java/kafkastreams_dsp/KafkaStreamsConfig.java) used to get properties for the stream processing library execution.
 
 #### [kafkastreams_dsp.queries package](src/main/java/kafkastreams_dsp/queries)
 
