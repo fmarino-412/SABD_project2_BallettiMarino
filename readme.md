@@ -3,11 +3,11 @@ Authors: Marco Balletti, Francesco Marino
 
 <h2>Project structure descritption</h2>
 
-### data
+### [data](data)
 
 Folder containing the input dataset as a CSV file (`dataset.csv`).
 
-### docker-env
+### [docker-env](docker-env)
 
 Folder containing scripts and file for a container based execution of the project architecture:
 
@@ -15,7 +15,7 @@ Folder containing scripts and file for a container based execution of the projec
 2. `stop-dockers.sh` stops and deletes the Kafka Cluster after the created topics deletion and
 3. `docker-compose.yml` is the Docker Compose file used to create the container infrastructure.
 
-### Documentation
+### [Documentation](Documentation)
 
 Folder containing benchmark results (under `Benchmark` directory), project report and presentation slides.
 
