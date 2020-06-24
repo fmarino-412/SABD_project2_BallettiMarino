@@ -13,6 +13,9 @@ import java.io.IOException;
 
 import static utility.DataCommonTransformation.formatDate;
 
+/**
+ * Class used to format the queries' outcomes into string
+ */
 @SuppressWarnings({"ResultOfMethodCallIgnored", "DuplicatedCode"})
 public class OutputFormatter {
 	private static final boolean CONSOLE_RESULTS_PRINT = false;
