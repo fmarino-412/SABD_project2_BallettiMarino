@@ -5,7 +5,7 @@ Authors: Marco Balletti, Francesco Marino
 
 ### [data](data)
 
-Folder containing the input dataset as a CSV file (`dataset.csv`).
+Folder containing the input dataset as a CSV file ([`dataset.csv`](data/dataset.csv)).
 
 ### [docker-env](docker-env)
 
