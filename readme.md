@@ -1,22 +1,26 @@
 # SABD 2019/2020 second project
 Authors: Marco Balletti, Francesco Marino
 
-<h2>Project structure descritption:</h2>
+<h2>Project structure descritption</h2>
 
 ### data
-Folder containing the input dataset as a CSV file (`dataset.csv`)
+
+Folder containing the input dataset as a CSV file (`dataset.csv`).
 
 ### docker-env
-Folder containing scripts and file for a container based execution of the project architecture.
 
-1. `start-dockers.sh` creates the Kafka Cluster and creates necessary Kafka topics,
-2. `stop-dockers.sh` stops and deletes the Kafka Cluster after the created topics deletion,
+Folder containing scripts and file for a container based execution of the project architecture:
+
+1. `start-dockers.sh` creates the Kafka Cluster and necessary Kafka topics,
+2. `stop-dockers.sh` stops and deletes the Kafka Cluster after the created topics deletion and
 3. `docker-compose.yml` is the Docker Compose file used to create the container infrastructure.
 
 ### Documentation
-Folder containing benchmark results (under `Benchmark` directory), project report and project presentation slides.
+
+Folder containing benchmark results (under `Benchmark` directory), project report and presentation slides.
 
 ### Results
+
 Folder containing Flink computation results as CSV files:
 
 1. `query1_daily.csv` containing the output of the first query evaluated by daily windows,
@@ -24,26 +28,27 @@ Folder containing Flink computation results as CSV files:
 3. `query1_monthly.csv` containing the output of the first query evaluated by monthly windows,
 4. `query2_daily.csv` containing the output of the second query evaluated by daily windows,
 5. `query2_weekly.csv` containing the output of the second query evaluated by weekly windows,
-6. `query3_daily.csv` containing the output of the third query evaluated by daily windows,
+6. `query3_daily.csv` containing the output of the third query evaluated by daily windows and
 7. `query3_weekly.csv` containing the output of the third query evaluated by weekly windows.
 
 **Results are evaluated from the entire dataset content**
 
 ### src
-this directory contains in its subdirectories Java code for:
+
+This directory contains in its subdirectories Java code for:
 
 1. creation of Kafka Topic producer for input data,
 2. creation of a Flink topology to run a DSP analysis of the three queries,
-3. creation of a Kafka Streams topology to run an alternative DSP analysis of the same three queries,
-4. creation of several Kafka Topic consumers for DSP output saving.
+3. creation of a Kafka Streams topology to run an alternative DSP analysis of the same three queries and
+4. creation of several Kafka topic consumers for DSP output saving.
 
 ---
 
-<h2>Java Project structure description:</h2>
+<h2>Java Project structure description</h2>
 
 It is recommended to open the entire directory with an IDE for better code navigation. Java project part was developed using JetBrains' IntelliJ IDEA.
 
-In the main folder there are the processing architecture launchers:
+In the main folder there are processing architecture launchers:
 
 * `ConsumersLauncher.java` that launches consumers for Kafka Streams and Flink outputs,
 * `FlinkDSPMain.java` that starts Flink data stream processing,
@@ -52,14 +57,14 @@ In the main folder there are the processing architecture launchers:
 
 ### flink_dsp package
 
-This package contains classes for queries' topologies building and execution using Flink framework.
+This package contains classes for queries' topologies building and execution using Flink as DSP framework.
 
 #### flink_dsp.query1 package
 
 * `AverageDelayAggregator.java` used to aggregate data for the first query using daily, weekly and monthly windows,
 * `AverageDelayOutcome.java` representing the aggregation result,
 * `AverageDelayProcessWindow.java` used to set correctly windows' start times,
-* `MonthlyWindowAssigner.java` is a custom thumbling window that assign tuples to a window basing on the event time month (this was necessary due to differences in month durations) and
+* `MonthlyWindowAssigner.java` contains a custom thumbling window assigner for tuples separation by event time month (this was necessary due to differences in month durations) and
 * `Query1TopologyBuilder.java` that builds the topology of the first query.
 
 #### flink_dsp.query2 package
@@ -86,7 +91,7 @@ This package contains configurations for the Kafka publish-subscribe service and
 
 ### kafkastreams_dsp package
 
-This package contains classes for queries' topologies building and execution using Kafka Streams library and the `KafkaStreamsConfig.java` used to get properties for Kafka Streams execution.
+This package contains classes for queries' topologies building and execution using Kafka Streams as DSP library and the `KafkaStreamsConfig.java` used to get properties for the stream processing library execution.
 
 #### kafkastreams_dsp.queries package
 
@@ -102,14 +107,14 @@ This package contains custom Kafka Streams windows:
 
 * `CustomTimeWindows.java` that is an abstract class representing a generic custom duration time window,
 * `DailyTimeWindows.java` that implements a daily time window aligned to a given time zone,
-* `MonthlyTimeWindows.java` that implements a monthly time window (aligned to the first day of a month) and
-* `WeeklyTimeWindows.java` implementing a weekly time window (starts on Monday and ends on Sunday).
+* `MonthlyTimeWindows.java` that implements a monthly time window (aligned to the first day of a month in a given time zone) and
+* `WeeklyTimeWindows.java` implementing a weekly time window (starts on Monday and ends on Sunday aligned to a given time zone).
 
 ### utility package
 
-This package contains classes needed for queries execution support, in particular:
+This package contains classes needed for queries' execution support, in particular:
 
-* `BusData.java` structure representing tuple information needed for queries evaluation,
+* `BusData.java` structure representing tuple information needed for evaluation,
 * `DataCommonTransformation.java` containing common method needed for queries processing and
 * `OutputFormatter.java` needed for query outcomes formatting in order to be published on Kafka.
 
