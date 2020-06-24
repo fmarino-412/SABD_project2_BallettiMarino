@@ -39,66 +39,110 @@ this directory contains in its subdirectories Java code for:
 
 ---
 
-<h1>BOZZA</h1>
-
 <h2>Java Project structure description:</h2>
 
 It is recommended to open the entire directory with an IDE for better code navigation. Java project part was developed using JetBrains' IntelliJ IDEA.
 
-### query1 package
+In the main folder there are the processing architecture launchers:
 
-This package contains:
+* `ConsumersLauncher.java` that launches consumers for Kafka Streams and Flink outputs,
+* `FlinkDSPMain.java` that starts Flink data stream processing,
+* `KafkaStreamsDSPMain.java` that starts Kafka Streams processing and
+* `ProducerLauncher.java` used to start a producer that reads from file and publish tuples to Kafka topics simulating a real time data source.
 
-* `Query1Preprocessing.java` implementing the data preprocessing for the first query execution with both Spark Core and Spark SQL,
-* `Query1Main.java` implementing the first query resolution using Spark Core Transformations and Actions,
-* `Query1SparkSQL.java` implementing the first query resolution using Spark SQL (preprocesing executed using Spark Core Transformations and Actions).
+### flink_dsp package
 
-### query2 package
+This package contains classes for queries' topologies building and execution using Flink framework.
 
-This package contains:
+#### flink_dsp.query1 package
 
-* `Query2Preprocessing.java` implementing the data preprocessing for the second query execution with both Spark Core and Spark SQL,
-* `Query2Main.java` implementing the second query resolution using Spark Core Transformations and Actions,
-* `Query2SparkSQL.java` implementing the second query resolution using Spark SQL (preprocesing executed using Spark Core Transformations and Actions),
-* `CountryDataQuery2.java` structure used to incapsulate data to pass between Spark Transformations/Actions.
+* `AverageDelayAggregator.java` used to aggregate data for the first query using daily, weekly and monthly windows,
+* `AverageDelayOutcome.java` representing the aggregation result,
+* `AverageDelayProcessWindow.java` used to set correctly windows' start times,
+* `MonthlyWindowAssigner.java` is a custom thumbling window that assign tuples to a window basing on the event time month (this was necessary due to differences in month durations) and
+* `Query1TopologyBuilder.java` that builds the topology of the first query.
 
-### query3 package
+#### flink_dsp.query2 package
 
-This package contains:
+* `ReasonRankingAggregator.java` used to aggregate data for the second query using daily and weekly windows,
+* `ReasonRankingOutcome.java` representing the aggregation result,
+* `ReasonRankingProcessWindow.java` used to set correctly windows' start times and
+* `Query2TopologyBuilder.java` that builds the topology of the second query.
 
-* `Query3Main.java` implementing the third query resolution (excluding the clustering part) using Spark Core Transformations and Actions,
-* `CountryDataQuery3.java` structure used to incapsulate data to pass between Transformations/Actions.
+#### flink_dsp.query3 package
+
+* `CompanyRankingAggregator.java` used to aggregate data for the third query using daily and weekly windows,
+* `CompanyRankingOutcome.java` representing the aggregation result,
+* `CompanyRankingProcessWindow.java` used to set correctly windows' start times and
+* `Query3TopologyBuilder.java` that builds the topology of the third query.
+
+### kafka_pubsub package
+
+This package contains configurations for the Kafka publish-subscribe service and classes for Consumers and Producers instantiation:
+
+* `KafkaClusterConfig.java` containing topics name and properties builders (for publishers and subscribers),
+* `KafkaParametricConsumers.java` used to create and start consumers registered to Kafka topics (of DSP outputs) and
+* `KafkaSingleProducer.java` creates a producer that publishes DSP input tuples to Kafka topics.
+
+### kafkastreams_dsp package
+
+This package contains classes for queries' topologies building and execution using Kafka Streams library and the `KafkaStreamsConfig.java` used to get properties for Kafka Streams execution.
+
+#### kafkastreams_dsp.queries package
+
+This package contains classes for queries' topologies creation:
+
+* `Query1TopologyBuilder.java` that builds the topology of the first query,
+* `Query2TopologyBuilder.java` that builds the topology of the second query and
+* `Query3TopologyBuilder.java` that builds the topology of the third query.
+
+#### kafkastreams_dsp.windows package
+
+This package contains custom Kafka Streams windows:
+
+* `CustomTimeWindows.java` that is an abstract class representing a generic custom duration time window,
+* `DailyTimeWindows.java` that implements a daily time window aligned to a given time zone,
+* `MonthlyTimeWindows.java` that implements a monthly time window (aligned to the first day of a month) and
+* `WeeklyTimeWindows.java` implementing a weekly time window (starts on Monday and ends on Sunday).
 
 ### utility package
 
 This package contains classes needed for queries execution support, in particular:
 
-* `Boundary.java` structure to define polygonal fences representing geographical continents,
-* `Continents.java` containing mapping of geographical continents and boundary structures,
-* `Codes.java` enum containing ISO3 country codes each mapped to the corresponding continent,
-* `ContinentDecoder.java` implementing different logics for continent detection starting from geographical coordinates,
-* `ClusteringUtility.java` implementing naive and mllib k-means clustering versions,
-* `GeoCoordinate.java` encapsulating latitude and longitude in a single object,
-* `IOUtility.java` implementing logic for HDFS communication,
-* `QueryUtility.java` containing methods for data conversion and dataset translation.
+* `BusData.java` structure representing tuple information needed for queries evaluation,
+* `DataCommonTransformation.java` containing common method needed for queries processing and
+* `OutputFormatter.java` needed for query outcomes formatting in order to be published on Kafka.
 
-### output\_and\_metrics package
+#### utility.accumulators package
 
-This package contains classes needed for performing banchmark and exporting queries results, in particular:
+This package contains classes used as accumulators for both Flink and Kafka Streams processing:
 
-* `CSVOutputFormatter.java` executes queries and export results from HDFS to `.csv` files inside the `Results` directory,
-* `MultiRunBenchmark.java` performs a multi-start for every query execution printing every run execution time.
+* `AverageDelayAccumulator.java` used for average delay statistics grouped by neighbourhood (first query),
+* `AverageDelayStatistics.java` used to maintain information about per neighbourhood delay (first query),
+* `CompanyRankingAccumulator.java` used for company name ranking on delay basis (third query) and
+* `ReasonRankingAccumulator.java` needed for delay reason rankings (second query).
 
-### output\_and\_metrics.hbase package
+#### utility.benchmarks package
 
-This package contains classes needed to export queries results from HDFS to HBase, in particular:
+This package contains utilities for latency and throughput evaluation:
 
-* `HBaseLightClient.java` implementing basic methods for datastore interaction,
-* `HBaseImport.java` implementing methods to get query outputs from HDFS and putting in HBase after format translation.
+* `BenchmarkFlinkSink.java` representing a sink that can be used in Flink topology to evaluate performances and
+* `SynchronizedCounter.java` that is a static counter for benchmark evaluation (counts tuples and time).
 
-### output\_and\_metrics.graphics package
+#### utility.delay package
 
-This package contains classes needed to export queries result from HDFS to InfluxDB in order to be graphically represented using Grafana, in particular:
+This package contains utilities for delay string parsing and delay type ranking:
 
-* `InfluxDBClient.java` implementing basic methods for datastore interaction,
-* `InfluxDBImport.java` implementing methods to get query outputs from HDFS and putting in InfluxDB after format translation.
+* `DelayFormatException.java` that is a custom exception for failure on gaining information from delay strings,
+* `DealyInfo.java` representing a single parsed delay information,
+* `DelayParsingUtility.java` that contains delay strings parsing logic and
+* `DelayScorer.java` used to assign a score on delay and reason basis (third query).
+
+#### utility.serdes package
+
+This package contains data serialization and deserialization utilities:
+
+* `FlinkStringToKafkaSerializer.java` needed to serialize Flink output strings for Kafka publication,
+* `JsonPOJODeserializer.java` used to deserialize custom object from JSON format,
+* `JsonPOJOSerializer.java` used to serialize custom object to JSON format and
+* `SerDesBuilders.java` used to build ser-des for Kafka Streams.
