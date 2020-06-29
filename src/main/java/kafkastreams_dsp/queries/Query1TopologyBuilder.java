@@ -48,7 +48,7 @@ public class Query1TopologyBuilder {
                         DataCommonTransformation.toDailyKeyed(busData))
                 .groupByKey(Grouped.with(Serdes.String(), SerDesBuilders.getSerdes(BusData.class)))
                 // used a custom daily window
-                .windowedBy(new DailyTimeWindows(ZoneId.systemDefault(), Duration.ofDays(0L)))
+                .windowedBy(new DailyTimeWindows(ZoneId.systemDefault(), Duration.ofHours(8L)))
                 // set up function to aggregate daily data for average delay
                 .aggregate(new AverageDelayInitializer(), new AverageDelayAggregator(),
                         Materialized.with(Serdes.String(), SerDesBuilders.getSerdes(AverageDelayAccumulator.class)))
