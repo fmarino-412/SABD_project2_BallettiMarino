@@ -138,6 +138,7 @@ This package contains utilities for latency and throughput evaluation:
 
 This package contains utilities for delay string parsing and delay type ranking:
 
+* [`DelayFixes.java`](src/main/java/utility/delay/DelayFixes.java) this is an Enum for wrongly converted string correction in the dataset,
 * [`DelayFormatException.java`](src/main/java/utility/delay/DelayFormatException.java) that is a custom Java Exception for failure on gaining information from delay strings,
 * [`DealyInfo.java`](src/main/java/utility/delay/DelayInfo.java) representing a single parsed delay information,
 * [`DelayParsingUtility.java`](src/main/java/utility/delay/DelayParsingUtility.java) that contains delay strings parsing logic and
