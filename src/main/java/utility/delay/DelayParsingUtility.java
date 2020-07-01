@@ -79,6 +79,9 @@ public class DelayParsingUtility {
 				.replaceAll(":", "")
 				.replaceAll("!", "");
 
+		// cleans the original string from conversion errors
+		dirtyDelay = fixDelay(dirtyDelay);
+
 		// in case of - or / evaluate every part separately and returns mean value of the parts
 		if (dirtyDelay.contains("-") || dirtyDelay.contains("/")) {
 			String[] parts = dirtyDelay.split("[-/]");
@@ -154,5 +157,21 @@ public class DelayParsingUtility {
 		} else {
 			return new DelayInfo(hours == null ? 0 : hours, minutes == null ? 0 : minutes, hours != null);
 		}
+	}
+
+	/**
+	 * This function is used to solve conversion errors in the dataset
+	 * @param unfixedDelay original delay string
+	 * @return fixed string or the original one if no problem was found
+	 */
+	private static String fixDelay(String unfixedDelay) {
+		String month;
+		for (DelayFixes toFix : DelayFixes.values()) {
+			month = toFix.name();
+			if (unfixedDelay.contains(month)) {
+				unfixedDelay = unfixedDelay.replaceAll(month, toFix.getText());
+			}
+		}
+		return unfixedDelay;
 	}
 }

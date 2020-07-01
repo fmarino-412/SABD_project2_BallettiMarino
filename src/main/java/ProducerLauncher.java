@@ -38,8 +38,8 @@ public class ProducerLauncher {
 					eventTime = format.parse(info[7]).getTime();
 					producer.produce(eventTime, line, eventTime);
 					// for real data stream processing source simulation
-					Thread.sleep(SLEEP);
-				} catch (ParseException | InterruptedException ignored) {
+					//Thread.sleep(SLEEP);
+				} catch (ParseException /*| InterruptedException*/ ignored) {
 				}
 			}
 
