@@ -1,3 +1,0 @@
-Ritardi in giorni?
-
-TODO: OutputFileFormatter e DataCommonTransformation overlapping
